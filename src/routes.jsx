@@ -4,7 +4,7 @@ import { Register } from "./components/Register"
 import { PublicRoute } from "./components/PublicRoute"
 import { PrivateRoute } from "./components/PrivateRoute"
 import { Home } from './pages/index'
-import { CriarModulo } from "./components/CriarModulo"  
+import { CriarModulo } from "./components/Modulo"  
 
 export default function AppRoutes({ session }) {
   return (
