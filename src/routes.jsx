@@ -4,6 +4,7 @@ import { Register } from "./components/Register"
 import { PublicRoute } from "./components/PublicRoute"
 import { PrivateRoute } from "./components/PrivateRoute"
 import { Home } from './pages/index'
+import { CriarModulo } from "./components/CriarModulo"  
 
 export default function AppRoutes({ session }) {
   return (
@@ -33,6 +34,15 @@ export default function AppRoutes({ session }) {
           <PublicRoute session={session}>
             <Register />
           </PublicRoute>
+        }
+      />
+
+      <Route
+        path="/criarmodulo"
+        element={
+          <PrivateRoute session={session}>
+            <CriarModulo />
+          </PrivateRoute>
         }
       />
 
