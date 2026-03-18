@@ -1,0 +1,117 @@
+-- 1. Tabela de Usuários (Conectada ao Auth do Supabase)
+CREATE TABLE public.usuarios (
+  id_user UUID REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
+  nome TEXT,
+  apelido TEXT,
+  email TEXT,
+  setor TEXT
+);
+
+-- 2. Tabela de Módulos
+CREATE TABLE public.modulos (
+  id_modulo INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  titulo TEXT NOT NULL,
+  descricao TEXT,
+  criado_por_id UUID REFERENCES public.usuarios(id_user),
+  atualizado_em TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 3. Tabela de Submódulos
+CREATE TABLE public.submodulos (
+  id_submodulo INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  id_modulo INT REFERENCES public.modulos(id_modulo) ON DELETE CASCADE,
+  titulo TEXT NOT NULL,
+  descricao TEXT,
+  criado_por_id UUID REFERENCES public.usuarios(id_user),
+  atualizado_em TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 4. Tabela de Cards
+CREATE TABLE public.cards (
+  id_card INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  titulo TEXT NOT NULL,
+  conteudo TEXT, 
+  arquivos JSONB, 
+  id_modulo INT REFERENCES public.modulos(id_modulo) ON DELETE CASCADE,
+  id_submodulo INT REFERENCES public.submodulos(id_submodulo) ON DELETE CASCADE,
+  criado_por_id UUID REFERENCES public.usuarios(id_user),
+  criado_em TIMESTAMPTZ DEFAULT NOW(),
+  atualizado_em TIMESTAMPTZ DEFAULT NOW()
+);
+
+// Policies 
+-- Cria a função que copia os dados do novo usuário para a sua tabela pública
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS TRIGGER AS $$
+BEGIN
+  INSERT INTO public.usuarios (id_user, email, nome)
+  VALUES (
+    NEW.id, 
+    NEW.email, 
+    NEW.raw_user_meta_data->>'nome' -- Pega o nome se você enviar nos metadados durante o cadastro
+  );
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Cria o gatilho que dispara a função toda vez que um usuário for inserido no auth.users
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW EXECUTE PROCEDURE public.handle_new_user();
+  
+ 
+-- 1. Ativar o RLS em todas as tabelas
+ALTER TABLE public.usuarios ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.modulos ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.submodulos ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.cards ENABLE ROW LEVEL SECURITY;
+
+-- 2. Políticas para a tabela de Usuários
+-- Todos os usuários logados podem ver os perfis uns dos outros
+CREATE POLICY "Visualização de perfis permitida para usuários autenticados" 
+ON public.usuarios FOR SELECT 
+USING (auth.role() = 'authenticated');
+
+-- O usuário só pode atualizar o seu próprio perfil
+CREATE POLICY "Usuários podem atualizar apenas o próprio perfil" 
+ON public.usuarios FOR UPDATE 
+USING (auth.uid() = id_user);
+
+-- 3. Políticas para a tabela de Módulos
+CREATE POLICY "Visualização de módulos para usuários autenticados" 
+ON public.modulos FOR SELECT USING (auth.role() = 'authenticated');
+
+CREATE POLICY "Inserção de módulos apenas com o próprio ID" 
+ON public.modulos FOR INSERT WITH CHECK (auth.uid() = criado_por_id);
+
+CREATE POLICY "Atualização restrita ao criador do módulo" 
+ON public.modulos FOR UPDATE USING (auth.uid() = criado_por_id);
+
+CREATE POLICY "Exclusão restrita ao criador do módulo" 
+ON public.modulos FOR DELETE USING (auth.uid() = criado_por_id);
+
+-- 4. Políticas para a tabela de Submódulos
+CREATE POLICY "Visualização de submódulos para usuários autenticados" 
+ON public.submodulos FOR SELECT USING (auth.role() = 'authenticated');
+
+CREATE POLICY "Inserção de submódulos apenas com o próprio ID" 
+ON public.submodulos FOR INSERT WITH CHECK (auth.uid() = criado_por_id);
+
+CREATE POLICY "Atualização restrita ao criador do submódulo" 
+ON public.submodulos FOR UPDATE USING (auth.uid() = criado_por_id);
+
+CREATE POLICY "Exclusão restrita ao criador do submódulo" 
+ON public.submodulos FOR DELETE USING (auth.uid() = criado_por_id);
+
+-- 5. Políticas para a tabela de Cards
+CREATE POLICY "Visualização de cards para usuários autenticados" 
+ON public.cards FOR SELECT USING (auth.role() = 'authenticated');
+
+CREATE POLICY "Inserção de cards apenas com o próprio ID" 
+ON public.cards FOR INSERT WITH CHECK (auth.uid() = criado_por_id);
+
+CREATE POLICY "Atualização restrita ao criador do card" 
+ON public.cards FOR UPDATE USING (auth.uid() = criado_por_id);
+
+CREATE POLICY "Exclusão restrita ao criador do card" 
+ON public.cards FOR DELETE USING (auth.uid() = criado_por_id);
