@@ -18,6 +18,17 @@ export const dbService = {
     return data[0] // Retorna o módulo recém-criado (com o ID dele)
   },
 
+  // 1.1 Obter Modulo (Exige ID modulo criado)
+  async getModulo(idModulo) {
+    const { data, error } = await supabase
+    .from('modulos')
+    .select(idModulo)
+    .order('id_modulo', {ascending: false}) // Trazendo os modulos mais recentes primeiro.
+
+    if (error) throw error
+    return data
+  },
+
   // 2. Criar Submódulo (Exige o ID do Módulo pai)
   async criarSubmodulo(titulo, descricao, idModulo) {
     const { data: { user } } = await supabase.auth.getUser()
@@ -54,4 +65,6 @@ export const dbService = {
     if (error) throw error
     return data[0]
   }
+
+ 
 }
