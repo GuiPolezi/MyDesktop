@@ -1,7 +1,7 @@
 import {Logout} from '../components/Logout'
 import { Link } from 'react-router-dom' //
 import { GetModulo } from '../components/Modulo'
-import { GetUser } from '../components/Users'
+
 
 
 
