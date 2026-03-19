@@ -49,6 +49,18 @@ export const dbService = {
     return data[0]
   },
 
+  // 2.2 Obter Submodulo (Exige ID_Modulo)
+  async getSubmodulo(idModulo) {
+    const { data, error } = await supabase
+    .from('submodulos')
+    .select('*')
+    .eq('id_modulo', idModulo)
+    .order('titulo', {ascending: true})
+    
+    if (error) throw error
+    return data
+  },
+
   // 3. Criar Card (Exige ID do Módulo e do Submódulo)
   async criarCard(titulo, conteudo, idModulo, idSubmodulo) {
     const { data: { user } } = await supabase.auth.getUser()
