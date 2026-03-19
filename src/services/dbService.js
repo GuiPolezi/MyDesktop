@@ -55,7 +55,7 @@ export const dbService = {
     .from('submodulos')
     .select('*')
     .eq('id_modulo', idModulo)
-    .order('titulo', {ascending: true})
+    .order('id_submodulo', {ascending: false})
     
     if (error) throw error
     return data
