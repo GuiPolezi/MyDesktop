@@ -51,6 +51,10 @@ export function GetModulo({idModulo}) {
 
   // UseEffect: Roda automaticamente a função quando o componente for montado na tela
   useEffect(() => {
+    if (!idModulo) {
+      setLoading(false)
+      return 
+    }
     async function carregarDados() {
       try {
         const dados = await dbService.getModulo(idModulo)
@@ -73,11 +77,9 @@ export function GetModulo({idModulo}) {
     return <p>Carregando Módulos...</p>
   }
 
-  // Se o carregamento terminou e o modulo ainda é null, significa que nao encontrou nada
   if (!modulo) {
     return <p>Módulo Não encontrado</p>
   }
-
   // O que aparece na tela depois que os dados chegam
   return (
     <section>
