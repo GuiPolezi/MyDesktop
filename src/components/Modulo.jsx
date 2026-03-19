@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { dbService } from '../services/dbService'
 import { Link } from 'react-router-dom' //
+import { GetSubModulo } from './SubModulo'
 
 export function CriarModulo() {
     const [titulo, setTitulo] = useState('')
@@ -86,7 +87,10 @@ export function GetModulo({idModulo}) {
     <section>
       <h1>{modulo.titulo}</h1>
       <p>{modulo.descricao}</p>
-
+      <div className='submodulos'>
+        {/* Chamamos o componente de lista passando o ID do módulo atual */}
+        <GetSubModulo idModulo={modulo.id_modulo} />
+      </div>
       {/* Link dinâmico usando o ID do módulo vindo do banco */}
       <Link 
         to={`/criarsubmodulo/${modulo.id_modulo}`} 
