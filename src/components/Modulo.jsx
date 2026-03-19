@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { dbService } from '../services/dbService'
+import { Link } from 'react-router-dom' //
 
 export function CriarModulo() {
     const [titulo, setTitulo] = useState('')
@@ -85,6 +86,14 @@ export function GetModulo({idModulo}) {
     <section>
       <h1>{modulo.titulo}</h1>
       <p>{modulo.descricao}</p>
+
+      {/* Link dinâmico usando o ID do módulo vindo do banco */}
+      <Link 
+        to={`/criarsubmodulo/${modulo.id_modulo}`} 
+        style={{ border: '1px solid', padding: '5px', textDecoration: 'none' }}
+      >
+        + Criar Submódulo para este módulo
+      </Link>
     </section>
   )
 }

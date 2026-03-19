@@ -15,6 +15,7 @@ export function Home() {
         <div>
           <h3>Modulos Criados</h3>
           <GetModulo idModulo={1}/>
+          <GetModulo idModulo={2}/>
         </div>
     </section>
   )

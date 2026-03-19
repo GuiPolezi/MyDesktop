@@ -4,7 +4,8 @@ import { Register } from "./components/Register"
 import { PublicRoute } from "./components/PublicRoute"
 import { PrivateRoute } from "./components/PrivateRoute"
 import { Home } from './pages/index'
-import { CriarModulo } from "./components/Modulo"  
+import { CriarModulo } from "./components/Modulo"
+import { CriarSubModulo } from "./components/SubModulo"
 
 export default function AppRoutes({ session }) {
   return (
@@ -42,6 +43,15 @@ export default function AppRoutes({ session }) {
         element={
           <PrivateRoute session={session}>
             <CriarModulo />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="/criarsubmodulo/:idModulo"
+        element={
+          <PrivateRoute session={session}>
+            <CriarSubModulo />
           </PrivateRoute>
         }
       />
