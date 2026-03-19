@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import { dbService } from '../services/dbService'
+import { useNavigate } from "react-router-dom";
+
 
 export function CriarSubModulo() {
 // 1. Obtém o idModulo da URL definida na rota (:idModulo)
@@ -9,6 +11,8 @@ export function CriarSubModulo() {
      const [titulo, setTitulo] = useState('')
   const [descricao, setDescricao] = useState('')
   const [loading, setLoading] = useState(false)
+    const navigate = useNavigate(); // 🔹 hook para redirecionar
+
 
   const handleCriar = async (e) => {
     e.preventDefault()
@@ -27,6 +31,7 @@ export function CriarSubModulo() {
         setTitulo('')
         setDescricao('')
         // Aqui você poderia atualizar uma lista de módulos na tela
+        navigate('/') // Redireciona para página inicial após criação
     } catch (error) {
         alert("Erro ao criar: " + error.message)
     } finally {
