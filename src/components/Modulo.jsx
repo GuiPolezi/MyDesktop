@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { dbService } from '../services/dbService'
 
 export function CriarModulo() {
@@ -42,3 +42,47 @@ export function CriarModulo() {
   )
 }
 
+// Função para obter Modulo
+
+export function GetModulo({idModulo}) {
+  // Estados para guardar os dados e status de carregamento
+  const [modulo, setModulos] = useState(null) // UseState para esperar por um modulo (um objeto)
+  const [loading, setLoading] = useState(true)
+
+  // UseEffect: Roda automaticamente a função quando o componente for montado na tela
+  useEffect(() => {
+    async function carregarDados() {
+      try {
+        const dados = await dbService.getModulo(idModulo)
+        setModulos(dados)
+      } catch (error) {
+        alert("Erro ao buscar módulos: " + error.message)
+      } finally {
+        setLoading(false) // Tira o aviso de carregando
+      }
+    }
+
+    if (idModulo) {
+      carregarDados();
+    }
+    
+  }, [idModulo]) // Colocamos idModulo aqui para o React atualizar se o ID mudar
+
+  // O que aparece na tela enquando os dados carregam
+  if (loading) {
+    return <p>Carregando Módulos...</p>
+  }
+
+  // Se o carregamento terminou e o modulo ainda é null, significa que nao encontrou nada
+  if (!modulo) {
+    return <p>Módulo Não encontrado</p>
+  }
+
+  // O que aparece na tela depois que os dados chegam
+  return (
+    <section>
+      <h1>{modulo.titulo}</h1>
+      <p>{modulo.descricao}</p>
+    </section>
+  )
+}

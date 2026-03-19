@@ -22,8 +22,10 @@ export const dbService = {
   async getModulo(idModulo) {
     const { data, error } = await supabase
     .from('modulos')
-    .select(idModulo)
-    .order('id_modulo', {ascending: false}) // Trazendo os modulos mais recentes primeiro.
+    .select('*') // Pega todas as colunas
+    .eq('id_modulo', idModulo) // Onde a coluna id_modulo seja igual ao ID passado
+    .single() // Garante que retorne apenas 1 objeto e nao um array
+    
 
     if (error) throw error
     return data
