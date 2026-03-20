@@ -110,3 +110,48 @@ export function GetCardsModule({idModulo}) {
     </section>
   )
 }
+
+
+export function GetCardsSubModule({idSubModulo}) {
+     // 1. Iniciamos com uma array vazia
+  const [ cardsubmodule, setCardSubmodule ] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function carregarCardsSubModule() {
+      if (!idSubModulo) return // Segurança: não busca se não tiver ID
+
+      try {
+        setLoading(true)
+        const dados = await dbService.getCardsSubmodule(idSubModulo)
+        setCardSubmodule(dados)
+      } catch (error) {
+        console.error("Erro ao buscar cards:", error.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    carregarCardsSubModule()
+  }, [idSubModulo]) // Recarrega se o ID do módulo mudar
+
+   if (loading) return <p>Carregando submódulos...</p>
+
+   if (cardsubmodule.length == 0) {
+    return <p>Nenhum card encontrado</p>
+   }
+
+   return (
+    <section>
+      <ul style={{ paddingLeft: '20px' }}>
+        {cardsubmodule.map((card) => (
+            <div key={card.id_card} style={{ marginBottom: '8px' }}>
+                <strong>{card.titulo}</strong>
+                {card.conteudo && <p style={{ margin: 0, fontSize: '0.85rem' }}>{card.conteudo}</p>}
+                {card.arquivos && <div>{card.arquivos}</div>}
+            </div>
+        ))}
+      </ul>
+    </section>
+  )
+}
