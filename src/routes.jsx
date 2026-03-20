@@ -58,7 +58,7 @@ export default function AppRoutes({ session }) {
       />
 
       <Route 
-        path="/criarcard/:idModulo/:idSubModulo?" // o ? Torna o idSubModulo
+        path="/criarcard/:idModulo/:idSubModulo?" // o ? Torna o idSubModulo opcional
         element={
           <PrivateRoute session={session}>
             <CriarCards />
