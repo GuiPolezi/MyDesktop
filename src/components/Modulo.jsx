@@ -102,6 +102,12 @@ export function GetModulo({idModulo}) {
       >
         + Criar Submódulo para este módulo
       </Link>
+
+      {/* 🔹 Passamos APENAS o id do módulo. O React Router entende que não há submódulo */}
+      <Link to={`/criarcard/${modulo.id_modulo}`}>
+        + Criar Card para este Módulo
+      </Link>
+    
     </section>
   )
 }
