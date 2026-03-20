@@ -6,6 +6,7 @@ import { PrivateRoute } from "./components/PrivateRoute"
 import { Home } from './pages/index'
 import { CriarModulo } from "./components/Modulo"
 import { CriarSubModulo } from "./components/SubModulo"
+import { CriarCards } from "./components/Cards"
 
 export default function AppRoutes({ session }) {
   return (
@@ -56,6 +57,14 @@ export default function AppRoutes({ session }) {
         }
       />
 
+      <Route 
+        path="/criarcard/:idModulo/:idSubModulo?" // o ? Torna o idSubModulo
+        element={
+          <PrivateRoute session={session}>
+            <CriarCards />
+          </PrivateRoute>
+        }
+      />
     </Routes>
   )
 }
