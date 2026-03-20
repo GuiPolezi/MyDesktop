@@ -106,5 +106,17 @@ export const dbService = {
     return data
   },
 
+  /* ------------ EXCLUSÕES --------- */
+
+ // Excluir Card
+ async deleteCard(idCard) {
+  const {data, error} = await supabase
+  .from('cards')
+  .delete()
+  .eq('id_card', idCard) // Filtra pelo id do card
  
+  if (error) throw error
+  return data
+}
+
 }
