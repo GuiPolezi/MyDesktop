@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import { dbService } from '../services/dbService'
+import { Link } from 'react-router-dom' //
 import { useNavigate } from "react-router-dom";
 
 
@@ -89,13 +90,19 @@ export function GetSubModulo({idModulo}) {
   }
 
   return (
-    <ul style={{ paddingLeft: '20px' }}>
-      {submodulos.map((sub) => (
-        <li key={sub.id_submodulo} style={{ marginBottom: '8px' }}>
-          <strong>{sub.titulo}</strong>
-          {sub.descricao && <p style={{ margin: 0, fontSize: '0.85rem' }}>{sub.descricao}</p>}
-        </li>
-      ))}
-    </ul>
+    <section>
+      <ul style={{ paddingLeft: '20px' }}>
+        {submodulos.map((sub) => (
+          <li key={sub.id_submodulo} style={{ marginBottom: '8px' }}>
+            <strong>{sub.titulo}</strong>
+            {sub.descricao && <p style={{ margin: 0, fontSize: '0.85rem' }}>{sub.descricao}</p>}
+            {/* 🔹 Aqui passamos OS DOIS IDs na URL */}
+            <Link to={`/criarcard/${idModulo}/${sub.id_submodulo}`}>
+              + Criar Card neste Submódulo
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </section>
   )
 }
