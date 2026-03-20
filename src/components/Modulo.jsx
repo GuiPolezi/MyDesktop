@@ -3,6 +3,7 @@ import { dbService } from '../services/dbService'
 import { Link } from 'react-router-dom' //
 import { GetSubModulo } from './SubModulo'
 import { useNavigate } from "react-router-dom";
+import { GetCardsModule } from './Cards';
 
 export function CriarModulo() {
     const [titulo, setTitulo] = useState('')
@@ -91,17 +92,22 @@ export function GetModulo({idModulo}) {
     <section>
       <h1>{modulo.titulo}</h1>
       <p>{modulo.descricao}</p>
+      <div className="cards">
+        {/* Chamamos o componente de lista passando o ID do módulo atual */}
+        <GetCardsModule idModulo={modulo.id_modulo} />
+      </div>
+
       <div className='submodulos'>
         {/* Chamamos o componente de lista passando o ID do módulo atual */}
         <GetSubModulo idModulo={modulo.id_modulo} />
+        {/* Link dinâmico usando o ID do módulo vindo do banco */}
+        <Link 
+          to={`/criarsubmodulo/${modulo.id_modulo}`} 
+          style={{ border: '1px solid', padding: '5px', textDecoration: 'none' }}
+          >
+          + Criar Submódulo para este módulo
+        </Link>
       </div>
-      {/* Link dinâmico usando o ID do módulo vindo do banco */}
-      <Link 
-        to={`/criarsubmodulo/${modulo.id_modulo}`} 
-        style={{ border: '1px solid', padding: '5px', textDecoration: 'none' }}
-      >
-        + Criar Submódulo para este módulo
-      </Link>
 
       {/* 🔹 Passamos APENAS o id do módulo. O React Router entende que não há submódulo */}
       <Link to={`/criarcard/${modulo.id_modulo}`}>
