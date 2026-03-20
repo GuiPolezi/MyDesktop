@@ -135,7 +135,7 @@ export function GetCardsSubModule({idSubModulo}) {
     carregarCardsSubModule()
   }, [idSubModulo]) // Recarrega se o ID do módulo mudar
 
-   if (loading) return <p>Carregando submódulos...</p>
+   if (loading) return <p>Carregando Cards de Submodulos...</p>
 
    if (cardsubmodule.length == 0) {
     return <p>Nenhum card encontrado</p>

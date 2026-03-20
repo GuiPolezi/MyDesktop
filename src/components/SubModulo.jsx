@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { dbService } from '../services/dbService'
 import { Link } from 'react-router-dom' //
 import { useNavigate } from "react-router-dom";
-
+import { GetCardsSubModule } from './Cards';
 
 export function CriarSubModulo() {
 // 1. Obtém o idModulo da URL definida na rota (:idModulo)
@@ -100,6 +100,10 @@ export function GetSubModulo({idModulo}) {
             <Link to={`/criarcard/${idModulo}/${sub.id_submodulo}`}>
               + Criar Card neste Submódulo
             </Link>
+            <div className="cards">
+                {/* Chamamos o componente de lista passando o ID do módulo atual */}
+                <GetCardsSubModule idSubModulo={sub.id_submodulo}/>
+            </div>
           </li>
         ))}
       </ul>
