@@ -81,12 +81,13 @@ export const dbService = {
     return data[0]
   },
 
-  // 3.3 Obter Submodulo (Exige ID_Modulo)
+  // 3.3 Obter cards modulo (Exige ID_Modulo)
   async getCardsModule(idModulo) {
     const { data, error } = await supabase
     .from('cards')
     .select('*')
     .eq('id_modulo', idModulo)
+    .is('id_submodulo', null)
     .order('id_card', {ascending: false})
     
     if (error) throw error
