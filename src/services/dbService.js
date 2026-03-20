@@ -62,7 +62,7 @@ export const dbService = {
   },
 
   // 3. Criar Card (Exige ID do Módulo e do Submódulo)
-  async criarCard(titulo, conteudo, idModulo, idSubmodulo) {
+  async criarCard(titulo, conteudo, arquivos=null, idModulo, idSubmodulo=null) {
     const { data: { user } } = await supabase.auth.getUser()
 
     const { data, error } = await supabase
@@ -70,6 +70,7 @@ export const dbService = {
       .insert([{ 
         titulo, 
         conteudo, 
+        arquivos: arquivos,
         id_modulo: idModulo, 
         id_submodulo: idSubmodulo, 
         criado_por_id: user.id 
