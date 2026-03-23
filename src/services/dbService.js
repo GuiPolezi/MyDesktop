@@ -114,7 +114,7 @@ export const dbService = {
 
     if (error) throw error;
     return data
-  }
+  },
 
   /* ------------ EXCLUSÕES --------- */
 

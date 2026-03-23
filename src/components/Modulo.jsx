@@ -160,7 +160,7 @@ export function LoopModule() {
   useEffect(() => {
     async function carregarQuantidade() {
       try {
-        const qtd = await dbService.getModulosCount();
+        const qtd = await dbService.getLoopModules();
         setListaModulos(qtd);
       } catch (error) {
         console.error("Erro ao contar módulos:", error.message);

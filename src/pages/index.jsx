@@ -1,6 +1,6 @@
 import {Logout} from '../components/Logout'
 import { Link } from 'react-router-dom' //
-import { GetModulo } from '../components/Modulo'
+import { GetModulo, LoopModule } from '../components/Modulo'
 
 
 
@@ -18,7 +18,8 @@ export function Home() {
 
         <div>
           <h3>Modulos Criados</h3>
-          <GetModulo idModulo={2}/>
+          {/*<GetModulo idModulo={2}/>*/ }
+          <LoopModule />
 
         </div>
 
