@@ -4,6 +4,8 @@ import { dbService } from '../services/dbService'
 import { Link } from 'react-router-dom' //
 import { useNavigate } from "react-router-dom";
 import { GetCardsSubModule } from './Cards';
+import { supabase } from '../services/supabase'; // Importe a instância do supabase para pegar o usuário
+
 
 export function CriarSubModulo() {
 // 1. Obtém o idModulo da URL definida na rota (:idModulo)
@@ -65,12 +67,19 @@ export function GetSubModulo({idModulo}) {
   const [submodulos, setSubmodulos] = useState([])
   const [loading, setLoading] = useState(true)
 
+  // Obtendo usuarios para nao mostrar botão de excluir caso condição nao seja verdadeira
+  const [ usuarioLogado, setUsuarioLogado ] = useState(null)
+
   useEffect(() => {
     async function carregarSubs() {
       if (!idModulo) return // Segurança: não busca se não tiver ID
 
       try {
         setLoading(true)
+        
+        const {data: {user}} = await supabase.auth.getUser();
+        setUsuarioLogado(user);
+
         const dados = await dbService.getSubmodulo(idModulo)
         setSubmodulos(dados)
       } catch (error) {
@@ -89,6 +98,22 @@ export function GetSubModulo({idModulo}) {
     return <p>Nenhum submodulo encontrado</p>
   }
 
+  // Excluindo Card Submodule
+   const handleExcluir = async (id_submodulo, titulo) => {
+    const confirmar = window.confirm(`Tem certeza que deseja excluir o submódulo "${titulo}"?`);
+
+    if (confirmar) {
+      try {
+        await dbService.deleteSubModule(id_submodulo);
+        alert("SubMódulo excluído com sucesso!");
+
+        navigate("/");
+      } catch (error) {
+        alert("Erro ao excluir: " + error.message);
+      }
+    }
+   };
+
   return (
     <section>
       <ul style={{ paddingLeft: '20px' }}>
@@ -96,6 +121,14 @@ export function GetSubModulo({idModulo}) {
           <li key={sub.id_submodulo} style={{ marginBottom: '8px' }}>
             <strong>{sub.titulo}</strong>
             {sub.descricao && <p style={{ margin: 0, fontSize: '0.85rem' }}>{sub.descricao}</p>}
+            {usuarioLogado && usuarioLogado.id === sub.criado_por_id && (
+                  <button 
+                    onClick={() => handleExcluir(sub.id_submodulo, sub.titulo)} 
+                    style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer', marginTop: '5px' }}
+                  >
+                    Excluir
+                  </button>
+                )}
             {/* 🔹 Aqui passamos OS DOIS IDs na URL */}
             <Link to={`/criarcard/${idModulo}/${sub.id_submodulo}`}>
               + Criar Card neste Submódulo
