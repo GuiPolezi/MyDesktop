@@ -135,10 +135,26 @@ export const dbService = {
     if (error) throw error
     // Aqui nós forçamos o erro para o React entender que falhou!
     if (!data || data.length === 0) {
-      throw new Error("Ação não permitida. Apenas o criador pode excluir este card.");
+      throw new Error("Ação não permitida. Apenas o criador pode excluir este modulo.");
     }
     return data
 
+  },
+
+  // Excluir SubModulo
+  async deleteSubModule(idSubModulo) {
+    const { data, error } = await suapabase
+    .from('submodulos')
+    .delete()
+    .eq('id_submodulo', idSubModulo) // Filtra pelo id
+    .select() // Obriga o supabase devolver a linha que foi apagada
+
+    if (error) throw error
+    // Aqui nós forçamos o erro para o React entender que falhou!
+    if (!data || data.length === 0) {
+      throw new Error("Ação não permitida. Apenas o criador pode excluir este submodulo.");
+    }
+    return data
   }
 
 
