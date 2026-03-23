@@ -58,6 +58,8 @@ export function GetModulo({idModulo}) {
   const [loading, setLoading] = useState(true)
 
   const [ usuarioLogado, setUsuarioLogado ] = useState(null)
+  const navigate = useNavigate(); // 🔹 hook para redirecionar
+
 
   // UseEffect: Roda automaticamente a função quando o componente for montado na tela
   useEffect(() => {

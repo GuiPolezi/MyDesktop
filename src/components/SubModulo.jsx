@@ -69,6 +69,8 @@ export function GetSubModulo({idModulo}) {
 
   // Obtendo usuarios para nao mostrar botão de excluir caso condição nao seja verdadeira
   const [ usuarioLogado, setUsuarioLogado ] = useState(null)
+  const navigate = useNavigate(); // 🔹 hook para redirecionar
+
 
   useEffect(() => {
     async function carregarSubs() {
