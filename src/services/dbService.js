@@ -106,14 +106,15 @@ export const dbService = {
     return data
   },
 
-  // 4. Contagem de módulos existentes
-  async getModulosCount() {
-    const { count, error} = await supabase
+  // 4. Obter Lista de modulos
+  async getLoopModules() {
+    const { data, error } = await supabase
     .from('modulos')
-    .select('*', { count: 'exact', head: true}) // Head  faz com que o supabase retorne apenas a contagem, sem trazer conteúdos
+    .select('*'); // Traz a lista de objetos
+
     if (error) throw error;
-    return count; // Retorna apenas o número (ex: 10)
-  },
+    return data
+  }
 
   /* ------------ EXCLUSÕES --------- */
 

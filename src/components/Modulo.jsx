@@ -151,3 +151,29 @@ export function GetModulo({idModulo}) {
   )
 }
 
+
+// Contagem de modulos em LOOP para exibição na página
+
+export function LoopModule() {
+  const [ listaModulos, setListaModulos ] = useState([])
+
+  useEffect(() => {
+    async function carregarQuantidade() {
+      try {
+        const qtd = await dbService.getModulosCount();
+        setListaModulos(qtd);
+      } catch (error) {
+        console.error("Erro ao contar módulos:", error.message);
+      }
+    }
+    carregarQuantidade();
+  }, []);
+
+  return (
+    <div>
+      {listaModulos.map((m) => (
+        <GetModulo key={m.id_modulo} idModulo={m.id_modulo} />
+      ))}
+    </div>
+  )
+}
