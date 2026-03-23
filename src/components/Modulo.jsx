@@ -96,7 +96,7 @@ export function GetModulo({idModulo}) {
     return <p>Módulo Não encontrado</p>
   }
 
-  // Excluindo Card Submodule
+  // Excluindo modulo
    const handleExcluir = async (id_modulo, titulo) => {
     const confirmar = window.confirm(`Tem certeza que deseja excluir o módulo "${titulo}"?`);
 
@@ -104,6 +104,9 @@ export function GetModulo({idModulo}) {
       try {
         await dbService.deleteModule(id_modulo);
         alert("Módulo excluído com sucesso!");
+
+        // 🔹 Dispara um evento global avisando que este ID foi excluído
+        window.dispatchEvent(new CustomEvent('moduloDeletado', { detail: id_modulo }));
 
         navigate("/");
       } catch (error) {
@@ -167,6 +170,22 @@ export function LoopModule() {
       }
     }
     carregarQuantidade();
+
+    // 🔹 Função que vai rodar quando escutar o evento
+    const removerDaLista = (evento) => {
+      const idDeletado = evento.detail; // Pega o ID que enviamos lá no GetModulo
+      setListaModulos((listaAtual) => 
+        listaAtual.filter((modulo) => modulo.id_modulo !== idDeletado)
+      );
+    };
+
+    // 🔹 Começa a escutar o evento global
+    window.addEventListener('moduloDeletado', removerDaLista);
+
+    // 🔹 Limpeza: Para de escutar quando o LoopModule sair da tela
+    return () => {
+      window.removeEventListener('moduloDeletado', removerDaLista);
+    };
   }, []);
 
   return (

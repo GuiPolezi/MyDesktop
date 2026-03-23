@@ -100,7 +100,7 @@ export function GetSubModulo({idModulo}) {
     return <p>Nenhum submodulo encontrado</p>
   }
 
-  // Excluindo Card Submodule
+  // Excluindo Submodule
    const handleExcluir = async (id_submodulo, titulo) => {
     const confirmar = window.confirm(`Tem certeza que deseja excluir o submódulo "${titulo}"?`);
 

@@ -18,7 +18,7 @@ export function Home() {
 
         <div>
           <h3>Modulos Criados</h3>
-          {/*<GetModulo idModulo={2}/>*/ }
+          {/*<GetModulo idModulo={2}/> -> Isso aqui obtem o modulo individualmente */ } 
           <LoopModule />
 
         </div>
