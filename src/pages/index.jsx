@@ -20,6 +20,7 @@ export function Home() {
           <h3>Modulos Criados</h3>
           <GetModulo idModulo={1}/>
           <GetModulo idModulo={2}/>
+          <GetModulo idModulo={7}/>
         </div>
 
         

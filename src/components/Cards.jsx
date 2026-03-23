@@ -72,6 +72,9 @@ export function GetCardsModule({idModulo}) {
     // 1. Iniciamos com uma array vazia
   const [ cardmodule, setCardmodule ] = useState([])
   const [loading, setLoading] = useState(true)
+  // Obtendo usuarios para nao mostrar botão de excluir caso condição nao seja verdadeira
+  const [ usuarioLogado, setUsuarioLogado ] = useState(null)
+
 
   useEffect(() => {
     async function carregarCardsModule() {
@@ -79,6 +82,10 @@ export function GetCardsModule({idModulo}) {
 
       try {
         setLoading(true)
+
+        const {data: {user}} = await supabase.auth.getUser();
+        setUsuarioLogado(user);
+
         const dados = await dbService.getCardsModule(idModulo)
         setCardmodule(dados)
       } catch (error) {
@@ -97,6 +104,23 @@ export function GetCardsModule({idModulo}) {
     return <p>Nenhum card encontrado</p>
   }
 
+  // Excluindo Card Submodule
+   const handleExcluir = async (id_card, titulo) => {
+    const confirmar = window.confirm(`Tem certeza que deseja excluir o card "${titulo}"?`);
+
+    if (confirmar) {
+      try {
+        await dbService.deleteCard(id_card);
+
+        setCardmodule(prev => prev.filter(card => card.id_card !== id_card));
+
+        alert("Card excluído com sucesso!");
+      } catch (error) {
+        alert("Erro ao excluir: " + error.message);
+      }
+    }
+   };
+
   return (
     <section>
       <ul style={{ paddingLeft: '20px' }}>
@@ -105,6 +129,15 @@ export function GetCardsModule({idModulo}) {
                 <strong>{card.titulo}</strong>
                 {card.conteudo && <p style={{ margin: 0, fontSize: '0.85rem' }}>{card.conteudo}</p>}
                 {card.arquivos && <div>{card.arquivos}</div>}
+                {/* 🔹 Renderização Condicional: Só mostra o botão se o ID do logado for igual ao criado_por_id */}
+                {usuarioLogado && usuarioLogado.id === card.criado_por_id && (
+                  <button 
+                    onClick={() => handleExcluir(card.id_card, card.titulo)} 
+                    style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer', marginTop: '5px' }}
+                  >
+                    Excluir
+                  </button>
+                )}
             </div>
         ))}
       </ul>
