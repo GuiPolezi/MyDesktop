@@ -143,7 +143,7 @@ export const dbService = {
 
   // Excluir SubModulo
   async deleteSubModule(idSubModulo) {
-    const { data, error } = await suapabase
+    const { data, error } = await supabase
     .from('submodulos')
     .delete()
     .eq('id_submodulo', idSubModulo) // Filtra pelo id
