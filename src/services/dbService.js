@@ -24,7 +24,7 @@ export const dbService = {
     .from('modulos')
     .select('*') // Pega todas as colunas
     .eq('id_modulo', idModulo) // Onde a coluna id_modulo seja igual ao ID passado
-    .single() // Garante que retorne apenas 1 objeto e nao um array
+    .maybeSingle() // Garante que retorne apenas 1 objeto e nao um array
     
 
     if (error) throw error

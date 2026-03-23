@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom' //
 import { GetSubModulo } from './SubModulo'
 import { useNavigate } from "react-router-dom";
 import { GetCardsModule } from './Cards';
+import { supabase } from '../services/supabase'; // Importe a instância do supabase para pegar o usuário
 
 export function CriarModulo() {
     const [titulo, setTitulo] = useState('')
@@ -56,6 +57,8 @@ export function GetModulo({idModulo}) {
   const [modulo, setModulos] = useState(null) // UseState para esperar por um modulo (um objeto)
   const [loading, setLoading] = useState(true)
 
+  const [ usuarioLogado, setUsuarioLogado ] = useState(null)
+
   // UseEffect: Roda automaticamente a função quando o componente for montado na tela
   useEffect(() => {
     if (!idModulo) {
@@ -64,6 +67,9 @@ export function GetModulo({idModulo}) {
     }
     async function carregarDados() {
       try {
+        const {data: {user}} = await supabase.auth.getUser();
+        setUsuarioLogado(user);
+
         const dados = await dbService.getModulo(idModulo)
         setModulos(dados)
       } catch (error) {
@@ -87,11 +93,36 @@ export function GetModulo({idModulo}) {
   if (!modulo) {
     return <p>Módulo Não encontrado</p>
   }
+
+  // Excluindo Card Submodule
+   const handleExcluir = async (id_modulo, titulo) => {
+    const confirmar = window.confirm(`Tem certeza que deseja excluir o módulo "${titulo}"?`);
+
+    if (confirmar) {
+      try {
+        await dbService.deleteModule(id_modulo);
+        alert("Módulo excluído com sucesso!");
+
+        navigate("/");
+      } catch (error) {
+        alert("Erro ao excluir: " + error.message);
+      }
+    }
+   };
+
   // O que aparece na tela depois que os dados chegam
   return (
     <section>
       <h1>{modulo.titulo}</h1>
       <p>{modulo.descricao}</p>
+      {usuarioLogado && usuarioLogado.id === modulo.criado_por_id && (
+                  <button 
+                    onClick={() => handleExcluir(modulo.id_modulo, modulo.titulo)} 
+                    style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer', marginTop: '5px' }}
+                  >
+                    Excluir
+                  </button>
+                )}
       <div className="cards">
         {/* Chamamos o componente de lista passando o ID do módulo atual */}
         <GetCardsModule idModulo={modulo.id_modulo} />
