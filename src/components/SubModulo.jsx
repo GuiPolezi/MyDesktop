@@ -71,6 +71,12 @@ export function GetSubModulo({idModulo}) {
   const [ usuarioLogado, setUsuarioLogado ] = useState(null)
   const navigate = useNavigate(); // 🔹 hook para redirecionar
 
+  // Novos estados para edição de card
+  const [editando, setEditando] = useState(false); // Controla se mostra o texto ou o <input>
+  const [novoTitulo, setNovoTitulo] = useState("");
+  const [novaDescricao, setNovaDescricao] = useState("");
+  const [novoPai, setNovoPai] = useState("");
+  const [salvando, setSalvando] = useState(false); // Para mostrar um "Salvando..." no botão
 
   useEffect(() => {
     async function carregarSubs() {
@@ -116,21 +122,105 @@ export function GetSubModulo({idModulo}) {
     }
    };
 
+    // 🔹 NOVA FUNÇÃO: Ativar o modo de edição
+  const iniciarEdicao = (submodule) => {
+    setEditando(submodule.id_submodulo) // Agora guardamos o ID do card específico
+    setNovoTitulo(submodule.titulo); // Preenche o input com o título atual
+    setNovaDescricao(submodule.descricao); // Preenche o input com a descrição atual
+   // setNovoPai(submodule.id_modulo) // Preenche o input com o id do modulo pai atual
+  };
+
+  // Nova função para salvar alterações no banco
+   const handleSalvarEdicao = async () => {
+    if (!novoTitulo.trim()) {
+      alert("O titulo não pode estar vázio")
+      return;
+    }
+   
+
+    setSalvando(true);
+    try {
+      const dadosAtualizados = {
+        titulo: novoTitulo,
+        descricao: novaDescricao,
+       // id_modulo: novoPai
+      }
+      
+      // Salva no banco de dados usando a função que criamos no dvservice
+      await dbService.updateSubmodule(editando, dadosAtualizados)
+      
+      // 🔹 AJUSTE: Atualiza apenas o card editado dentro da array
+      setSubmodulos(prev => 
+        prev.map(submodule => 
+          submodule.id_submodulo === editando ? { ...submodule, ...dadosAtualizados } : submodule
+        )
+      );
+
+      // sai do modo edição
+      setEditando(null);
+    } catch (error) {
+      alert("Erro ao salvar: " + error.message)
+    } finally {
+      setSalvando(false);
+    }
+  };
+
+
   return (
     <section>
       <ul style={{ paddingLeft: '20px' }}>
         {submodulos.map((sub) => (
           <li key={sub.id_submodulo} style={{ marginBottom: '8px' }}>
-            <strong>{sub.titulo}</strong>
-            {sub.descricao && <p style={{ margin: 0, fontSize: '0.85rem' }}>{sub.descricao}</p>}
-            {usuarioLogado && usuarioLogado.id === sub.criado_por_id && (
-                  <button 
-                    onClick={() => handleExcluir(sub.id_submodulo, sub.titulo)} 
-                    style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer', marginTop: '5px' }}
-                  >
-                    Excluir
-                  </button>
-                )}
+            {editando === sub.id_submodulo ? (
+              // --- MODO EDIÇÃO ---
+            <div>
+              <input 
+                value={novoTitulo} 
+                onChange={(e) => setNovoTitulo(e.target.value)}
+                style={{ display: 'block', marginBottom: '5px', width: '100%' }}
+              />
+              <textarea 
+                value={novaDescricao} 
+                onChange={(e) => setNovaDescricao(e.target.value)}
+                style={{ display: 'block', marginBottom: '5px', width: '100%' }}
+              />
+
+            {/* 
+                <input 
+                  value={novoPai}
+                  onChange={(e) => setNovoPai(e.target.value)}
+                  style={{display: 'block', marginBottom: '5px', width: '100%'}}
+                />
+            */}
+              
+              <button onClick={handleSalvarEdicao} disabled={salvando} style={{ color: 'green', marginRight: '10px' }}>
+                {salvando ? "Salvando..." : "Salvar"}
+              </button>
+              <button onClick={() => setEditando(null)}>Cancelar</button>
+            </div>
+            ) : (
+              <div>
+                <strong>{sub.titulo}</strong>
+                {sub.descricao && <p style={{ margin: 0, fontSize: '0.85rem' }}>{sub.descricao}</p>}
+                {usuarioLogado && usuarioLogado.id === sub.criado_por_id && (
+                      <div>
+                        <button 
+                          onClick={() => iniciarEdicao(sub)} // Passa o card para a função
+                          style={{ color: 'blue', border: 'none', background: 'none', cursor: 'pointer', marginRight: '10px', fontSize: '0.8rem' }}
+                        >
+                          Editar Submódulo
+                        </button>
+
+                        <button 
+                          onClick={() => handleExcluir(sub.id_submodulo, sub.titulo)} 
+                          style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer', marginTop: '5px' }}
+                        >
+                          Excluir
+                        </button>
+                      </div>
+                    )}
+              </div>
+            )}
             {/* 🔹 Aqui passamos OS DOIS IDs na URL */}
             <Link to={`/criarcard/${idModulo}/${sub.id_submodulo}`}>
               + Criar Card neste Submódulo
