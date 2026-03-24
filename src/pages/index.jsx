@@ -20,6 +20,57 @@ export function Home() {
           </div>
         </div>
       </section>
+
+      <section className='hero p-5'>
+        <div className="grid grid-cols-2">
+          <div className="col-span-1 mt-30">
+            <div className="grid grid-cols-4">
+              <div className="col-span-2 mb-10 flex flex-col">
+                <p className='heroTopic'>Sistema para Anotações</p>
+                <a className='buttonDaily' href="https://daily-checkout-team.vercel.app/" target='_blank'>Daily Workout</a>
+                <small className='descHero' style={{textAlign: 'justify'}}>
+                  Descrição: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi placerat, ex ut gravida aliquam, nulla nisl pretium lectus, 
+                </small>
+              </div>
+
+              <div className="col-span-3 flex flex-col">
+                <p className='heroTopic'>Sistema Gerador de Relatórios Analiticos</p>
+                <a className='buttonHelp' href="https://helpdeskbot.vercel.app/relatos/u5wlM3UCYKfX7kSPEFBs" target='_blank'>Help Desk - AI Support</a>
+                <small className='descHero' style={{textAlign: 'justify'}}>
+                  Descrição: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi placerat, ex ut gravida aliquam, nulla nisl pretium lectus, 
+                </small>
+              </div>
+            </div>
+          </div>
+          <div className="col-span-1 mydesktop">
+            <div className="grid grid-cols-3 bg-pink-200">
+              <div className="col-span-3 bg-neutral-300">
+
+
+                <div className="grid grid-cols-6">
+                  <div className="col-span-5 text-end bg-amber-300">
+                    <p>My</p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-6">
+                  <div className="col-span-4 bg-blue-300 text-end">
+                    <p>DESK</p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-6">
+                  <div className="col-span-5 bg-rose-200 text-end">
+                    <p>TOP</p>
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
       <div className='header'>
         <h1>Hello</h1>
         <GetNameUser />

@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-* {
+main {
   background-color: #fefae0;
 }
 
@@ -24,9 +24,10 @@ a {
   color: #646cff;
   text-decoration: inherit;
 }
+/*
 a:hover {
   color: #535bf2;
-}
+}*/
 /*
 body {
   margin: 0;
@@ -48,9 +49,11 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
+/*
 button:hover {
   border-color: #646cff;
 }
+  */
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
@@ -61,9 +64,9 @@ button:focus-visible {
     color: #213547;
     background-color: #ffffff;
   }
-  a:hover {
+  /*a:hover {
     color: #747bff;
-  }
+  }*/
   button {
     background-color: #f9f9f9;
   }
@@ -79,4 +82,57 @@ button:focus-visible {
 .buttonHeader {
   background-color: #FF5353;
   color: white;
+}
+
+/* Hero Section */
+.hero {
+  height: 100vh;
+ /* background-color: rebeccapurple;*/
+}
+
+.heroTopic {
+  font-weight: bolder;
+  opacity: 0.5;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+
+
+.buttonDaily {
+  background-color: black;
+  color: white;
+  border-radius: 15px;
+  text-align: center;
+  font-size: 32px;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
+  margin-bottom: 15px;
+}
+
+.buttonDaily:hover {
+  background-color: rgba(0, 0, 0, 0.342);
+}
+
+.buttonHelp {
+  background-color: #43C307;
+  color: white;
+  border-radius: 15px;
+  text-align: center;
+  font-size: 32px;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
+  margin-bottom: 15px;
+}
+
+.buttonHelp:hover {
+  background-color: #43c30780;
+}
+
+.descHero {
+  font-size: 14px
+}
+
+.mydesktop {
+  font-size: 134px;
+  text-transform: uppercase;
+  font-weight: 900;
 }
