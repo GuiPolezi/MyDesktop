@@ -60,6 +60,13 @@ export function GetModulo({idModulo}) {
   const [ usuarioLogado, setUsuarioLogado ] = useState(null)
   const navigate = useNavigate(); // 🔹 hook para redirecionar
 
+  // Novos estados para edição de Módulo
+  const [editando, setEditando] = useState(false); // Controla se mostra o texto ou o <input>
+  const [novoTitulo, setNovoTitulo] = useState("");
+  const [novaDescricao, setNovaDescricao] = useState("");
+  const [salvando, setSalvando] = useState(false); // Para mostrar um "Salvando..." no botão
+
+  
 
   // UseEffect: Roda automaticamente a função quando o componente for montado na tela
   useEffect(() => {
@@ -115,40 +122,129 @@ export function GetModulo({idModulo}) {
     }
    };
 
+    // 🔹 NOVA FUNÇÃO: Ativar o modo de edição
+  const iniciarEdicao = (module) => {
+    setEditando(module.id_modulo) // Agora guardamos o ID do card específico
+    setNovoTitulo(module.titulo); // Preenche o input com o título atual
+    setNovaDescricao(module.descricao); // Preenche o input com a descrição atual
+  };
+
+   // Nova função para salvar alterações no banco
+   const handleSalvarEdicao = async () => {
+    if (!novoTitulo.trim()) {
+      alert("O titulo não pode estar vázio")
+      return;
+    }
+   
+
+    setSalvando(true);
+    try {
+      const dadosAtualizados = {
+        titulo: novoTitulo,
+        descricao: novaDescricao,
+      }
+      
+      // Salva no banco de dados usando a função que criamos no dvservice
+      await dbService.updateModule(editando, dadosAtualizados)
+      
+      // atualiza o estado local
+      setModulos({ ...modulo, ...dadosAtualizados });
+
+      // sai do modo edição
+      setEditando(null);
+    } catch (error) {
+      alert("Erro ao salvar: " + error.message)
+    } finally {
+      setSalvando(false);
+    }
+  };
+
   // O que aparece na tela depois que os dados chegam
   return (
     <section>
-      <h1>{modulo.titulo}</h1>
-      <p>{modulo.descricao}</p>
-      {usuarioLogado && usuarioLogado.id === modulo.criado_por_id && (
-                  <button 
-                    onClick={() => handleExcluir(modulo.id_modulo, modulo.titulo)} 
-                    style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer', marginTop: '5px' }}
-                  >
-                    Excluir
-                  </button>
-                )}
-      <div className="cards">
-        {/* Chamamos o componente de lista passando o ID do módulo atual */}
+      
+      {/* --- MODO EDIÇÃO --- */}
+      {editando === modulo.id_modulo ? (
+        <div style={{ marginBottom: '20px' }}>
+          <label style={{ display: 'block', fontWeight: 'bold' }}>Título do Módulo:</label>
+          <input 
+            type="text" 
+            value={novoTitulo} 
+            onChange={(e) => setNovoTitulo(e.target.value)} 
+            style={{ display: 'block', width: '100%', padding: '8px', marginBottom: '10px' }}
+          />
+
+          <label style={{ display: 'block', fontWeight: 'bold' }}>Descrição:</label>
+          <textarea 
+            value={novaDescricao} 
+            onChange={(e) => setNovaDescricao(e.target.value)} 
+            style={{ display: 'block', width: '100%', padding: '8px', height: '80px', marginBottom: '10px' }}
+          />
+
+          <button 
+            onClick={handleSalvarEdicao} 
+            disabled={salvando}
+            style={{ backgroundColor: '#28a745', color: 'white', padding: '8px 15px', border: 'none', cursor: 'pointer', marginRight: '10px' }}
+          >
+            {salvando ? "Salvando..." : "Salvar Alterações"}
+          </button>
+          
+          <button 
+            onClick={() => setEditando(null)} 
+            style={{ padding: '8px 15px', cursor: 'pointer' }}
+          >
+            Cancelar
+          </button>
+        </div>
+      ) : (
+        // --- MODO VISUALIZAÇÃO ---
+        <div style={{ marginBottom: '20px' }}>
+          <h1>{modulo.titulo}</h1>
+          <p>{modulo.descricao}</p>
+
+          {/* Botões de Gestão (Dono) */}
+          {usuarioLogado && usuarioLogado.id === modulo.criado_por_id && (
+            <div style={{ display: 'flex', gap: '15px', marginTop: '10px' }}>
+              <button 
+                onClick={() => iniciarEdicao(modulo)} 
+                style={{ color: 'blue', border: 'none', background: 'none', cursor: 'pointer', padding: 0, fontWeight: 'bold' }}
+              >
+                📝 Editar Módulo
+              </button>
+
+              <button 
+                onClick={() => handleExcluir(modulo.id_modulo, modulo.titulo)} 
+                style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer', padding: 0, fontWeight: 'bold' }}
+              >
+                🗑️ Excluir Módulo
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
+      <hr />
+
+      {/* Seção de Cards e Submódulos permanecem iguais */}
+      <div className="cards" style={{ marginTop: '20px' }}>
         <GetCardsModule idModulo={modulo.id_modulo} />
       </div>
 
-      <div className='submodulos'>
-        {/* Chamamos o componente de lista passando o ID do módulo atual */}
+      <div className='submodulos' style={{ marginTop: '20px', padding: '10px', backgroundColor: '#f9f9f9' }}>
         <GetSubModulo idModulo={modulo.id_modulo} />
-        {/* Link dinâmico usando o ID do módulo vindo do banco */}
         <Link 
           to={`/criarsubmodulo/${modulo.id_modulo}`} 
-          style={{ border: '1px solid', padding: '5px', textDecoration: 'none' }}
-          >
+          style={{ display: 'inline-block', marginTop: '10px', border: '1px solid', padding: '5px', textDecoration: 'none' }}
+        >
           + Criar Submódulo para este módulo
         </Link>
       </div>
 
-      {/* 🔹 Passamos APENAS o id do módulo. O React Router entende que não há submódulo */}
-      <Link to={`/criarcard/${modulo.id_modulo}`}>
-        + Criar Card para este Módulo
-      </Link>
+      <div style={{ marginTop: '20px' }}>
+        <Link to={`/criarcard/${modulo.id_modulo}`} style={{ fontWeight: 'bold' }}>
+          + Criar Card para este Módulo
+        </Link>
+      </div>
     
     </section>
   )
