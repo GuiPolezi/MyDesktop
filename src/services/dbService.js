@@ -116,6 +116,18 @@ export const dbService = {
     return data
   },
 
+
+  // 5. Obter nome do usuario
+  async getNameUser(idUser) {
+    const {data, error} = await supabase
+    .from('usuarios')
+    .select('*')
+    .eq('id_user', idUser)
+
+    if (error) throw error
+    return data
+  },
+
   /* ------------ EXCLUSÕES --------- */
 
  // Excluir Card
