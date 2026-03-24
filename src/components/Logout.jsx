@@ -15,5 +15,5 @@ export function Logout() {
         }
     }
 
-    return <button onClick={handleLogout}>Sair</button>
+    return <button className='buttonHeader' onClick={handleLogout}>Sair do Sistema</button>
 }

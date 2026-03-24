@@ -8,7 +8,18 @@ import { GetNameUser} from '../components/Users'
 
 export function Home() {
   return (
-    <section>
+    <main>
+      <section className="header">
+        <div className="grid grid-cols-2 p-5 items-center">
+          <div className="col-span-1 flex items-center">
+            <p className='mt-9' style={{fontSize: '20px'}}>Olá,</p>
+            <GetNameUser />
+          </div>
+          <div className="col-span-1 text-end">
+            <Logout />
+          </div>
+        </div>
+      </section>
       <div className='header'>
         <h1>Hello</h1>
         <GetNameUser />
@@ -27,6 +38,6 @@ export function Home() {
         </div>
 
         
-    </section>
+    </main>
   )
 }
