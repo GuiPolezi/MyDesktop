@@ -75,6 +75,11 @@ export function GetCardsModule({idModulo}) {
   // Obtendo usuarios para nao mostrar botão de excluir caso condição nao seja verdadeira
   const [ usuarioLogado, setUsuarioLogado ] = useState(null)
 
+   // Novos estados para edição de card
+  const [editando, setEditando] = useState(false); // Controla se mostra o texto ou o <input>
+  const [novoTitulo, setNovoTitulo] = useState("");
+  const [novoConteudo, setNovoConteudo] = useState("");
+  const [salvando, setSalvando] = useState(false); // Para mostrar um "Salvando..." no botão
 
   useEffect(() => {
     async function carregarCardsModule() {
@@ -121,23 +126,97 @@ export function GetCardsModule({idModulo}) {
     }
    };
 
+    // 🔹 NOVA FUNÇÃO: Ativar o modo de edição
+  const iniciarEdicao = (card) => {
+    setEditando(card.id_card) // Agora guardamos o ID do card específico
+    setNovoTitulo(card.titulo); // Preenche o input com o título atual
+    setNovoConteudo(card.conteudo); // Preenche o input com a descrição atual
+  };
+
+   // Nova função para salvar alterações no banco
+   const handleSalvarEdicao = async () => {
+    if (!novoTitulo.trim()) {
+      alert("O titulo não pode estar vázio")
+      return;
+    }
+   
+
+    setSalvando(true);
+    try {
+      const dadosAtualizados = {
+        titulo: novoTitulo,
+        conteudo: novoConteudo
+      }
+      
+      // Salva no banco de dados usando a função que criamos no dvservice
+      await dbService.updateCard(editando, dadosAtualizados)
+      
+      // 🔹 AJUSTE: Atualiza apenas o card editado dentro da array
+      setCardmodule(prev => 
+        prev.map(card => 
+          card.id_card === editando ? { ...card, ...dadosAtualizados } : card
+        )
+      );
+
+      // sai do modo edição
+      setEditando(null);
+    } catch (error) {
+      alert("Erro ao salvar: " + error.message)
+    } finally {
+      setSalvando(false);
+    }
+  };
+
   return (
     <section>
       <ul style={{ paddingLeft: '20px' }}>
         {cardmodule.map((card) => (
             <div key={card.id_card} style={{ marginBottom: '8px' }}>
-                <strong>{card.titulo}</strong>
-                {card.conteudo && <p style={{ margin: 0, fontSize: '0.85rem' }}>{card.conteudo}</p>}
-                {card.arquivos && <div>{card.arquivos}</div>}
-                {/* 🔹 Renderização Condicional: Só mostra o botão se o ID do logado for igual ao criado_por_id */}
-                {usuarioLogado && usuarioLogado.id === card.criado_por_id && (
+                 {/* 🔹 VERIFICAÇÃO: Este card é o que estou editando? */}
+          {editando === card.id_card ? (
+            // --- MODO EDIÇÃO ---
+            <div>
+              <input 
+                value={novoTitulo} 
+                onChange={(e) => setNovoTitulo(e.target.value)}
+                style={{ display: 'block', marginBottom: '5px', width: '100%' }}
+              />
+              <textarea 
+                value={novoConteudo} 
+                onChange={(e) => setNovoConteudo(e.target.value)}
+                style={{ display: 'block', marginBottom: '5px', width: '100%' }}
+              />
+              <button onClick={handleSalvarEdicao} disabled={salvando} style={{ color: 'green', marginRight: '10px' }}>
+                {salvando ? "Salvando..." : "Salvar"}
+              </button>
+              <button onClick={() => setEditando(null)}>Cancelar</button>
+            </div>
+          ) : (
+            // --- MODO VISUALIZAÇÃO ---
+            <div>
+              <strong>{card.titulo}</strong>
+              {card.conteudo && <p style={{ margin: 0, fontSize: '0.85rem' }}>{card.conteudo}</p>}
+              {card.arquivos && <div>{card.arquivos}</div>}
+
+              {/* Botões de Ação (Apenas para o dono) */}
+              {usuarioLogado && usuarioLogado.id === card.criado_por_id && (
+                <div style={{ marginTop: '5px' }}>
+                  <button 
+                    onClick={() => iniciarEdicao(card)} // Passa o card para a função
+                    style={{ color: 'blue', border: 'none', background: 'none', cursor: 'pointer', marginRight: '10px', fontSize: '0.8rem' }}
+                  >
+                    Editar
+                  </button>
                   <button 
                     onClick={() => handleExcluir(card.id_card, card.titulo)} 
-                    style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer', marginTop: '5px' }}
+                    style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer', fontSize: '0.8rem' }}
                   >
                     Excluir
                   </button>
-                )}
+                </div>
+              )}
+            </div>
+          )}
             </div>
         ))}
       </ul>
