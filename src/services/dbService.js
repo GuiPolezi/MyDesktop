@@ -165,8 +165,29 @@ export const dbService = {
       throw new Error("Ação não permitida. Apenas o criador pode excluir este submodulo.");
     }
     return data
-  }
+  },
 
+  /* ------------- Edições ------------ */
 
+  // Editar Card
+  async updateCard(idCard, dadosAtualizados) {
+    try {
+      const { data, error } = await supabase
+      .from('cards') // Nome da tabela
+      .update(dadosAtualizados) // Passando objeto com as alterações
+      .eq('id_card', idCard) // Garante que apenas o card com id especificado seja alterado
+      .select() // Opcional: Faz o supabase devolver o objeto atualizado
+  
+      if (error) {
+        throw new Error(error.message)
+      }
+  
+      return data;
+    } catch (error) {
+      console.error("Erro no dbservice ao tentar atualizar dados de Card")
+      throw error;
+    }
+    
+  },
 
 }
