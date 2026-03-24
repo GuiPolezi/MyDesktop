@@ -9,9 +9,10 @@ import { GetNameUser} from '../components/Users'
 export function Home() {
   return (
     <section>
-      <div className='flex'></div>
+      <div className='header'>
         <h1>Hello</h1>
         <GetNameUser />
+      </div>
         <div style={{display: 'flex', flexDirection: 'column'}}>
           <Link to="/criarmodulo" style={{border: '1px solid', marginBottom: '10px'}}>Criar Modulo</Link>
           <Logout />
