@@ -123,6 +123,7 @@ export const dbService = {
     .from('usuarios')
     .select('*')
     .eq('id_user', idUser)
+    .single() // Obtendo apenas o objeto e nao a lista
 
     if (error) throw error
     return data
