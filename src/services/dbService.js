@@ -210,4 +210,24 @@ export const dbService = {
     }
   },
 
+  // Editar submódulo
+  async updateSubmodule(idSubModulo, dadosAtualizados) {
+    try {
+      const {data, error } = await supabase
+      .from('submodulos')
+      .update(dadosAtualizados)
+      .eq('id_submodulo', idSubModulo)
+      .select()
+
+      if (error) {
+        throw new Error(error.message)
+      }
+
+      return data;
+    } catch (error) {
+      console.error("Erro no dbservice ao tentar atualizar SubMódulo")
+      throw error;
+    }
+  }
+
 }
