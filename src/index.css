@@ -84,6 +84,10 @@ button:focus-visible {
   color: white;
 }
 
+.buttonHeader:hover {
+  background-color: #ff535394;
+}
+
 /* Hero Section */
 .hero {
   height: 100vh;
@@ -92,7 +96,7 @@ button:focus-visible {
 
 .heroTopic {
   font-weight: bolder;
-  opacity: 0.5;
+  opacity: 0.3;
   font-size: 20px;
   margin-bottom: 20px;
 }
@@ -133,6 +137,7 @@ button:focus-visible {
 
 .mydesktop {
   font-size: 134px;
+  color: black;
   text-transform: uppercase;
   font-weight: 900;
 }

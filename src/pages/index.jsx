@@ -25,7 +25,7 @@ export function Home() {
         <div className="grid grid-cols-2">
           <div className="col-span-1 mt-30">
             <div className="grid grid-cols-4">
-              <div className="col-span-2 mb-10 flex flex-col">
+              <div className="col-span-2 mb-20 flex flex-col">
                 <p className='heroTopic'>Sistema para Anotações</p>
                 <a className='buttonDaily' href="https://daily-checkout-team.vercel.app/" target='_blank'>Daily Workout</a>
                 <small className='descHero' style={{textAlign: 'justify'}}>
@@ -42,25 +42,27 @@ export function Home() {
               </div>
             </div>
           </div>
+
+          
           <div className="col-span-1 mydesktop">
-            <div className="grid grid-cols-3 bg-pink-200">
-              <div className="col-span-3 bg-neutral-300">
+            <div className="grid grid-cols-3 ">
+              <div className="col-span-3">
 
 
                 <div className="grid grid-cols-6">
-                  <div className="col-span-5 text-end bg-amber-300">
+                  <div className="col-span-5 text-end ">
                     <p>My</p>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-6">
-                  <div className="col-span-4 bg-blue-300 text-end">
+                  <div className="col-span-4  text-end">
                     <p>DESK</p>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-6">
-                  <div className="col-span-5 bg-rose-200 text-end">
+                  <div className="col-span-5  text-end">
                     <p>TOP</p>
                   </div>
                 </div>
