@@ -190,5 +190,24 @@ export const dbService = {
     
   },
 
+  // Editar Módulo
+  async updateModule(idModulo, dadosAtualizados) {
+    try {
+      const {data, error} = await supabase
+      .from('modulos') // Nome da tabela
+      .update(dadosAtualizados) // Passando objeto com as alterações
+      .eq('id_modulo', idModulo) // Garante que apenas o modulo com id especificado seja alterado
+      .select() // Opcional: Faz supabase devolver o objeto atualizado
+    
+      if (error) {
+        throw new Error(error.message)
+      }
+
+      return data;
+    } catch (error) {
+      console.error("Erro no dbservice ao tentar atualizar Módulo")
+      throw error;
+    }
+  },
 
 }
