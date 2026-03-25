@@ -63,60 +63,28 @@ export function Home() {
         </div>
       </section>
 
-      {/*
-      <section className='hero p-5'>
-        <div className="grid grid-cols-2">
-          <div className="col-span-1 mt-30">
-            <div className="grid grid-cols-4">
-              <div className="col-span-2 mb-20 flex flex-col">
-                <p className='heroTopic'>Sistema para Anotações</p>
-                <a className='buttonDaily' href="https://daily-checkout-team.vercel.app/" target='_blank'>Daily Workout</a>
-                <small className='descHero' style={{textAlign: 'justify'}}>
-                  Descrição: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi placerat, ex ut gravida aliquam, nulla nisl pretium lectus, 
-                </small>
-              </div>
-
-              <div className="col-span-3 flex flex-col">
-                <p className='heroTopic'>Sistema Gerador de Relatórios Analiticos</p>
-                <a className='buttonHelp' href="https://helpdeskbot.vercel.app/relatos/u5wlM3UCYKfX7kSPEFBs" target='_blank'>Help Desk - AI Support</a>
-                <small className='descHero' style={{textAlign: 'justify'}}>
-                  Descrição: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi placerat, ex ut gravida aliquam, nulla nisl pretium lectus, 
-                </small>
-              </div>
-            </div>
-          </div>
-
-          
-          <div className="col-span-1 mydesktop">
-            <div className="grid grid-cols-3 ">
-              <div className="col-span-3">
-
-
-                <div className="grid grid-cols-6">
-                  <div className="col-span-5 text-end ">
-                    <p>My</p>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-6">
-                  <div className="col-span-4  text-end">
-                    <p>DESK</p>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-6">
-                  <div className="col-span-5  text-end">
-                    <p>TOP</p>
-                  </div>
-                </div>
-
-
-              </div>
-            </div>
+     {/* Seção Módulos */}
+     <section className='modulos mt-30 lg:mt-100'>
+      <div className="grid grid-cols-1 ">
+        <div className="flex flex-col items-center">
+          <h2 className='text-7xl'>Módulos</h2>
+          <div className="line mt-5"></div>
+          <div className="pesquisa  w-full mt-5">
+            <form className='flex align-center justify-center gap-5 p-2'>
+              <p className='flex flex-col justify-center'>
+                Nome
+              </p>
+              <input className='w-full p-1 max-w-md' type="text" placeholder='Digite o nome do módulo'/>
+              <button className='text-center' style={{backgroundColor: '#283618'}}>
+                <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 16">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3"/>
+                </svg>
+              </button>
+            </form>
           </div>
         </div>
-      </section>
-       */}
+      </div>
+     </section>
       <div className='header'>
         <h1>Hello</h1>
         <GetNameUser />

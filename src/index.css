@@ -77,6 +77,7 @@ button:focus-visible {
   margin-left: 10px;
   font-weight: bolder;
  /* font-size: 64px;*/
+ color: black;
 }
 
 .buttonHeader {
@@ -135,4 +136,20 @@ button:focus-visible {
   color: black;
   text-transform: uppercase;
   font-weight: 900;
+}
+
+/* Módulos section */
+.modulos {
+  height: 100vh;
+}
+
+.modulos .line {
+  border-bottom: 2px solid;
+  width: 100px;
+  opacity: 0.3;
+}
+
+.modulos .pesquisa input {
+  border: 2px solid;
+  border-radius: 15px;
 }
