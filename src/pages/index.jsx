@@ -31,7 +31,7 @@ export function Home() {
                 <p className='heroTopic'>Sistema para Anotações</p>
                 <a className='buttonDaily' href="https://daily-checkout-team.vercel.app/" target='_blank'>Daily Workout</a>
                 <small className='descHero text-justify'>
-                  Descrição: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi placerat, ex ut gravida aliquam, nulla nisl pretium lectus, 
+                  <strong>Descrição:</strong> Gestão de tarefas com interface interativa, controle de equipes e relatórios automatizados. Organize seu cronograma diário com movimentação intuitiva e tenha o histórico completo da sua produtividade sempre à mão.
                 </small>
             </div>
 
@@ -40,7 +40,7 @@ export function Home() {
                 <p className='heroTopic'>Sistema Gerador de Relatórios Analiticos</p>
                 <a className='buttonHelp' href="https://helpdeskbot.vercel.app/relatos/u5wlM3UCYKfX7kSPEFBs" target='_blank'>Help Desk - AI Support</a>
                 <small className='descHero' style={{textAlign: 'justify'}}>
-                  Descrição: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi placerat, ex ut gravida aliquam, nulla nisl pretium lectus, 
+                  <strong>Descrição:</strong> Um assistente inteligente de triagem técnica que utiliza IA Generativa para atuar como um Analista de TI especializado. O sistema processa relatos brutos de usuários, extrai o contexto essencial e gera diagnósticos precisos acompanhados de soluções recomendadas, padronizando a comunicação entre a ponta e a equipe de suporte.
                 </small>
             </div>
 
