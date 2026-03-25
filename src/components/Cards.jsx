@@ -194,7 +194,7 @@ export function GetCardsModule({idModulo}) {
           ) : (
             // --- MODO VISUALIZAÇÃO ---
             <div>
-              <strong>{card.titulo}</strong>
+              {/*<strong>{card.titulo}</strong> */}
               {card.conteudo && <p style={{ margin: 0, fontSize: '0.85rem' }}>{card.conteudo}</p>}
               {card.arquivos && <div>{card.arquivos}</div>}
 
@@ -380,4 +380,43 @@ export function GetCardsSubModule({idSubModulo}) {
     </ul>
   </section>
   )
+}
+
+
+export function GetCardsTitle({ idModulo }) {
+  const [cards, setCards] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function carregarCards() {
+      if (!idModulo) return; // Segurança: não busca se não tiver ID
+
+      try {
+        setLoading(true);
+        // Usamos a mesma função do seu dbService
+        const dados = await dbService.getCardsModule(idModulo);
+        setCards(dados);
+      } catch (error) {
+        console.error("Erro ao buscar cards:", error.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    carregarCards();
+  }, [idModulo]);
+
+  if (loading) return <p>Carregando títulos...</p>;
+  if (cards.length === 0) return <p>Nenhum card encontrado</p>;
+
+  return (
+    <ul style={{ paddingLeft: '20px' }}>
+      {cards.map((card) => (
+        <li key={card.id_card} style={{ marginBottom: '8px' }}>
+          {/* Exibe APENAS o título */}
+          <strong>{card.titulo}</strong>
+        </li>
+      ))}
+    </ul>
+  );
 }

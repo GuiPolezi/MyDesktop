@@ -92,6 +92,8 @@ export function Home() {
         <LoopModule />
       </div>
      </section>
+
+     {/*
       <div className='header'>
         <h1>Hello</h1>
         <GetNameUser />
@@ -104,11 +106,11 @@ export function Home() {
 
         <div>
           <h3>Modulos Criados</h3>
-          {/*<GetModulo idModulo={2}/> -> Isso aqui obtem o modulo individualmente */ } 
+          {/*<GetModulo idModulo={2}/> -> Isso aqui obtem o modulo individualmente 
           <LoopModule />
 
         </div>
-
+      */}
         
     </main>
   )

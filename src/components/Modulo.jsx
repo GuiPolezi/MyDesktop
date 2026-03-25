@@ -3,7 +3,7 @@ import { dbService } from '../services/dbService'
 import { Link } from 'react-router-dom' //
 import { GetSubModulo } from './SubModulo'
 import { useNavigate } from "react-router-dom";
-import { GetCardsModule } from './Cards';
+import { GetCardsModule, GetCardsTitle } from './Cards';
 import { supabase } from '../services/supabase'; // Importe a instância do supabase para pegar o usuário
 
 export function CriarModulo() {
@@ -210,7 +210,9 @@ export function GetModulo({idModulo}) {
         {/* Coluna dos Cards*/}
         <div className="col-span-2">
           <p>Cards</p>
-          <button onClick={() => setIsModalAberto(true)} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Abrir card</button>
+          <button onClick={() => setIsModalAberto(true)} className="openModal">
+            <GetCardsTitle idModulo={modulo.id_modulo}/>
+          </button>
          {/*<GetCardsModule idModulo={modulo.id_modulo} /> */}
         </div>
       </div>
@@ -223,7 +225,7 @@ export function GetModulo({idModulo}) {
             
             {/* Cabeçalho do Modal com Botão Fechar */}
             <div className="flex justify-between items-center p-4 border-b">
-              <h3 className="text-xl font-semibold">Conteúdo do Card</h3>
+              <GetCardsTitle idModulo={modulo.id_modulo}/>
               <button
                 onClick={() => setIsModalAberto(false)}
                 className="text-gray-500 hover:text-gray-800 text-2xl font-bold px-2"

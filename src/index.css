@@ -139,10 +139,11 @@ button:focus-visible {
 }
 
 /* Módulos section */
+/*
 .modulos {
   height: 100vh;
 }
-
+*/
 .modulos .line {
   border-bottom: 2px solid;
   width: 100px;
