@@ -39,7 +39,7 @@ export function Home() {
             <div className="flex flex-col">
                 <p className='heroTopic'>Sistema Gerador de Relatórios Analiticos</p>
                 <a className='buttonHelp' href="https://helpdeskbot.vercel.app/relatos/u5wlM3UCYKfX7kSPEFBs" target='_blank'>Help Desk - AI Support</a>
-                <small className='descHero' style={{textAlign: 'justify'}}>
+                <small className='descHero text-justify'>
                   <strong>Descrição:</strong> Um assistente inteligente de triagem técnica que utiliza IA Generativa para atuar como um Analista de TI especializado. O sistema processa relatos brutos de usuários, extrai o contexto essencial e gera diagnósticos precisos acompanhados de soluções recomendadas, padronizando a comunicação entre a ponta e a equipe de suporte.
                 </small>
             </div>
@@ -64,10 +64,10 @@ export function Home() {
       </section>
 
      {/* Seção Módulos */}
-     <section className='modulos mt-30 lg:mt-100'>
+     <section className='modulos mt-30 lg:mt-70'>
       <div className="grid grid-cols-1 ">
         <div className="flex flex-col items-center">
-          <h2 className='text-7xl'>Módulos</h2>
+          <h2 className='text-7xl font-black'>Módulos</h2>
           <div className="line mt-5"></div>
           <div className="pesquisa  w-full mt-5">
             <form className='flex align-center justify-center gap-5 p-2'>
