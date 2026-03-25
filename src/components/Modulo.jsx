@@ -66,7 +66,8 @@ export function GetModulo({idModulo}) {
   const [novaDescricao, setNovaDescricao] = useState("");
   const [salvando, setSalvando] = useState(false); // Para mostrar um "Salvando..." no botão
 
-  
+  // Modal para cards
+  const [isModalAberto, setIsModalAberto] = useState(false);
 
   // UseEffect: Roda automaticamente a função quando o componente for montado na tela
   useEffect(() => {
@@ -209,9 +210,35 @@ export function GetModulo({idModulo}) {
         {/* Coluna dos Cards*/}
         <div className="col-span-2">
           <p>Cards</p>
-          <GetCardsModule idModulo={modulo.id_modulo} />
+          <button onClick={() => setIsModalAberto(true)} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Abrir card</button>
+         {/*<GetCardsModule idModulo={modulo.id_modulo} /> */}
         </div>
       </div>
+
+      {/* Estrutura do Modal de Cards */}
+      {isModalAberto && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-opacity-50">
+          {/* Caixa do Modal */}
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col relative m-4">
+            
+            {/* Cabeçalho do Modal com Botão Fechar */}
+            <div className="flex justify-between items-center p-4 border-b">
+              <h3 className="text-xl font-semibold">Conteúdo do Card</h3>
+              <button
+                onClick={() => setIsModalAberto(false)}
+                className="text-gray-500 hover:text-gray-800 text-2xl font-bold px-2"
+              >
+                &times;
+              </button>
+            </div>
+
+            {/* Conteúdo (Scrollável se for muito grande) */}
+            <div className="p-4 overflow-y-auto">
+              <GetCardsModule idModulo={modulo.id_modulo} />
+            </div>
+          </div>
+        </div>
+      )}
     </section>
 
     /* 
