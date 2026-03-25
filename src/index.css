@@ -76,7 +76,7 @@ button:focus-visible {
 .username {
   margin-left: 10px;
   font-weight: bolder;
-  font-size: 64px;
+ /* font-size: 64px;*/
 }
 
 .buttonHeader {
@@ -88,11 +88,7 @@ button:focus-visible {
   background-color: #ff535394;
 }
 
-/* Hero Section */
-.hero {
-  height: 100vh;
- /* background-color: rebeccapurple;*/
-}
+/* Hero Section */ 
 
 .heroTopic {
   font-weight: bolder;
@@ -136,7 +132,6 @@ button:focus-visible {
 }
 
 .mydesktop {
-  font-size: 134px;
   color: black;
   text-transform: uppercase;
   font-weight: 900;

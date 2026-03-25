@@ -37,7 +37,7 @@ export function GetNameUser() {
     return (
         <div>
             {nomeUsuario ? (
-                <h1 className='username'>{nomeUsuario.nome}</h1>
+                <h1 className='username text-4xl lg:text-7xl'>{nomeUsuario.nome}</h1>
             ): (
                 <p>Usuário não encontrado</p>
             )}
