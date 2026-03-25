@@ -65,6 +65,7 @@ export function Home() {
 
      {/* Seção Módulos */}
      <section className='modulos mt-30 lg:mt-70'>
+      {/* Container: Titulo Modulos e Input pesquisa */}
       <div className="grid grid-cols-1 ">
         <div className="flex flex-col items-center">
           <h2 className='text-7xl font-black'>Módulos</h2>
@@ -83,6 +84,12 @@ export function Home() {
             </form>
           </div>
         </div>
+
+      </div>
+
+      {/* Container - Cards e Submodulos */}
+      <div className='mt-25'>
+        <LoopModule />
       </div>
      </section>
       <div className='header'>

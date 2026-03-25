@@ -160,10 +160,64 @@ export function GetModulo({idModulo}) {
   };
 
   // O que aparece na tela depois que os dados chegam
+  
   return (
+
+    <section>
+      <div className="grid grid-cols-1 bg-amber-400 lg:grid-cols-3">
+        {/* Coluna do Módulo - Submodulo */}
+        <div className="col-span-1 bg-amber-200 items-center lg:items-start flex flex-col">
+          {/* Titulo modulo */}
+          <div className="title bg-blue-200 w-full max-w-lg">
+            <h2 className='text-5xl'>{modulo.titulo}</h2>
+            <small>{modulo.descricao}</small>
+              {/* Botões de Gestão (Dono) */}
+              {usuarioLogado && usuarioLogado.id === modulo.criado_por_id && (
+                <div style={{ display: 'flex', gap: '15px', marginTop: '10px' }}>
+                  <button 
+                    onClick={() => iniciarEdicao(modulo)} 
+                    style={{ color: 'blue', border: 'none', background: 'none', cursor: 'pointer', padding: 0, fontWeight: 'bold' }}
+                  >
+                    📝 Editar Módulo
+                  </button>
+
+                  <button 
+                    onClick={() => handleExcluir(modulo.id_modulo, modulo.titulo)} 
+                    style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer', padding: 0, fontWeight: 'bold' }}
+                  >
+                    🗑️ Excluir Módulo
+                  </button>
+                  <Link 
+                    to={`/criarsubmodulo/${modulo.id_modulo}`} 
+
+                  >
+                    + Criar Submódulo
+                  </Link>
+                  <Link to={`/criarcard/${modulo.id_modulo}`} style={{ fontWeight: 'bold' }}>
+                    + Criar Card
+                  </Link>
+                </div>
+              )}
+          </div>
+          
+          {/* Submodulos */}
+          <div className="submodulos bg-pink-200 w-full max-w-lg flex">
+              <GetSubModulo idModulo={modulo.id_modulo} />
+          </div>
+        </div>
+
+        {/* Coluna dos Cards*/}
+        <div className="col-span-2">
+          <p>Cards</p>
+          <GetCardsModule idModulo={modulo.id_modulo} />
+        </div>
+      </div>
+    </section>
+
+    /* 
     <section>
       
-      {/* --- MODO EDIÇÃO --- */}
+      {/* --- MODO EDIÇÃO --- 
       {editando === modulo.id_modulo ? (
         <div style={{ marginBottom: '20px' }}>
           <label style={{ display: 'block', fontWeight: 'bold' }}>Título do Módulo:</label>
@@ -202,7 +256,7 @@ export function GetModulo({idModulo}) {
           <h1>{modulo.titulo}</h1>
           <p>{modulo.descricao}</p>
 
-          {/* Botões de Gestão (Dono) */}
+          {/* Botões de Gestão (Dono) 
           {usuarioLogado && usuarioLogado.id === modulo.criado_por_id && (
             <div style={{ display: 'flex', gap: '15px', marginTop: '10px' }}>
               <button 
@@ -225,7 +279,7 @@ export function GetModulo({idModulo}) {
 
       <hr />
 
-      {/* Seção de Cards e Submódulos permanecem iguais */}
+      {/* Seção de Cards e Submódulos permanecem iguais 
       <div className="cards" style={{ marginTop: '20px' }}>
         <GetCardsModule idModulo={modulo.id_modulo} />
       </div>
@@ -247,7 +301,9 @@ export function GetModulo({idModulo}) {
       </div>
     
     </section>
+    */
   )
+ 
 }
 
 
