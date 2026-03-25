@@ -208,11 +208,11 @@ export function GetModulo({idModulo}) {
         </div>
 
         {/* Coluna dos Cards*/}
-        <div className="col-span-2">
+        <div className="col-span-2 bg-red-500">
           <p>Cards</p>
-          <button onClick={() => setIsModalAberto(true)} className="openModal">
-            <GetCardsTitle idModulo={modulo.id_modulo}/>
-          </button>
+          <div className="cards bg-amber-400 p-2">
+            <GetCardsTitle idModulo={modulo.id_modulo} abrirModal={() => setIsModalAberto(true)}/>
+          </div>
          {/*<GetCardsModule idModulo={modulo.id_modulo} /> */}
         </div>
       </div>

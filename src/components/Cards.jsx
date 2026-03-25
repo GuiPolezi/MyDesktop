@@ -383,7 +383,7 @@ export function GetCardsSubModule({idSubModulo}) {
 }
 
 
-export function GetCardsTitle({ idModulo }) {
+export function GetCardsTitle({ idModulo, abrirModal }) {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -407,16 +407,17 @@ export function GetCardsTitle({ idModulo }) {
   }, [idModulo]);
 
   if (loading) return <p>Carregando títulos...</p>;
-  if (cards.length === 0) return <p>Nenhum card encontrado</p>;
+  if (cards.length === 0) return null;
 
   return (
-    <ul style={{ paddingLeft: '20px' }}>
-      {cards.map((card) => (
-        <li key={card.id_card} style={{ marginBottom: '8px' }}>
-          {/* Exibe APENAS o título */}
-          <strong>{card.titulo}</strong>
-        </li>
-      ))}
-    </ul>
+   <button style={{background: 'none'}}
+      onClick={abrirModal} 
+
+    >
+        {cards.map((card) => (
+            <p key={card.id_card}>{card.titulo}</p>
+        ))}
+
+    </button>
   );
 }
