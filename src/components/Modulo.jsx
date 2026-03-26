@@ -210,9 +210,7 @@ export function GetModulo({idModulo}) {
         {/* Coluna dos Cards*/}
         <div className="col-span-2 bg-red-500">
           <p>Cards</p>
-          <div className="cards bg-amber-400 p-2">
             <GetCardsTitle idModulo={modulo.id_modulo} abrirModal={() => setIsModalAberto(true)}/>
-          </div>
          {/*<GetCardsModule idModulo={modulo.id_modulo} /> */}
         </div>
       </div>
@@ -224,8 +222,7 @@ export function GetModulo({idModulo}) {
           <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col relative m-4">
             
             {/* Cabeçalho do Modal com Botão Fechar */}
-            <div className="flex justify-between items-center p-4 border-b">
-              <GetCardsTitle idModulo={modulo.id_modulo}/>
+            <div className='text-end'>
               <button
                 onClick={() => setIsModalAberto(false)}
                 className="text-gray-500 hover:text-gray-800 text-2xl font-bold px-2"

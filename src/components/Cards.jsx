@@ -194,7 +194,7 @@ export function GetCardsModule({idModulo}) {
           ) : (
             // --- MODO VISUALIZAÇÃO ---
             <div>
-              {/*<strong>{card.titulo}</strong> */}
+              <strong>{card.titulo}</strong> 
               {card.conteudo && <p style={{ margin: 0, fontSize: '0.85rem' }}>{card.conteudo}</p>}
               {card.arquivos && <div>{card.arquivos}</div>}
 
@@ -407,7 +407,7 @@ export function GetCardsTitle({ idModulo, abrirModal }) {
   }, [idModulo]);
 
   if (loading) return <p>Carregando títulos...</p>;
-  if (cards.length === 0) return null;
+  if (cards.length === 0) return "Nenhum Card encontrado";
 
   return (
    <button style={{background: 'none'}}
