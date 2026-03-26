@@ -382,3 +382,44 @@ export function GetCardsSubModule({idSubModulo}) {
   )
 }
 
+/*
+export function GetCardsTitle({ idModulo, abrirModal }) {
+  const [cards, setCards] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function carregarCards() {
+      if (!idModulo) return; // Segurança: não busca se não tiver ID
+
+      try {
+        setLoading(true);
+        // Usamos a mesma função do seu dbService
+        const dados = await dbService.getCardsModule(idModulo);
+        setCards(dados);
+      } catch (error) {
+        console.error("Erro ao buscar cards:", error.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    carregarCards();
+  }, [idModulo]);
+
+  if (loading) return <p>Carregando títulos...</p>;
+  if (cards.length === 0) return "Nenhum Card encontrado";
+
+  return (
+   <button className='cardModal'
+      onClick={abrirModal} 
+
+    >
+        {cards.map((card) => (
+            <p key={card.id_card}>{card.titulo}</p>
+        ))}
+
+    </button>
+  );
+}
+
+*/

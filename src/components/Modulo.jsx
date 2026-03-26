@@ -166,41 +166,75 @@ export function GetModulo({idModulo}) {
 
     <section>
       <div className="grid grid-cols-1 bg-amber-400 lg:grid-cols-3">
-        {/* Coluna do Módulo - Submodulo */}
-        <div className="col-span-1 bg-amber-200 items-center lg:items-start flex flex-col">
-          {/* Titulo modulo */}
-          <div className="title bg-blue-200 w-full max-w-lg">
-            <h2 className='text-5xl'>{modulo.titulo}</h2>
-            <small>{modulo.descricao}</small>
-             <Link 
-                    to={`/criarsubmodulo/${modulo.id_modulo}`} 
+          {/* Coluna do Módulo - Submodulo */}
+          <div className="col-span-1 bg-amber-200 items-center lg:items-start flex flex-col">
+          { editando === modulo.id_modulo ? (
+            <div style={{ marginBottom: '20px' }}>
+            <label style={{ display: 'block', fontWeight: 'bold' }}>Título do Módulo:</label>
+            <input 
+              type="text" 
+              value={novoTitulo} 
+              onChange={(e) => setNovoTitulo(e.target.value)} 
+              style={{ display: 'block', width: '100%', padding: '8px', marginBottom: '10px' }}
+            />
 
-                  >
-                    + Criar Submódulo
-                  </Link>
-                  <Link to={`/criarcard/${modulo.id_modulo}`} style={{ fontWeight: 'bold' }}>
-                    + Criar Card
-                  </Link>
-              {/* Botões de Gestão (Dono) */}
-              {usuarioLogado && usuarioLogado.id === modulo.criado_por_id && (
-                <div style={{ display: 'flex', gap: '15px', marginTop: '10px' }}>
-                  <button 
-                    onClick={() => iniciarEdicao(modulo)} 
-                    style={{ color: 'blue', border: 'none', background: 'none', cursor: 'pointer', padding: 0, fontWeight: 'bold' }}
-                  >
-                    📝 Editar Módulo
-                  </button>
+            <label style={{ display: 'block', fontWeight: 'bold' }}>Descrição:</label>
+            <textarea 
+              value={novaDescricao} 
+              onChange={(e) => setNovaDescricao(e.target.value)} 
+              style={{ display: 'block', width: '100%', padding: '8px', height: '80px', marginBottom: '10px' }}
+            />
 
-                  <button 
-                    onClick={() => handleExcluir(modulo.id_modulo, modulo.titulo)} 
-                    style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer', padding: 0, fontWeight: 'bold' }}
-                  >
-                    🗑️ Excluir Módulo
-                  </button>
-
-                </div>
-              )}
+            <button 
+              onClick={handleSalvarEdicao} 
+              disabled={salvando}
+              style={{ backgroundColor: '#28a745', color: 'white', padding: '8px 15px', border: 'none', cursor: 'pointer', marginRight: '10px' }}
+            >
+              {salvando ? "Salvando..." : "Salvar Alterações"}
+            </button>
+            
+            <button 
+              onClick={() => setEditando(null)} 
+              style={{ padding: '8px 15px', cursor: 'pointer' }}
+            >
+              Cancelar
+            </button>
           </div>
+          ) : (
+            // Titulo modulo
+            <div className="title bg-blue-200 w-full max-w-lg">
+              <h2 className='text-5xl'>{modulo.titulo}</h2>
+              <small>{modulo.descricao}</small>
+              <Link 
+                      to={`/criarsubmodulo/${modulo.id_modulo}`} 
+
+                    >
+                      + Criar Submódulo
+                    </Link>
+                    <Link to={`/criarcard/${modulo.id_modulo}`} style={{ fontWeight: 'bold' }}>
+                      + Criar Card
+                    </Link>
+                {/* Botões de Gestão (Dono) */}
+                {usuarioLogado && usuarioLogado.id === modulo.criado_por_id && (
+                  <div style={{ display: 'flex', gap: '15px', marginTop: '10px' }}>
+                    <button 
+                      onClick={() => iniciarEdicao(modulo)} 
+                      style={{ color: 'blue', border: 'none', background: 'none', cursor: 'pointer', padding: 0, fontWeight: 'bold' }}
+                    >
+                      📝 Editar Módulo
+                    </button>
+
+                    <button 
+                      onClick={() => handleExcluir(modulo.id_modulo, modulo.titulo)} 
+                      style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer', padding: 0, fontWeight: 'bold' }}
+                    >
+                      🗑️ Excluir Módulo
+                    </button>
+
+                  </div>
+                )}
+            </div>
+          )}
           
           {/* Submodulos */}
           <div className="submodulos bg-pink-200 w-full max-w-lg flex">
@@ -209,7 +243,7 @@ export function GetModulo({idModulo}) {
         </div>
 
         {/* Coluna dos Cards*/}
-        <div className="col-span-2 bg-red-500 h-full mb-5">
+        <div className="col-span-2 bg-red-800 h-full mb-5">
           <p className='text-4xl mb-2'>Cards</p>
           <GetCardsModule idModulo={modulo.id_modulo} />
         </div>
