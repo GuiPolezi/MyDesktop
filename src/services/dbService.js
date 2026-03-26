@@ -110,8 +110,8 @@ export const dbService = {
   async getLoopModules() {
     const { data, error } = await supabase
     .from('modulos')
-    .select('*'); // Traz a lista de objetos
-
+    .select('*') // Traz a lista de objetos
+    .order('id_modulo', { ascending: true }); 
     if (error) throw error;
     return data
   },
