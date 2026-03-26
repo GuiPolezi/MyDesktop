@@ -103,7 +103,7 @@ export function GetSubModulo({idModulo}) {
   if (loading) return <p>Carregando submódulos...</p>
 
   if (submodulos.length == 0) {
-    return <p>Nenhum submodulo encontrado</p>
+    return <p className='p-2'>Nenhum submodulo encontrado</p>
   }
 
   // Excluindo Submodule
@@ -167,6 +167,67 @@ export function GetSubModulo({idModulo}) {
 
 
   return (
+    <section className='bg-red-400 w-full p-2'>
+      <p className='mt-2 font-bold' style={{fontSize: '20px', opacity:'0.3'}}>Submodulos</p>
+      <div>
+        {submodulos.map((sub) => (
+          <div>
+
+            {editando === sub.id_submodulo ? (
+              <div>
+                  <input 
+                  value={novoTitulo} 
+                  onChange={(e) => setNovoTitulo(e.target.value)}
+                  style={{ display: 'block', marginBottom: '5px', width: '100%' }}
+                  />
+
+                <button onClick={handleSalvarEdicao} disabled={salvando} style={{ color: 'green', marginRight: '10px' }}>
+                  {salvando ? "Salvando..." : "Salvar"}
+                </button>
+                <button onClick={() => setEditando(null)}>Cancelar</button>
+              </div>
+              
+            ): (
+              <div className='flex bg-amber-100'>
+                
+                <a href="#" className='flex items-center' key={sub.id_submodulo}>{sub.titulo} | </a>
+                {/*
+                <li key={sub.id_submodulo} style={{ marginBottom: '8px' }} className='listSubModules'>
+                  {sub.titulo}
+                </li> */}
+
+                {usuarioLogado && usuarioLogado.id === sub.criado_por_id && (
+                      <div className='buttonsSubmodule'>
+                        <button 
+                          onClick={() => iniciarEdicao(sub)} // Passa o card para a função
+                          style={{ color: 'blue', border: 'none', background: 'none', cursor: 'pointer', fontSize: '0.8rem' }}
+                        >
+                          Editar Submódulo
+                        </button>
+
+                        <button 
+                          onClick={() => handleExcluir(sub.id_submodulo, sub.titulo)} 
+                          style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer'}}
+                        >
+                          Excluir
+                        </button>
+                      </div>
+                    )}
+              </div>
+            )}
+          
+          </div>
+
+        ))}
+      </div>
+    </section>
+  )
+}
+
+
+/* 
+
+  return (
     <section>
       <p className='mt-2 font-bold' style={{fontSize: '20px', opacity:'0.3'}}>Submodulos</p>
       <ul style={{ paddingLeft: '20px' }}>
@@ -192,7 +253,7 @@ export function GetSubModulo({idModulo}) {
                   onChange={(e) => setNovoPai(e.target.value)}
                   style={{display: 'block', marginBottom: '5px', width: '100%'}}
                 />
-            */}
+            
               
               <button onClick={handleSalvarEdicao} disabled={salvando} style={{ color: 'green', marginRight: '10px' }}>
                 {salvando ? "Salvando..." : "Salvar"}
@@ -200,7 +261,7 @@ export function GetSubModulo({idModulo}) {
               <button onClick={() => setEditando(null)}>Cancelar</button>
             </div>
             ) : (
-              <div>
+              <div className='bg-red-600'>
                 <strong>{sub.titulo}</strong>
                 {sub.descricao && <p style={{ margin: 0, fontSize: '0.85rem' }}>{sub.descricao}</p>}
                 {usuarioLogado && usuarioLogado.id === sub.criado_por_id && (
@@ -222,12 +283,12 @@ export function GetSubModulo({idModulo}) {
                     )}
               </div>
             )}
-            {/* 🔹 Aqui passamos OS DOIS IDs na URL */}
+            {/* 🔹 Aqui passamos OS DOIS IDs na URL 
             <Link to={`/criarcard/${idModulo}/${sub.id_submodulo}`}>
               + Criar Card neste Submódulo
             </Link>
             <div className="cards">
-                {/* Chamamos o componente de lista passando o ID do módulo atual */}
+                {/* Chamamos o componente de lista passando o ID do módulo atual 
                 <GetCardsSubModule idSubModulo={sub.id_submodulo}/>
             </div>
           </li>
@@ -235,4 +296,6 @@ export function GetSubModulo({idModulo}) {
       </ul>
     </section>
   )
-}
+
+
+*/
