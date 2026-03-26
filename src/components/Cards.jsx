@@ -179,7 +179,7 @@ export function GetCardsModule({idModulo}) {
       <ul className='bg-amber-400 flex gap-5 items-center'>
         {cardmodule.map((card) => (
             <div key={card.id_card}>
-              <button onClick={() => setCardSelecionado(card)} className='buttonModalCard'>{card.titulo}</button>
+              <button onClick={() => setCardSelecionado(card)} className='buttonModalCard w-full md:w-48 h-12 md:h-20'>{card.titulo}</button>
             
             </div>
         ))}
