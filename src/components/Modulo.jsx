@@ -5,6 +5,8 @@ import { GetSubModulo } from './SubModulo'
 import { useNavigate } from "react-router-dom";
 import { GetCardsModule } from './Cards';
 import { supabase } from '../services/supabase'; // Importe a instância do supabase para pegar o usuário
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons'; // Importe o ícone específico
 
 export function CriarModulo() {
     const [titulo, setTitulo] = useState('')
@@ -200,30 +202,31 @@ export function GetModulo({idModulo}) {
           ) : (
             // Titulo modulo
             <div className="title bg-blue-200 w-full max-w-lg">
-              <div className='flex'>
-                <h2 className='text-5xl'>{modulo.titulo}</h2>
+              <div className='flex bg-gray-400 justify-between'>
+                <h2 className='text-5xl font-bold'>{modulo.titulo}</h2>
                 {/* Botões de Gestão (Dono) */}
                 {usuarioLogado && usuarioLogado.id === modulo.criado_por_id && (
-                  <div className='bg-green-300'>
+                  <div className='bg-green-300 items-center flex gap-2'>
                     <button 
                       onClick={() => iniciarEdicao(modulo)} 
                       style={{ color: 'blue', border: 'none', background: 'none', cursor: 'pointer', padding: 0, fontWeight: 'bold' }}
                     >
-                      <FontAwesomeIcon icon={byPrefixAndName.fas['pen-to-square']} />
+                      <FontAwesomeIcon icon={faPenToSquare} />
                     </button>
 
                     <button 
                       onClick={() => handleExcluir(modulo.id_modulo, modulo.titulo)} 
                       style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer', padding: 0, fontWeight: 'bold' }}
                     >
-                      🗑️ Excluir Módulo
+                      <FontAwesomeIcon icon={faTrash} />
                     </button>
 
                   </div>
                 )}
               </div>
-              <small>{modulo.descricao}</small>
-              <Link 
+              <p className='text-2xl'>{modulo.descricao}</p>
+              <div className='flex gap-5 mt-2'>
+                 <Link 
                       to={`/criarsubmodulo/${modulo.id_modulo}`} 
 
                     >
@@ -233,6 +236,8 @@ export function GetModulo({idModulo}) {
                       + Criar Card
                     </Link>
                 
+              </div>
+
             </div>
           )}
           
