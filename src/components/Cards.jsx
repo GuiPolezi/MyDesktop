@@ -107,7 +107,7 @@ export function GetCardsModule({idModulo}) {
     carregarCardsModule()
   }, [idModulo]) // Recarrega se o ID do módulo mudar
 
-  if (loading) return <p>Carregando submódulos...</p>
+  if (loading) return <p>Carregando Cards...</p>
 
   if (cardmodule.length == 0) {
     return <p>Nenhum card encontrado</p>
@@ -176,37 +176,7 @@ export function GetCardsModule({idModulo}) {
       <ul className='bg-amber-400 flex gap-5 items-center'>
         {cardmodule.map((card) => (
             <div key={card.id_card}>
-                 {/* 🔹 VERIFICAÇÃO: Este card é o que estou editando? */}
-          {editando === card.id_card ? (
-            // --- MODO EDIÇÃO ---
-            <div>
-              <input 
-                value={novoTitulo} 
-                onChange={(e) => setNovoTitulo(e.target.value)}
-                style={{ display: 'block', marginBottom: '5px', width: '100%' }}
-              />
-              <textarea 
-                value={novoConteudo} 
-                onChange={(e) => setNovoConteudo(e.target.value)}
-                style={{ display: 'block', marginBottom: '5px', width: '100%' }}
-              />
-              <button onClick={handleSalvarEdicao} disabled={salvando} style={{ color: 'green', marginRight: '10px' }}>
-                {salvando ? "Salvando..." : "Salvar"}
-              </button>
-              <button onClick={() => setEditando(null)}>Cancelar</button>
-            </div>
-          ) : (
-            // --- MODO VISUALIZAÇÃO ---
-            <div className='bg-pink-200 p-5'>
               <button onClick={() => setCardSelecionado(card)} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">{card.titulo}</button>
-
-              <strong>{card.titulo}</strong> 
-              {card.conteudo && <p style={{ margin: 0, fontSize: '0.85rem' }}>{card.conteudo}</p>}
-              {card.arquivos && <div>{card.arquivos}</div>}
-
-              
-            </div>
-          )}
             
             </div>
         ))}
@@ -216,34 +186,60 @@ export function GetCardsModule({idModulo}) {
               <div className='fixed inset-0 z-50 flex items-center justify-center bg-opacity-50'>
                 {/* Caixa do Modal */}
                 <div className='bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col relative m-4'>
-                  {/* Cabeçalho com botão fechar */}
-                  <div className='flex justify-between items-center p-4 border-b'>
-                    <h3 className="text-xl font-semibold">{cardSelecionado.titulo}</h3>
-                    <button className="text-gray-500 hover:text-gray-800 text-2xl font-bold px-2" onClick={() => setCardSelecionado(null)}>&times;</button>
-                  </div>
-
-                  {/* Conteudo do modal */}
-                  <div className='p-4 overflow-y-auto'>
-                    {cardSelecionado.conteudo && <p style={{ margin: 0, fontSize: '0.85rem' }}>{cardSelecionado.conteudo}</p>}
-                    {cardSelecionado.arquivos && <div>{cardSelecionado.arquivos}</div>}
-                    {/* Botões de Ação (Apenas para o dono) */}
-                    {usuarioLogado && usuarioLogado.id === cardSelecionado.criado_por_id && (
-                      <div style={{ marginTop: '5px' }}>
-                        <button 
-                          onClick={() => iniciarEdicao(cardSelecionado)} // Passa o card para a função
-                          style={{ color: 'blue', border: 'none', background: 'none', cursor: 'pointer', marginRight: '10px', fontSize: '0.8rem' }}
-                        >
-                          Editar
-                        </button>
-                        <button 
-                          onClick={() => handleExcluir(cardSelecionado.id_card, cardSelecionado.titulo)} 
-                          style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer', fontSize: '0.8rem' }}
-                        >
-                          Excluir
-                        </button>
+                  {/* 🔹 VERIFICAÇÃO: Este card é o que estou editando? */}
+                  {editando === cardSelecionado.id_card ? (
+                    // --- MODO EDIÇÃO ---
+                    <div>
+                      <input 
+                        value={novoTitulo} 
+                        onChange={(e) => setNovoTitulo(e.target.value)}
+                        style={{ display: 'block', marginBottom: '5px', width: '100%' }}
+                      />
+                      <textarea 
+                        value={novoConteudo} 
+                        onChange={(e) => setNovoConteudo(e.target.value)}
+                        style={{ display: 'block', marginBottom: '5px', width: '100%' }}
+                      />
+                      <button onClick={handleSalvarEdicao} disabled={salvando} style={{ color: 'green', marginRight: '10px' }}>
+                        {salvando ? "Salvando..." : "Salvar"}
+                      </button>
+                      <button onClick={() => setEditando(null)}>Cancelar</button>
+                    </div>
+                  ) : (
+                    // Modo Visualização
+                    
+                    <div>
+                      {/* Cabeçalho com botão fechar */}
+                      <div className='flex justify-between items-center p-4 border-b'>
+                        <h3 className="text-xl font-semibold">{cardSelecionado.titulo}</h3>
+                        <button className="text-gray-500 hover:text-gray-800 text-2xl font-bold px-2" onClick={() => setCardSelecionado(null)}>&times;</button>
                       </div>
-                    )}
-                  </div>
+
+                      {/*Conteudo do modal*/} 
+                      <div className='p-4 overflow-y-auto'>
+                        {cardSelecionado.conteudo && <p style={{ margin: 0, fontSize: '0.85rem' }}>{cardSelecionado.conteudo}</p>}
+                        {cardSelecionado.arquivos && <div>{cardSelecionado.arquivos}</div>}
+                        {/* Botões de Ação (Apenas para o dono) */}
+                        {usuarioLogado && usuarioLogado.id === cardSelecionado.criado_por_id && (
+                          <div style={{ marginTop: '5px' }}>
+                            <button 
+                              onClick={() => iniciarEdicao(cardSelecionado)} // Passa o card para a função
+                              style={{ color: 'blue', border: 'none', background: 'none', cursor: 'pointer', marginRight: '10px', fontSize: '0.8rem' }}
+                            >
+                              Editar
+                            </button>
+                            <button 
+                              onClick={() => handleExcluir(cardSelecionado.id_card, cardSelecionado.titulo)} 
+                              style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer', fontSize: '0.8rem' }}
+                            >
+                              Excluir
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                     </div>
+                  )}
+                  
                 </div>
                 
               </div>
