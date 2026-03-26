@@ -200,25 +200,16 @@ export function GetModulo({idModulo}) {
           ) : (
             // Titulo modulo
             <div className="title bg-blue-200 w-full max-w-lg">
-              <h2 className='text-5xl'>{modulo.titulo}</h2>
-              <small>{modulo.descricao}</small>
-              <Link 
-                      to={`/criarsubmodulo/${modulo.id_modulo}`} 
-
-                    >
-                      + Criar Submódulo
-                    </Link>
-                    <Link to={`/criarcard/${modulo.id_modulo}`} style={{ fontWeight: 'bold' }}>
-                      + Criar Card
-                    </Link>
+              <div className='flex'>
+                <h2 className='text-5xl'>{modulo.titulo}</h2>
                 {/* Botões de Gestão (Dono) */}
                 {usuarioLogado && usuarioLogado.id === modulo.criado_por_id && (
-                  <div style={{ display: 'flex', gap: '15px', marginTop: '10px' }}>
+                  <div className='bg-green-300'>
                     <button 
                       onClick={() => iniciarEdicao(modulo)} 
                       style={{ color: 'blue', border: 'none', background: 'none', cursor: 'pointer', padding: 0, fontWeight: 'bold' }}
                     >
-                      📝 Editar Módulo
+                      <FontAwesomeIcon icon={byPrefixAndName.fas['pen-to-square']} />
                     </button>
 
                     <button 
@@ -230,6 +221,18 @@ export function GetModulo({idModulo}) {
 
                   </div>
                 )}
+              </div>
+              <small>{modulo.descricao}</small>
+              <Link 
+                      to={`/criarsubmodulo/${modulo.id_modulo}`} 
+
+                    >
+                      + Criar Submódulo
+                    </Link>
+                    <Link to={`/criarcard/${modulo.id_modulo}`} style={{ fontWeight: 'bold' }}>
+                      + Criar Card
+                    </Link>
+                
             </div>
           )}
           
@@ -241,7 +244,7 @@ export function GetModulo({idModulo}) {
 
         {/* Coluna dos Cards*/}
         <div className="col-span-2 bg-red-800 h-full mb-5">
-          <p className='text-4xl mb-2'>Cards</p>
+          <p className='text-4xl mb-2 bg-blue-400 h-20'>Cards</p>
           <GetCardsModule idModulo={modulo.id_modulo} />
         </div>
       </div>
