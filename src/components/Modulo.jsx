@@ -66,9 +66,6 @@ export function GetModulo({idModulo}) {
   const [novaDescricao, setNovaDescricao] = useState("");
   const [salvando, setSalvando] = useState(false); // Para mostrar um "Salvando..." no botão
 
-  // Modal para cards
-  const [isModalAberto, setIsModalAberto] = useState(false);
-
   // UseEffect: Roda automaticamente a função quando o componente for montado na tela
   useEffect(() => {
     if (!idModulo) {

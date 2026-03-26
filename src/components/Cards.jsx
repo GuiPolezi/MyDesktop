@@ -169,9 +169,9 @@ export function GetCardsModule({idModulo}) {
 
   return (
     <section>
-      <ul style={{ paddingLeft: '20px' }}>
+      <ul className='bg-amber-400 flex gap-5 items-center'>
         {cardmodule.map((card) => (
-            <div key={card.id_card} style={{ marginBottom: '8px' }}>
+            <div key={card.id_card}>
                  {/* 🔹 VERIFICAÇÃO: Este card é o que estou editando? */}
           {editando === card.id_card ? (
             // --- MODO EDIÇÃO ---
@@ -193,7 +193,7 @@ export function GetCardsModule({idModulo}) {
             </div>
           ) : (
             // --- MODO VISUALIZAÇÃO ---
-            <div>
+            <div className='bg-pink-200 p-5'>
               <strong>{card.titulo}</strong> 
               {card.conteudo && <p style={{ margin: 0, fontSize: '0.85rem' }}>{card.conteudo}</p>}
               {card.arquivos && <div>{card.arquivos}</div>}
@@ -382,7 +382,7 @@ export function GetCardsSubModule({idSubModulo}) {
   )
 }
 
-/*
+
 export function GetCardsTitle({ idModulo, abrirModal }) {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -422,4 +422,3 @@ export function GetCardsTitle({ idModulo, abrirModal }) {
   );
 }
 
-*/
