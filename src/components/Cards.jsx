@@ -81,6 +81,10 @@ export function GetCardsModule({idModulo}) {
   const [novoConteudo, setNovoConteudo] = useState("");
   const [salvando, setSalvando] = useState(false); // Para mostrar um "Salvando..." no botão
 
+
+  // Declarando controles do modal
+  const [cardSelecionado, setCardSelecionado] = useState(false)
+
   useEffect(() => {
     async function carregarCardsModule() {
       if (!idModulo) return // Segurança: não busca se não tiver ID
@@ -194,32 +198,56 @@ export function GetCardsModule({idModulo}) {
           ) : (
             // --- MODO VISUALIZAÇÃO ---
             <div className='bg-pink-200 p-5'>
+              <button onClick={() => setCardSelecionado(card)} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">{card.titulo}</button>
+
               <strong>{card.titulo}</strong> 
               {card.conteudo && <p style={{ margin: 0, fontSize: '0.85rem' }}>{card.conteudo}</p>}
               {card.arquivos && <div>{card.arquivos}</div>}
 
-              {/* Botões de Ação (Apenas para o dono) */}
-              {usuarioLogado && usuarioLogado.id === card.criado_por_id && (
-                <div style={{ marginTop: '5px' }}>
-                  <button 
-                    onClick={() => iniciarEdicao(card)} // Passa o card para a função
-                    style={{ color: 'blue', border: 'none', background: 'none', cursor: 'pointer', marginRight: '10px', fontSize: '0.8rem' }}
-                  >
-                    Editar
-                  </button>
-                  <button 
-                    onClick={() => handleExcluir(card.id_card, card.titulo)} 
-                    style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer', fontSize: '0.8rem' }}
-                  >
-                    Excluir
-                  </button>
-                </div>
-              )}
+              
             </div>
           )}
+            
             </div>
         ))}
+        
       </ul>
+      {cardSelecionado && (
+              <div className='fixed inset-0 z-50 flex items-center justify-center bg-opacity-50'>
+                {/* Caixa do Modal */}
+                <div className='bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col relative m-4'>
+                  {/* Cabeçalho com botão fechar */}
+                  <div className='flex justify-between items-center p-4 border-b'>
+                    <h3 className="text-xl font-semibold">{cardSelecionado.titulo}</h3>
+                    <button className="text-gray-500 hover:text-gray-800 text-2xl font-bold px-2" onClick={() => setCardSelecionado(null)}>&times;</button>
+                  </div>
+
+                  {/* Conteudo do modal */}
+                  <div className='p-4 overflow-y-auto'>
+                    {cardSelecionado.conteudo && <p style={{ margin: 0, fontSize: '0.85rem' }}>{cardSelecionado.conteudo}</p>}
+                    {cardSelecionado.arquivos && <div>{cardSelecionado.arquivos}</div>}
+                    {/* Botões de Ação (Apenas para o dono) */}
+                    {usuarioLogado && usuarioLogado.id === cardSelecionado.criado_por_id && (
+                      <div style={{ marginTop: '5px' }}>
+                        <button 
+                          onClick={() => iniciarEdicao(cardSelecionado)} // Passa o card para a função
+                          style={{ color: 'blue', border: 'none', background: 'none', cursor: 'pointer', marginRight: '10px', fontSize: '0.8rem' }}
+                        >
+                          Editar
+                        </button>
+                        <button 
+                          onClick={() => handleExcluir(cardSelecionado.id_card, cardSelecionado.titulo)} 
+                          style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer', fontSize: '0.8rem' }}
+                        >
+                          Excluir
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                
+              </div>
+            )}
     </section>
   )
 }
@@ -382,6 +410,7 @@ export function GetCardsSubModule({idSubModulo}) {
   )
 }
 
+/*
 
 export function GetCardsTitle({ idModulo, abrirModal }) {
   const [cards, setCards] = useState([]);
@@ -422,3 +451,4 @@ export function GetCardsTitle({ idModulo, abrirModal }) {
   );
 }
 
+*/
