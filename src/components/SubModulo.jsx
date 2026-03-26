@@ -168,6 +168,7 @@ export function GetSubModulo({idModulo}) {
 
   return (
     <section>
+      <p className='mt-2 font-bold' style={{fontSize: '20px', opacity:'0.3'}}>Submodulos</p>
       <ul style={{ paddingLeft: '20px' }}>
         {submodulos.map((sub) => (
           <li key={sub.id_submodulo} style={{ marginBottom: '8px' }}>
