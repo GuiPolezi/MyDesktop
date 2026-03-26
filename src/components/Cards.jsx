@@ -179,7 +179,7 @@ export function GetCardsModule({idModulo}) {
       <ul className='bg-amber-400 flex gap-5 items-center'>
         {cardmodule.map((card) => (
             <div key={card.id_card}>
-              <button onClick={() => setCardSelecionado(card)} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">{card.titulo}</button>
+              <button onClick={() => setCardSelecionado(card)} className='buttonModalCard'>{card.titulo}</button>
             
             </div>
         ))}
