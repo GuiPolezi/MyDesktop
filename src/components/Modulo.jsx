@@ -3,7 +3,7 @@ import { dbService } from '../services/dbService'
 import { Link } from 'react-router-dom' //
 import { GetSubModulo } from './SubModulo'
 import { useNavigate } from "react-router-dom";
-import { GetCardsModule, GetCardsTitle } from './Cards';
+import { GetCardsModule } from './Cards';
 import { supabase } from '../services/supabase'; // Importe a instância do supabase para pegar o usuário
 
 export function CriarModulo() {
@@ -172,6 +172,15 @@ export function GetModulo({idModulo}) {
           <div className="title bg-blue-200 w-full max-w-lg">
             <h2 className='text-5xl'>{modulo.titulo}</h2>
             <small>{modulo.descricao}</small>
+             <Link 
+                    to={`/criarsubmodulo/${modulo.id_modulo}`} 
+
+                  >
+                    + Criar Submódulo
+                  </Link>
+                  <Link to={`/criarcard/${modulo.id_modulo}`} style={{ fontWeight: 'bold' }}>
+                    + Criar Card
+                  </Link>
               {/* Botões de Gestão (Dono) */}
               {usuarioLogado && usuarioLogado.id === modulo.criado_por_id && (
                 <div style={{ display: 'flex', gap: '15px', marginTop: '10px' }}>
@@ -188,15 +197,7 @@ export function GetModulo({idModulo}) {
                   >
                     🗑️ Excluir Módulo
                   </button>
-                  <Link 
-                    to={`/criarsubmodulo/${modulo.id_modulo}`} 
 
-                  >
-                    + Criar Submódulo
-                  </Link>
-                  <Link to={`/criarcard/${modulo.id_modulo}`} style={{ fontWeight: 'bold' }}>
-                    + Criar Card
-                  </Link>
                 </div>
               )}
           </div>
@@ -208,36 +209,12 @@ export function GetModulo({idModulo}) {
         </div>
 
         {/* Coluna dos Cards*/}
-        <div className="col-span-2 bg-red-500">
-          <p>Cards</p>
-            <GetCardsTitle idModulo={modulo.id_modulo} abrirModal={() => setIsModalAberto(true)}/>
-         {/*<GetCardsModule idModulo={modulo.id_modulo} /> */}
+        <div className="col-span-2 bg-red-500 h-full mb-5">
+          <p className='text-4xl mb-2'>Cards</p>
+          <GetCardsModule idModulo={modulo.id_modulo} />
         </div>
       </div>
 
-      {/* Estrutura do Modal de Cards */}
-      {isModalAberto && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-opacity-50">
-          {/* Caixa do Modal */}
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col relative m-4">
-            
-            {/* Cabeçalho do Modal com Botão Fechar */}
-            <div className='text-end'>
-              <button
-                onClick={() => setIsModalAberto(false)}
-                className="text-gray-500 hover:text-gray-800 text-2xl font-bold px-2"
-              >
-                &times;
-              </button>
-            </div>
-
-            {/* Conteúdo (Scrollável se for muito grande) */}
-            <div className="p-4 overflow-y-auto">
-              <GetCardsModule idModulo={modulo.id_modulo} />
-            </div>
-          </div>
-        </div>
-      )}
     </section>
 
     /* 

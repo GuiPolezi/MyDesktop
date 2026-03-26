@@ -157,13 +157,6 @@ button:focus-visible {
 
 
 /* Modulos - Estilos da Função getModulo */
-.title {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.137);
-}
 
 
 /* Cards - Estilo da coluna CARDS modulo */
-
-.cards {
-  width: fit-content;;
-}
