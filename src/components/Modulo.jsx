@@ -165,8 +165,8 @@ export function GetModulo({idModulo}) {
 
     <section>
       <div className="grid grid-cols-1 bg-amber-400 lg:grid-cols-3">
-          {/* Coluna do Módulo - Submodulo */}
-          <div className="col-span-1 bg-amber-200 items-center lg:items-start flex flex-col">
+        {/* Coluna do Módulo - Submodulo */}
+        <div className="col-span-1 p-2 bg-amber-200 items-center lg:items-start flex flex-col">
           { editando === modulo.id_modulo ? (
             <div style={{ marginBottom: '20px' }}>
             <label style={{ display: 'block', fontWeight: 'bold' }}>Título do Módulo:</label>
@@ -225,7 +225,7 @@ export function GetModulo({idModulo}) {
                 )}
               </div>
               <p className='text-2xl'>{modulo.descricao}</p>
-              <div className='flex gap-5 mt-2'>
+              <div className='flex gap-5 mt-2' style={{borderBottom: '1px solid gray'}}>
                  <Link 
                       to={`/criarsubmodulo/${modulo.id_modulo}`} 
 
@@ -248,8 +248,8 @@ export function GetModulo({idModulo}) {
         </div>
 
         {/* Coluna dos Cards*/}
-        <div className="col-span-2 bg-red-800 h-full mb-5">
-          <p className='text-4xl mb-2 bg-blue-400 h-20'>Cards</p>
+        <div className="col-span-2 bg-red-800 p-2 h-full mb-5">
+          <p className='text-4xl mb-2 bg-blue-400'>Cards</p>
           <GetCardsModule idModulo={modulo.id_modulo} />
         </div>
       </div>
