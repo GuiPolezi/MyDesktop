@@ -123,6 +123,9 @@ export function GetCardsModule({idModulo}) {
 
         setCardmodule(prev => prev.filter(card => card.id_card !== id_card));
 
+        // fecha o modal limpando card selecionado
+        setCardSelecionado(null);
+
         alert("Card excluído com sucesso!");
       } catch (error) {
         alert("Erro ao excluir: " + error.message);
