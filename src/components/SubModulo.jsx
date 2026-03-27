@@ -167,7 +167,7 @@ export function GetSubModulo({idModulo}) {
 
 
   return (
-    <section className='bg-red-400 w-full p-2'>
+    <section className='w-full p-2'>
       <p className='mt-2 font-bold' style={{fontSize: '20px', opacity:'0.3'}}>Submodulos</p>
       <div>
         {submodulos.map((sub) => (
@@ -188,7 +188,7 @@ export function GetSubModulo({idModulo}) {
               </div>
               
             ): (
-              <div className='flex bg-amber-100'>
+              <div className='flex'>
                 
                 <a href="#" className='flex items-center' key={sub.id_submodulo}>{sub.titulo} | </a>
                 {/*

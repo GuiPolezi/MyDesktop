@@ -164,9 +164,9 @@ export function GetModulo({idModulo}) {
   return (
 
     <section>
-      <div className="grid grid-cols-1 bg-amber-400 lg:grid-cols-3">
+      <div className="grid grid-cols-1 lg:grid-cols-3">
         {/* Coluna do Módulo - Submodulo */}
-        <div className="col-span-1 p-2 bg-amber-200 items-center lg:items-start flex flex-col">
+        <div className="col-span-1 p-2  items-center lg:items-start flex flex-col">
           { editando === modulo.id_modulo ? (
             <div style={{ marginBottom: '20px' }}>
             <label style={{ display: 'block', fontWeight: 'bold' }}>Título do Módulo:</label>
@@ -201,12 +201,12 @@ export function GetModulo({idModulo}) {
           </div>
           ) : (
             // Titulo modulo
-            <div className="title bg-blue-200 w-full max-w-lg">
-              <div className='flex bg-gray-400 justify-between'>
+            <div className="title  w-full max-w-lg">
+              <div className='flex justify-between'>
                 <h2 className='text-5xl font-bold'>{modulo.titulo}</h2>
                 {/* Botões de Gestão (Dono) */}
                 {usuarioLogado && usuarioLogado.id === modulo.criado_por_id && (
-                  <div className='bg-green-300 items-center flex gap-2'>
+                  <div className='items-center flex gap-2'>
                     <button 
                       onClick={() => iniciarEdicao(modulo)} 
                       style={{ color: 'blue', border: 'none', background: 'none', cursor: 'pointer', padding: 0, fontWeight: 'bold' }}
@@ -242,14 +242,14 @@ export function GetModulo({idModulo}) {
           )}
           
           {/* Submodulos */}
-          <div className="submodulos bg-pink-200 w-full max-w-lg flex">
+          <div className="submodulos w-full max-w-lg flex">
               <GetSubModulo idModulo={modulo.id_modulo} />
           </div>
         </div>
 
         {/* Coluna dos Cards*/}
-        <div className="col-span-2 bg-red-800 p-2 h-full mb-5">
-          <p className='text-4xl mb-2 bg-blue-400'>Cards</p>
+        <div className="col-span-2 p-2 h-full mb-5">
+          <p className='text-4xl mb-2'>Cards</p>
           <GetCardsModule idModulo={modulo.id_modulo} />
         </div>
       </div>
