@@ -83,6 +83,7 @@ export function Home() {
               </button>
             </form>
           </div>
+          <Link to="/criarmodulo" className='mt-10 text-2xl' style={{color: '#283618'}}>Criar Modulo</Link>
         </div>
 
       </div>

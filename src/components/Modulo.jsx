@@ -382,6 +382,10 @@ export function LoopModule() {
     };
   }, []);
 
+  if (listaModulos.length == 0 ) {
+    return <p>nenhum módulo encontrado</p>
+  }
+
   return (
     <div>
       {listaModulos.map((m) => (
