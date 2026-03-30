@@ -33,6 +33,17 @@ export const dbService = {
     return data
   },
 
+ // 1.1.1 Obter lista de Modulo
+  async getModuloList() {
+    const { data, error } = await supabase
+    .from('modulos')
+    .select('*') // Pega todas as colunas
+    .order('id_modulo')
+
+    if (error) throw error
+    return data
+  },
+
   // 2. Criar Submódulo (Exige o ID do Módulo pai)
   async criarSubmodulo(titulo, descricao, idModulo) {
     const { data: { user } } = await supabase.auth.getUser()
@@ -62,6 +73,7 @@ export const dbService = {
     if (error) throw error
     return data
   },
+  
 
   // 3. Criar Card (Exige ID do Módulo e do Submódulo)
   async criarCard(titulo, conteudo, arquivos=null, idModulo, idSubmodulo=null) {
@@ -108,8 +120,7 @@ export const dbService = {
     return data
   },
 
-  // 4. Obter Lista de modulos
-  // Atualizando para filtrar por setor do usuario
+  // 4. Obter Lista de modulos com funções de filtragem
   async getLoopModules() {
     // Primeiro descobre o usuario e qual o setor dele
     const usuario = await this.getUsers();
@@ -296,6 +307,18 @@ export const dbService = {
       .update({ setor: novoSetor })
       .eq('id_user', idUser)
       .select()
+
+    if (error) throw error
+    return data
+  },
+
+  // Editar setor Permitido do modulo (para painek admin)
+  async updateSetorPermitido(idModulo, novoSetorPermitido) {
+    const {data, error} = await supabase
+    .from('modulos')
+    .update({setor_permitido: novoSetorPermitido})
+    .eq('id_modulo', idModulo)
+    .select()
 
     if (error) throw error
     return data

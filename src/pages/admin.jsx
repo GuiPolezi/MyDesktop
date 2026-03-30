@@ -6,12 +6,16 @@ export function AdminPage() {
   const [usuarios, setUsuarios] = useState([]);
   const [loading, setLoading] = useState(true);
   const [salvandoId, setSalvandoId] = useState(null); // Controla qual linha está sendo salva no momento
+  const [modulos, setModulos] = useState([]);
+  const [salvandoIdModulo, setSalvandoIdModulo] = useState(null);
 
   useEffect(() => {
     carregarUsuarios();
-  }, []);
+    carregarModulos();
+}, []);
 
-  // 1. Função para buscar os usuários assim que a página abre
+
+  // Função para buscar os usuários assim que a página abre
   async function carregarUsuarios() {
     try {
       const lista = await dbService.getAllUsers();
@@ -21,6 +25,45 @@ export function AdminPage() {
       alert("Erro ao carregar a lista de usuários.");
     } finally {
       setLoading(false);
+    }
+  }
+
+  // Função para buscar os módulos assim que a página abre
+  async function carregarModulos() {
+    try {
+        const listaM = await dbService.getModuloList();
+        setModulos(listaM);
+    } catch (error) {
+        console.error("Erro ao buscar módulos:", error);
+        alert("Erro ao carregar a lista de módulos")
+    } finally {
+        setLoading(false);
+    }
+  }
+
+  // Função acionada quando trocamos o valor no <select>
+  const handleMudarSetorPermitido = async(idModulo, novoSetorPermitido, tituloModulo) => {
+    // Uma confirmação de segurança para evitar cliques acidentais
+    const confirmar = window.confirm(`Deseja alterar o setor de ${tituloModulo} para "${novoSetorPermitido}"?`);
+    if (!confirmar) return;
+
+    setSalvandoIdModulo(idModulo); // Ativa o aviso de "salvando"
+
+    try {
+        await dbService.updateSetorPermitido(idModulo, novoSetorPermitido);
+
+        setModulos((modulosAtuais) =>
+            modulosAtuais.map((modulos) =>
+                modulos.id_modulo === idModulo ? {...modulos, setor_permitido: novoSetorPermitido} : modulos
+            )
+        );
+
+        alert("Setor Permitido atualizado com sucesso!");
+    } catch (error) {
+        console.error("Erro ao atualizar setor Permitido:", error);
+      alert("Erro ao salvar o novo setor Permitido. Tente novamente.");
+    } finally {
+        setSalvandoIdModulo(null);
     }
   }
 
@@ -119,6 +162,70 @@ export function AdminPage() {
                 <tr>
                   <td colSpan="3" className="p-4 text-center text-gray-500">
                     Nenhum usuário encontrado no banco de dados.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+
+      {/* Tabela para controle dos módulos */}
+      <div className="bg-white mt-20 shadow-md rounded-lg overflow-hidden border">
+        {/* Cabeçalho da Tabela */}
+        <div className="p-5 border-b bg-gray-50">
+          <h2 className="text-2xl font-semibold">Gerenciamento de Módulos</h2>
+          <p className="text-sm text-gray-500">Altere o setor permitido.</p>
+        </div>
+        
+        {/* Tabela Responsiva */}
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-gray-100 border-b-2">
+                <th className="p-4 font-semibold text-gray-700">Módulo</th>
+                <th className="p-4 font-semibold text-gray-700">ID</th>
+                <th className="p-4 font-semibold text-gray-700 text-center">Setor de Acesso</th>
+              </tr>
+            </thead>
+            <tbody>
+              {modulos.map((modulo) => (
+                <tr key={modulo.id_modulo} className="border-b hover:bg-gray-50 transition-colors">
+                  
+                  <td className="p-4 font-medium">{modulo.titulo || 'Sem Título'}</td>
+                  <td className="p-4 text-gray-600">{modulo.id_modulo}</td>
+                  
+                  <td className="p-4 text-center">
+                    <div className="flex flex-col items-center">
+                      <select 
+                        className={`border p-2 rounded w-full max-w-xs focus:ring-2 focus:outline-none 
+                          ${salvandoIdModulo === modulo.id_modulo ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                        value={modulo.setor_permitido || 'todos'} // Se estiver vazio no banco, assume 'comum'
+                        onChange={(e) => handleMudarSetorPermitido(modulo.id_modulo, e.target.value, modulo.titulo)}
+                        disabled={salvandoIdModulo === modulo.id_modulo} // Bloqueia enquanto salva
+                        style={{ borderColor: '#283618' }}
+                      >
+                        {/* 🔹 Aqui ficam as opções de setores! Adicione ou remova conforme precisar */}
+                        <option value="suporte">Suporte</option>
+                        <option value="todos">todos</option>
+                      </select>
+                      
+                      {/* Feedback visual enquanto o banco de dados processa */}
+                      {salvandoIdModulo === modulo.id_modulo && (
+                        <span className="text-xs font-bold text-green-600 mt-1">Salvando...</span>
+                      )}
+                    </div>
+                  </td>
+
+                </tr>
+              ))}
+              
+              {/* Caso não tenha nenhum usuário (raro, mas evita tela em branco) */}
+              {modulos.length === 0 && (
+                <tr>
+                  <td colSpan="3" className="p-4 text-center text-gray-500">
+                    Nenhum Módulo encontrado no banco de dados.
                   </td>
                 </tr>
               )}
