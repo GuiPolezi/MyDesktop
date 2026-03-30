@@ -7,6 +7,8 @@ import { Home } from './pages/index'
 import { CriarModulo } from "./components/Modulo"
 import { CriarSubModulo } from "./components/SubModulo"
 import { CriarCards } from "./components/Cards"
+import { AdminRoute } from "./components/AdminRoute"
+import { AdminPage } from "./pages/admin"
 
 export default function AppRoutes({ session }) {
   return (
@@ -63,6 +65,15 @@ export default function AppRoutes({ session }) {
           <PrivateRoute session={session}>
             <CriarCards />
           </PrivateRoute>
+        }
+      />
+
+      <Route 
+        path="/admin"
+        element={
+          <AdminRoute session={session}>
+            <AdminPage />
+          </AdminRoute>
         }
       />
     </Routes>

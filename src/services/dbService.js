@@ -2,7 +2,8 @@ import { supabase } from './supabase'
 
 export const dbService = {
   // 1. Criar Módulo
-  async criarModulo(titulo, descricao) {
+  // Atualizando para receber setorPermitido
+  async criarModulo(titulo, descricao, setorPermitido = 'todos') {
     const { data: { user } } = await supabase.auth.getUser()
     
     const { data, error } = await supabase
@@ -10,7 +11,8 @@ export const dbService = {
       .insert([{ 
         titulo, 
         descricao, 
-        criado_por_id: user.id 
+        criado_por_id: user.id,
+        setor_permitido: setorPermitido,
       }])
       .select()
 
@@ -107,13 +109,29 @@ export const dbService = {
   },
 
   // 4. Obter Lista de modulos
+  // Atualizando para filtrar por setor do usuario
   async getLoopModules() {
-    const { data, error } = await supabase
-    .from('modulos')
-    .select('*') // Traz a lista de objetos
-    .order('id_modulo', { ascending: true }); 
+    // Primeiro descobre o usuario e qual o setor dele
+    const usuario = await this.getUsers();
+    if (!usuario) throw new Error('usuario não autenticado');
+
+    const setorDoUser = usuario.setor;
+
+    let query = supabase
+      .from('modulos')
+      .select('*') // Traz a lista de objetos
+      .order('id_modulo', { ascending: true }); 
+    
+    // Regra de negocio: se não for admin, filtra os modulos
+    if (setorDoUser !== 'administrador') {
+      // retorna os modulos onde setor_permitido é 'todos' ou igual ao setor do usuario
+      query = query.or(`setor_permitido.eq.todos,setor_permitido.eq.${setorDoUser}`);
+    }
+
+    const { data, error } = await query;
     if (error) throw error;
-    return data
+    return data;
+
   },
 
 
@@ -128,6 +146,34 @@ export const dbService = {
     if (error) throw error
     return data
   },
+
+  // 6. Obter usuario completo
+  async getUsers() {
+    const {data: {user} } = await supabase.auth.getUser()
+    if (!user) return null;
+
+    const {data, error} = await supabase
+    .from('usuarios')
+    .select('*')
+    .eq('id_user', user.id)
+    .single()
+
+    if (error) throw error
+    return data
+  },
+
+
+  // 7. Obter todos os usuarios (para painel admin)
+  async getAllUsers() {
+    const { data, error } = await supabase
+      .from('usuarios')
+      .select('*')
+      .order('nome', { ascending: true })
+
+    if (error) throw error
+    return data
+  },
+
 
   /* ------------ EXCLUSÕES --------- */
 
@@ -241,6 +287,18 @@ export const dbService = {
       console.error("Erro no dbservice ao tentar atualizar SubMódulo")
       throw error;
     }
+  },
+
+   // Editar setor do usuario (para painel admin)
+  async updateSetorUser(idUser, novoSetor) {
+    const { data, error } = await supabase
+      .from('usuarios')
+      .update({ setor: novoSetor })
+      .eq('id_user', idUser)
+      .select()
+
+    if (error) throw error
+    return data
   }
 
 }

@@ -11,6 +11,7 @@ import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons'; // I
 export function CriarModulo() {
     const [titulo, setTitulo] = useState('')
   const [descricao, setDescricao] = useState('')
+  const [setorPermitido, setSetorPermitido] = useState('todos')
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate(); // 🔹 hook para redirecionar
 
@@ -20,10 +21,11 @@ export function CriarModulo() {
     setLoading(true)
     
     try {
-        const novoModulo = await dbService.criarModulo(titulo, descricao)
+        const novoModulo = await dbService.criarModulo(titulo, descricao, setorPermitido)
         alert(`Módulo "${novoModulo.titulo}" criado com sucesso! ID: ${novoModulo.id_modulo}`)
         setTitulo('')
         setDescricao('')
+        setSetorPermitido('todos')
         // Aqui você poderia atualizar uma lista de módulos na tela
         navigate('/') // Redireciona para página inicial após criação
     } catch (error) {
@@ -47,6 +49,16 @@ export function CriarModulo() {
         value={descricao} 
         onChange={e => setDescricao(e.target.value)} 
       />
+      <select
+        value={setorPermitido} 
+        onChange={e => setSetorPermitido(e.target.value)}
+        required
+        style={{ display: 'block', width: '100%', padding: '8px', marginBottom: '10px' }} // Estilo básico para não ficar grudado
+      >
+        <option value="todos">Todos (Visível para qualquer setor)</option>
+        <option value="suporte">Suporte</option>
+        {/* Adicione mais options se criar novos setores no banco */}
+      </select>
       <button type="submit" disabled={loading}>Salvar Módulo</button>
     </form>
   )
