@@ -1,5 +1,5 @@
 import {Logout} from '../components/Logout'
-import { Link } from 'react-router-dom' //
+import { Link } from 'react-router-dom'
 import { GetModulo, LoopModule } from '../components/Modulo'
 import { GetNameUser} from '../components/Users'
 import { useState } from 'react'
@@ -24,7 +24,8 @@ export function Home() {
             <p className='mt-9' style={{fontSize: '20px'}}>Olá,</p>
             <GetNameUser />
           </div>
-          <div className="col-span-1 text-end">
+          <div className="col-span-1 gap-5 flex justify-end">
+            <Link to="/admin" className='self-center' style={{color: '#606c38', opacity: '0.5'}}>Painel Administrativo</Link>
             <Logout />
           </div>
         </div>

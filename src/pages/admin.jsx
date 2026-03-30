@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { dbService } from '../services/dbService';
+import { Link } from 'react-router-dom'
 
 export function AdminPage() {
   const [usuarios, setUsuarios] = useState([]);
@@ -62,8 +63,8 @@ export function AdminPage() {
   return (
     <section className="p-5 lg:p-10 max-w-7xl mx-auto">
       <h1 className="text-4xl font-bold mb-8" style={{ color: '#283618' }}>Painel Administrativo</h1>
-      
-      <div className="bg-white shadow-md rounded-lg overflow-hidden border">
+        <Link to="/" className='text-2xl'>Voltar</Link>
+      <div className="bg-white mt-20 shadow-md rounded-lg overflow-hidden border">
         {/* Cabeçalho da Tabela */}
         <div className="p-5 border-b bg-gray-50">
           <h2 className="text-2xl font-semibold">Gerenciamento de Usuários</h2>
