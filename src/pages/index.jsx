@@ -2,11 +2,20 @@ import {Logout} from '../components/Logout'
 import { Link } from 'react-router-dom' //
 import { GetModulo, LoopModule } from '../components/Modulo'
 import { GetNameUser} from '../components/Users'
+import { useState } from 'react'
 
 
 
 
 export function Home() {
+  // Cria estado para armazenar texto da pesquisa
+  const [termoBusca, setTermoBusca] = useState('')
+
+  // Função para evitar que a página recarregue ao apertar enter ou clicar no submit
+  const handlePesquisa = (e) => {
+    e.preventDefault()
+  }
+
   return (
     <main>
       <section className="header">
@@ -71,11 +80,11 @@ export function Home() {
           <h2 className='text-7xl font-black'>Módulos</h2>
           <div className="line mt-5"></div>
           <div className="pesquisa  w-full mt-5">
-            <form className='flex align-center justify-center gap-5 p-2'>
+            <form onSubmit={handlePesquisa} className='flex align-center justify-center gap-5 p-2'>
               <p className='flex flex-col justify-center'>
                 Nome
               </p>
-              <input className='w-full p-1 max-w-md' type="text" placeholder='Digite o nome do módulo'/>
+              <input className='w-full p-1 max-w-md' type="text" placeholder='Digite o nome do módulo' value={termoBusca} onChange={(e) => setTermoBusca(e.target.value)}/>
               <button className='text-center' style={{backgroundColor: '#283618'}}>
                 <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 16">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3"/>
@@ -89,8 +98,8 @@ export function Home() {
       </div>
 
       {/* Container - Cards e Submodulos */}
-      <div className='mt-25'>
-        <LoopModule />
+      <div className='mt-10 p-5'>
+        <LoopModule termoBusca={termoBusca}/>
       </div>
      </section>
 

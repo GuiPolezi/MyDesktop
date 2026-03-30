@@ -351,7 +351,7 @@ export function GetModulo({idModulo}) {
 
 // Contagem de modulos em LOOP para exibição na página
 
-export function LoopModule() {
+export function LoopModule({termoBusca = ''}) {
   const [ listaModulos, setListaModulos ] = useState([])
 
   useEffect(() => {
@@ -382,13 +382,32 @@ export function LoopModule() {
     };
   }, []);
 
+  // filtra os módulos baseado no que foi digitado (prop termoBusca)
+  const modulosFiltrados = listaModulos.filter((m) => {
+    // se a busca for vazia, mostra tudo
+    if (!termoBusca) return true;
+
+    // converte os dois para minusculo para a busca nar ser sensivel a maiusculas
+    return m.titulo?.toLowerCase().includes(termoBusca.toLowerCase());
+  })
+
   if (listaModulos.length == 0 ) {
     return <p>nenhum módulo encontrado</p>
   }
 
+  if (modulosFiltrados.length == 0 ) {
+    return (
+      <div className='text-center text-3xl'>
+        <p>Nenhum módulo encontrado para "{termoBusca}"</p>
+      </div>
+
+      
+    )
+  }
+
   return (
     <div>
-      {listaModulos.map((m) => (
+      {modulosFiltrados.map((m) => (
         <GetModulo key={m.id_modulo} idModulo={m.id_modulo} />
       ))}
     </div>
