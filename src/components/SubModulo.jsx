@@ -188,8 +188,10 @@ export function GetSubModulo({idModulo}) {
       try {
         await dbService.deleteSubModule(id_submodulo);
         alert("SubMódulo excluído com sucesso!");
-
-        navigate("/");
+        // 🔹 A SOLUÇÃO: Atualiza a lista na tela imediatamente
+        setSubmodulos((prevSubmodulos) => 
+          prevSubmodulos.filter((sub) => sub.id_submodulo !== id_submodulo)
+        );
       } catch (error) {
         alert("Erro ao excluir: " + error.message);
       }
