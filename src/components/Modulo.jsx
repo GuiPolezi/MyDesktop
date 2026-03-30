@@ -224,7 +224,7 @@ export function GetModulo({idModulo}) {
                   </div>
                 )}
               </div>
-              <p className='text-2xl'>{modulo.descricao}</p>
+              <p className='text-1xl'>{modulo.descricao}</p>
               <div className='linksModule flex gap-5 mt-2'>
                  <Link style={{fontWeight: 'bold',}} className='linksCreate'
                       to={`/criarsubmodulo/${modulo.id_modulo}`} 
