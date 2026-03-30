@@ -158,7 +158,43 @@ button:focus-visible {
 
 /* Modulos - Estilos da Função getModulo */
 
+/* Estilização da coluna da esquerda - Modulo titulo e descrição, botões e submodulos */
+.iconsManagementModule {
+  font-size: 20px;
+  color: gray;
+}
+
+.iconsManagementModule .buttonDelete:hover {
+  color: red;
+}
+
+.iconsManagementModule button:hover {
+  color: #606c38;
+}
+
+.linksModule .linksCreate {
+  color: #606c38;
+}
+
+.linksModule .linksCreate:hover {
+  opacity: 0.5;
+}
+
 /*  Estilo da listagem de submodulos*/
+.buttonsSubmodule button{
+  color: gray;
+  background: none;
+  padding: 4px;
+}
+
+.buttonsSubmodule button:hover {
+  color: #606c38;
+}
+
+.buttonsSubmodule .buttonSubmoduleDelete:hover {
+  color: red;
+}
+
 
 
 /* Cards - Estilo da coluna CARDS modulo */

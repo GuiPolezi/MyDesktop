@@ -206,17 +206,17 @@ export function GetModulo({idModulo}) {
                 <h2 className='text-5xl font-bold'>{modulo.titulo}</h2>
                 {/* Botões de Gestão (Dono) */}
                 {usuarioLogado && usuarioLogado.id === modulo.criado_por_id && (
-                  <div className='items-center flex gap-2'>
+                  <div className='items-center flex gap-2 iconsManagementModule'>
                     <button 
                       onClick={() => iniciarEdicao(modulo)} 
-                      style={{ color: 'blue', border: 'none', background: 'none', cursor: 'pointer', padding: 0, fontWeight: 'bold' }}
+                      style={{border: 'none', background: 'none', cursor: 'pointer', padding: 0, fontWeight: 'bold' }}
                     >
                       <FontAwesomeIcon icon={faPenToSquare} />
                     </button>
 
                     <button 
-                      onClick={() => handleExcluir(modulo.id_modulo, modulo.titulo)} 
-                      style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer', padding: 0, fontWeight: 'bold' }}
+                      onClick={() => handleExcluir(modulo.id_modulo, modulo.titulo)} className='buttonDelete'
+                      style={{ border: 'none', background: 'none', cursor: 'pointer', padding: 0, fontWeight: 'bold' }}
                     >
                       <FontAwesomeIcon icon={faTrash} />
                     </button>
@@ -225,14 +225,14 @@ export function GetModulo({idModulo}) {
                 )}
               </div>
               <p className='text-2xl'>{modulo.descricao}</p>
-              <div className='flex gap-5 mt-2' style={{borderBottom: '1px solid gray'}}>
-                 <Link 
+              <div className='linksModule flex gap-5 mt-2'>
+                 <Link style={{fontWeight: 'bold',}} className='linksCreate'
                       to={`/criarsubmodulo/${modulo.id_modulo}`} 
 
                     >
                       + Criar Submódulo
                     </Link>
-                    <Link to={`/criarcard/${modulo.id_modulo}`} style={{ fontWeight: 'bold' }}>
+                    <Link to={`/criarcard/${modulo.id_modulo}`} style={{ fontWeight: 'bold', }} className='linksCreate'>
                       + Criar Card
                     </Link>
                 
@@ -249,7 +249,7 @@ export function GetModulo({idModulo}) {
 
         {/* Coluna dos Cards*/}
         <div className="col-span-2 p-2 h-full mb-5">
-          <p className='text-4xl mb-2'>Cards</p>
+          <p className='text-4xl font-bold mb-2'>Cards</p>
           <GetCardsModule idModulo={modulo.id_modulo} />
         </div>
       </div>

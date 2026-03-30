@@ -103,7 +103,7 @@ export function GetSubModulo({idModulo}) {
   if (loading) return <p>Carregando submódulos...</p>
 
   if (submodulos.length == 0) {
-    return <p className='p-2'>Nenhum submodulo encontrado</p>
+    return <p className='p-2 mt-2 font-bold' style={{fontSize: '20px', opacity:'0.3'}}>Nenhum submodulo encontrado</p>
   }
 
   // Excluindo Submodule
@@ -197,17 +197,15 @@ export function GetSubModulo({idModulo}) {
                 </li> */}
 
                 {usuarioLogado && usuarioLogado.id === sub.criado_por_id && (
-                      <div className='buttonsSubmodule'>
+                      <div className='buttonsSubmodule flex'>
                         <button 
                           onClick={() => iniciarEdicao(sub)} // Passa o card para a função
-                          style={{ color: 'blue', border: 'none', background: 'none', cursor: 'pointer', fontSize: '0.8rem' }}
                         >
                           Editar Submódulo
                         </button>
-
-                        <button 
+                        <p className='self-center'>-</p>
+                        <button className='buttonSubmoduleDelete'
                           onClick={() => handleExcluir(sub.id_submodulo, sub.titulo)} 
-                          style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer'}}
                         >
                           Excluir
                         </button>
