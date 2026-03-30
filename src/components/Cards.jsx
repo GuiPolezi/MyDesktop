@@ -108,7 +108,7 @@ export function CriarCards() {
             <div className="mt-1 flex items-center">
               <input 
                 type="file" 
-                onChange={e => setArquivos(e.target.files[0]?.name)} 
+                onChange={e => setArquivos(e.target.files[0] || null)}
                 // O Tailwind tem pseudo-classes específicas para estilizar o botão de file upload (file:)
                 className="w-full text-sm text-gray-500
                   file:mr-4 file:py-2.5 file:px-4
@@ -209,7 +209,7 @@ export function GetCardsModule({idModulo}) {
     return <p>Nenhum card encontrado</p>
   }
 
-  // Excluindo Card Submodule
+  // Excluindo Card module
    const handleExcluir = async (id_card, titulo) => {
     const confirmar = window.confirm(`Tem certeza que deseja excluir o card "${titulo}"?`);
 
@@ -376,18 +376,33 @@ export function GetCardsModule({idModulo}) {
                             <p className="text-gray-400 italic">Nenhum conteúdo adicionado a este card.</p>
                           )}
 
-                          {/* Área de Arquivo Anexado */}
-                          {cardSelecionado.arquivos && (
-                            <div className="mt-8 p-4 bg-gray-50 border border-gray-200 rounded-lg flex items-center gap-3 w-fit pr-8 max-w-full">
-                              <svg className="w-6 h-6 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path>
-                              </svg>
-                              <div className="overflow-hidden">
-                                <p className="text-xs text-gray-500 uppercase font-semibold tracking-wider">Anexo</p>
-                                <p className="text-sm font-medium text-gray-800 truncate" title={cardSelecionado.arquivos}>
-                                  {cardSelecionado.arquivos}
-                                </p>
+                          {/* Área de Arquivo Anexado (ATUALIZADA PARA O NOVO JSONB) */}
+                          {cardSelecionado.arquivos && cardSelecionado.arquivos.url_publica && (
+                            <div className="mt-8 p-4 bg-gray-50 border border-gray-200 rounded-lg flex items-center justify-between w-fit pr-8 max-w-full">
+                              <div className="flex items-center gap-3 overflow-hidden">
+                                <svg className="w-6 h-6 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path>
+                                </svg>
+                                <div className="overflow-hidden">
+                                  <p className="text-xs text-gray-500 uppercase font-semibold tracking-wider">Anexo</p>
+                                  <p className="text-sm font-medium text-gray-800 truncate" title={cardSelecionado.arquivos.nome_original}>
+                                    {cardSelecionado.arquivos.nome_original}
+                                  </p>
+                                </div>
                               </div>
+                              
+                              {/* Botão de Download ou Visualização */}
+                              <a 
+                                href={cardSelecionado.arquivos.url_publica} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="ml-6 flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors shadow-sm"
+                              >
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                </svg>
+                                Abrir
+                              </a>
                             </div>
                           )}
                         </div>

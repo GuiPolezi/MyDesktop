@@ -76,25 +76,57 @@ export const dbService = {
   
 
   // 3. Criar Card (Exige ID do Módulo e do Submódulo)
-  async criarCard(titulo, conteudo, arquivos=null, idModulo, idSubmodulo=null) {
-    const { data: { user } } = await supabase.auth.getUser()
+  async criarCard(titulo, conteudo, arquivoObjeto = null, idModulo, idSubmodulo = null) {
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    // Variável para guardar os dados do arquivo (URL e Nome) que vai para o JSONB
+    let metadadosArquivo = null;
 
+    // Se o usuário selecionou um arquivo, fazemos o upload primeiro
+    if (arquivoObjeto) {
+      // 1. Gera um nome único para não sobrescrever arquivos com o mesmo nome
+      const extensao = arquivoObjeto.name.split('.').pop();
+      const nomeUnico = `${Date.now()}-${Math.random().toString(36).substring(7)}.${extensao}`;
+      
+      // 2. Faz o upload para o bucket 'card-arquivos'
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('card-arquivos')
+        .upload(nomeUnico, arquivoObjeto);
+
+      if (uploadError) {
+        console.error("Erro no upload do arquivo:", uploadError);
+        throw new Error("Falha ao enviar o arquivo para a nuvem.");
+      }
+
+      // 3. Pega a URL pública do arquivo recém-enviado
+      const { data: urlData } = supabase.storage
+        .from('card-arquivos')
+        .getPublicUrl(nomeUnico);
+
+      // 4. Monta o objeto JSONB que será salvo na coluna 'arquivos' da tabela 'cards'
+      metadadosArquivo = {
+        nome_original: arquivoObjeto.name,
+        url_publica: urlData.publicUrl,
+        caminho_storage: nomeUnico // Guardamos isso caso precise excluir do storage no futuro
+      };
+    }
+
+    // Agora sim, insere os dados do card na tabela, enviando o JSONB
     const { data, error } = await supabase
       .from('cards')
       .insert([{ 
         titulo, 
         conteudo, 
-        arquivos: arquivos,
+        arquivos: metadadosArquivo, // Envia o objeto JSON ou null se não tiver arquivo
         id_modulo: idModulo, 
         id_submodulo: idSubmodulo, 
         criado_por_id: user.id 
       }])
-      .select()
+      .select();
 
-    if (error) throw error
-    return data[0]
+    if (error) throw error;
+    return data[0];
   },
-
   // 3.3 Obter cards modulo (Exige ID_Modulo)
   async getCardsModule(idModulo) {
     const { data, error } = await supabase
@@ -107,6 +139,7 @@ export const dbService = {
     if (error) throw error
     return data
   },
+  
 
   // 3.3.3 obter Cards Submodulo (Exige ID_submodulo) 
   async getCardsSubmodule(idSubModulo) {
@@ -188,21 +221,41 @@ export const dbService = {
 
   /* ------------ EXCLUSÕES --------- */
 
- // Excluir Card
- async deleteCard(idCard) {
-  const {data, error} = await supabase
-  .from('cards')
-  .delete()
-  .eq('id_card', idCard) // Filtra pelo id do card
-  .select() // 🔹 Obriga o Supabase a devolver a linha que foi apagada
- 
-  if (error) throw error
-  // Aqui nós forçamos o erro para o React entender que falhou!
-  if (!data || data.length === 0) {
-    throw new Error("Ação não permitida. Apenas o criador pode excluir este card.");
-  }
-  return data
-},
+ // Excluir Card (e o arquivo atrelado a ele no Storage)
+  async deleteCard(idCard) {
+    // 1. Apaga a linha do banco de dados e traz os dados dela de volta
+    const { data, error } = await supabase
+      .from('cards')
+      .delete()
+      .eq('id_card', idCard)
+      .select() 
+    
+    if (error) throw error;
+    
+    if (!data || data.length === 0) {
+      throw new Error("Ação não permitida. Apenas o criador pode excluir este card.");
+    }
+
+    // Pega o objeto do card que acabou de ser apagado
+    const cardDeletado = data[0];
+
+    // 2. Verifica se havia um arquivo atrelado a este card
+    if (cardDeletado.arquivos && cardDeletado.arquivos.caminho_storage) {
+      
+      // 3. Pede para o Storage excluir o arquivo usando o nome único salvo
+      const { error: storageError } = await supabase.storage
+        .from('card-arquivos') // Confirme se o nome do bucket é esse mesmo
+        .remove([cardDeletado.arquivos.caminho_storage]);
+
+      if (storageError) {
+        // Se der erro no storage, mostramos no console, mas não travamos o app, 
+        // pois o card já foi apagado do banco de dados com sucesso.
+        console.error("Atenção: O card foi excluído, mas houve um erro ao apagar o arquivo da nuvem:", storageError);
+      }
+    }
+
+    return data;
+  },
 
   // Excluir Modulo
   async deleteModule(idModulo) {
