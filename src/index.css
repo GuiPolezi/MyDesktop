@@ -181,6 +181,10 @@ button:focus-visible {
 }
 
 /*  Estilo da listagem de submodulos*/
+.buttonsSubmodule {
+  font-size: 12px;
+}
+
 .buttonsSubmodule button{
   color: gray;
   background: none;

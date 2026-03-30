@@ -264,14 +264,14 @@ export function GetSubModulo({idModulo}) {
             ): (
               <div className='flex'>
                 
-                <a href="#" className='flex items-center' key={sub.id_submodulo}>{sub.titulo} | </a>
+                <a href="#" className='flex items-center text-2xl' key={sub.id_submodulo}>{sub.titulo} | </a>
                 {/*
                 <li key={sub.id_submodulo} style={{ marginBottom: '8px' }} className='listSubModules'>
                   {sub.titulo}
                 </li> */}
 
                 {usuarioLogado && usuarioLogado.id === sub.criado_por_id && (
-                      <div className='buttonsSubmodule flex'>
+                      <div className='buttonsSubmodule flex self-end'>
                         <button 
                           onClick={() => iniciarEdicao(sub)} // Passa o card para a função
                         >
