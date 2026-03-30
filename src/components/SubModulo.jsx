@@ -278,7 +278,7 @@ export function GetSubModulo({idModulo}) {
                         <button 
                           onClick={() => iniciarEdicao(sub)} // Passa o card para a função
                         >
-                          Editar Submódulo
+                          Editar
                         </button>
                         <p className='self-center'>-</p>
                         <button className='buttonSubmoduleDelete'

@@ -46,52 +46,72 @@ export function SubPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 py-10 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
+    <main className="min-h-screen bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-slate-50 via-gray-50 to-emerald-50/20 py-12 px-4 sm:px-6 lg:px-8 font-sans">
+      <div className="max-w-6xl mx-auto">
         
-        {/* Botão Voltar */}
-        <Link to="/" className="inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-900 mb-6 transition-colors">
-          <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-          </svg>
+        {/* Botão Voltar com Efeito de Hover */}
+        <Link 
+          to="/" 
+          className="group inline-flex items-center text-sm font-semibold text-gray-400 hover:text-[#283618] mb-10 transition-all duration-300"
+        >
+          <div className="p-2 mr-3 bg-white rounded-full shadow-sm border border-gray-100 group-hover:shadow-md group-hover:-translate-x-1 transition-all">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+            </svg>
+          </div>
           Voltar para o Início
         </Link>
 
-        {/* Cabeçalho do Submódulo */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-10 border-t-4" style={{ borderTopColor: '#283618' }}>
-          <div className="flex items-center gap-3 mb-4">
-            <span className="bg-gray-800 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-              Submódulo
-            </span>
-            <span className="text-sm font-medium text-gray-500">
-              Vinculado ao Módulo #{submodulo.id_modulo}
-            </span>
-          </div>
-          <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">{submodulo.titulo}</h1>
-          {submodulo.descricao && (
-            <p className="text-lg text-gray-600 leading-relaxed max-w-3xl">{submodulo.descricao}</p>
-          )}
-        </div>
-
-        {/* Área de Cards deste Submódulo */}
-        <div className="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
-          <div>
-            <h2 className="text-3xl font-bold text-gray-800">Cards de Conteúdo</h2>
-            <p className="text-gray-500 mt-1">Materiais e anotações exclusivas desta seção.</p>
-          </div>
+        {/* Header Card: Design Minimalista e Flutuante */}
+        <header className="relative bg-white/70 backdrop-blur-md rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/80 p-8 md:p-12 mb-12 overflow-hidden">
+          {/* Detalhe Decorativo de Fundo */}
+          <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-[#283618]/5 rounded-full blur-3xl" />
           
-          {/* Botão para criar um card que já vai cair direto dentro deste Submódulo */}
-          <Link
-            to={`/criarcard/${submodulo.id_modulo}/${submodulo.id_submodulo}`}
-            className="px-6 py-3 text-white font-semibold rounded-lg shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all flex items-center gap-2"
-            style={{ backgroundColor: '#283618' }}
-          >
-            + Adicionar Card Aqui
-          </Link>
-        </div>
+          <div className="relative">
+            <div className="flex flex-wrap items-center gap-3 mb-6">
+              <span className="bg-[#283618] text-white text-[10px] font-black px-3 py-1 rounded-lg uppercase tracking-[0.15em]">
+                Submódulo
+              </span>
+              <div className="h-1 w-1 rounded-full bg-gray-300" />
+              <span className="text-sm font-medium text-gray-400">
+                Módulo <span className="text-gray-600">#{submodulo.id_modulo}</span>
+              </span>
+            </div>
 
-        {/* 🔹 Componente que vai listar os cards (Passo 2) */}
-        <GetCardsSubModule idSubModulo={submodulo.id_submodulo} />
+            <h1 className="text-4xl md:text-6xl font-black text-gray-900 tracking-tight mb-6 leading-tight">
+              {submodulo.titulo}
+            </h1>
+            
+            {submodulo.descricao && (
+              <p className="text-lg text-gray-500 leading-relaxed max-w-2xl font-light">
+                {submodulo.descricao}
+              </p>
+            )}
+          </div>
+        </header>
+
+        {/* Seção de Conteúdo */}
+        <section className="space-y-8">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 border-b border-gray-200 pb-8">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-800 tracking-tight">Cards de Conteúdo</h2>
+              <p className="text-gray-400 text-sm mt-1 font-medium">Explore e gerencie seus materiais de estudo.</p>
+            </div>
+            
+            <Link
+              to={`/criarcard/${submodulo.id_modulo}/${submodulo.id_submodulo}`}
+              className="group relative px-8 py-4 bg-[#283618] text-white font-bold rounded-2xl shadow-xl shadow-[#283618]/20 hover:shadow-[#283618]/30 hover:-translate-y-1 transition-all duration-300 flex items-center gap-3 overflow-hidden"
+            >
+              <span className="relative z-10">+ Adicionar Card</span>
+              <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+            </Link>
+          </div>
+
+          {/* Lista de Cards */}
+          <div className="py-4">
+            <GetCardsSubModule idSubModulo={submodulo.id_submodulo} />
+          </div>
+        </section>
 
       </div>
     </main>

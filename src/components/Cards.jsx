@@ -534,62 +534,108 @@ export function GetCardsSubModule({idSubModulo}) {
     }
   };
 
-   return (
-    <section>
-    <ul style={{ paddingLeft: '20px', listStyle: 'none' }}>
-      {cardsubmodule.map((card) => (
-        <div key={card.id_card} style={{ marginBottom: '15px', borderBottom: '1px solid #eee', paddingBottom: '10px' }}>
-          
-          {/* 🔹 VERIFICAÇÃO: Este card é o que estou editando? */}
-          {editando === card.id_card ? (
-            // --- MODO EDIÇÃO ---
-            <div>
-              <input 
-                value={novoTitulo} 
-                onChange={(e) => setNovoTitulo(e.target.value)}
-                style={{ display: 'block', marginBottom: '5px', width: '100%' }}
-              />
-              <textarea 
-                value={novoConteudo} 
-                onChange={(e) => setNovoConteudo(e.target.value)}
-                style={{ display: 'block', marginBottom: '5px', width: '100%' }}
-              />
-              <button onClick={handleSalvarEdicao} disabled={salvando} style={{ color: 'green', marginRight: '10px' }}>
-                {salvando ? "Salvando..." : "Salvar"}
-              </button>
-              <button onClick={() => setEditando(null)}>Cancelar</button>
-            </div>
-          ) : (
-            // --- MODO VISUALIZAÇÃO ---
-            <div>
-              <strong>{card.titulo}</strong>
-              {card.conteudo && <p style={{ margin: 0, fontSize: '0.85rem' }}>{card.conteudo}</p>}
-              {card.arquivos && <div>{card.arquivos}</div>}
+  return (
+    <section className="mt-8">
+      {/* Grid Responsivo: 1 coluna no mobile, 2 em tablets, 3 em desktops grandes */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {cardsubmodule.map((card) => (
+          <article
+            key={card.id_card}
+            className="group relative bg-white rounded-3xl p-6 shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
+          >
+            {/* 🔹 MODO EDIÇÃO */}
+            {editando === card.id_card ? (
+              <div className="space-y-4 animate-in fade-in duration-300">
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-gray-400 ml-1">Título do Card</label>
+                  <input
+                    value={novoTitulo}
+                    onChange={(e) => setNovoTitulo(e.target.value)}
+                    className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#283618] focus:bg-white outline-none transition-all text-gray-800 font-semibold"
+                    placeholder="Título..."
+                  />
+                </div>
 
-              {/* Botões de Ação (Apenas para o dono) */}
-              {usuarioLogado && usuarioLogado.id === card.criado_por_id && (
-                <div style={{ marginTop: '5px' }}>
-                  <button 
-                    onClick={() => iniciarEdicao(card)} // Passa o card para a função
-                    style={{ color: 'blue', border: 'none', background: 'none', cursor: 'pointer', marginRight: '10px', fontSize: '0.8rem' }}
+                <div className="space-y-1">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-gray-400 ml-1">Conteúdo</label>
+                  <textarea
+                    value={novoConteudo}
+                    onChange={(e) => setNovoConteudo(e.target.value)}
+                    className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#283618] focus:bg-white outline-none transition-all text-gray-600 text-sm min-h-[100px] resize-none"
+                    placeholder="Escreva o conteúdo aqui..."
+                  />
+                </div>
+
+                <div className="flex items-center gap-2 pt-2">
+                  <button
+                    onClick={handleSalvarEdicao}
+                    disabled={salvando}
+                    className="flex-1 bg-[#283618] text-black py-2 rounded-lg font-bold text-sm hover:bg-[#3a4d24] disabled:opacity-50 transition-colors"
                   >
-                    Editar
+                    {salvando ? "Salvando..." : "Salvar Alterações"}
                   </button>
-                  <button 
-                    onClick={() => handleExcluir(card.id_card, card.titulo)} 
-                    style={{ color: 'red', border: 'none', background: 'none', cursor: 'pointer', fontSize: '0.8rem' }}
+                  <button
+                    onClick={() => setEditando(null)}
+                    className="px-4 py-2 text-gray-500 font-semibold text-sm hover:bg-gray-100 rounded-lg transition-colors"
                   >
-                    Excluir
+                    Cancelar
                   </button>
                 </div>
-              )}
-            </div>
-          )}
-        </div>
-      ))}
-    </ul>
-  </section>
-  )
+              </div>
+            ) : (
+              // --- MODO VISUALIZAÇÃO ---
+              <div className="flex flex-col h-full">
+                <div className="mb-4">
+                  <h3 className="text-xl font-bold text-gray-900 leading-snug group-hover:text-[#283618] transition-colors">
+                    {card.titulo}
+                  </h3>
+                  {card.conteudo && (
+                    <p className="mt-3 text-gray-500 text-sm leading-relaxed line-clamp-4">
+                      {card.conteudo}
+                    </p>
+                  )}
+                </div>
+
+                {/* Área de Arquivos (se houver) */}
+                {card.arquivos && (
+                  <div className="mt-auto pt-4 border-t border-gray-50">
+                    <span className="text-[10px] font-black text-gray-300 uppercase tracking-widest block mb-2">Anexos</span>
+                    <div className="text-sm text-gray-600 italic bg-gray-50 p-2 rounded-lg">
+                      {card.arquivos}
+                    </div>
+                  </div>
+                )}
+
+                {/* Botões de Ação (Apenas para o dono) */}
+                {usuarioLogado && usuarioLogado.id === card.criado_por_id && (
+                  <div className="mt-6 flex items-center justify-end gap-4 border-t border-gray-50 pt-4">
+                    <button
+                      onClick={() => iniciarEdicao(card)}
+                      className="flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:text-blue-800 transition-colors"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                      </svg>
+                      Editar
+                    </button>
+                    <button
+                      onClick={() => handleExcluir(card.id_card, card.titulo)}
+                      className="flex items-center gap-1.5 text-xs font-bold text-red-400 hover:text-red-600 transition-colors"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                      Excluir
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+          </article>
+        ))}
+      </div>
+    </section>
+  );
 }
 
 /*
