@@ -247,7 +247,7 @@ export function GetSubModulo({idModulo}) {
       <p className='mt-2 font-bold' style={{fontSize: '20px', opacity:'0.3'}}>Submodulos</p>
       <div>
         {submodulos.map((sub) => (
-          <div>
+          <div  key={sub.id_submodulo}>
 
             {editando === sub.id_submodulo ? (
               <div>
@@ -266,8 +266,9 @@ export function GetSubModulo({idModulo}) {
             ): (
               <div className='flex'>
                 
-                <a href="#" className='flex items-center text-2xl' key={sub.id_submodulo}>{sub.titulo} | </a>
+                <Link to={`/submodulo/${sub.id_submodulo}`}>{sub.titulo} | </Link>
                 {/*
+                <a href="#" className='flex items-center text-2xl' key={sub.id_submodulo}>{sub.titulo} | </a>
                 <li key={sub.id_submodulo} style={{ marginBottom: '8px' }} className='listSubModules'>
                   {sub.titulo}
                 </li> */}

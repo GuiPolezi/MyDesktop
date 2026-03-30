@@ -218,6 +218,21 @@ export const dbService = {
     return data
   },
 
+  // 8 Obter apenas um submodulo por id
+  async getSubmoduloById(idSubmodulo) {
+    const { data, error } = await supabase
+      .from('submodulos')
+      .select('*')
+      .eq('id_submodulo', idSubmodulo)
+      .maybeSingle(); // 🔹 .maybeSingle() garante que o Supabase devolva apenas UM objeto, e não uma array (lista)
+
+    if (error) {
+      console.error("Erro no getSubmoduloById:", error);
+      throw error;
+    }
+    
+    return data;
+  },
 
   /* ------------ EXCLUSÕES --------- */
 
@@ -289,6 +304,7 @@ export const dbService = {
     }
     return data
   },
+
 
   /* ------------- Edições ------------ */
 

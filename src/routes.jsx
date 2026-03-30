@@ -9,6 +9,7 @@ import { CriarSubModulo } from "./components/SubModulo"
 import { CriarCards } from "./components/Cards"
 import { AdminRoute } from "./components/AdminRoute"
 import { AdminPage } from "./pages/admin"
+import { SubPage } from "./pages/submodulo"
 
 export default function AppRoutes({ session }) {
   return (
@@ -74,6 +75,16 @@ export default function AppRoutes({ session }) {
           <AdminRoute session={session}>
             <AdminPage />
           </AdminRoute>
+        }
+      />
+
+      {/* Página individual de cada submodulo */}
+      <Route
+        path="/submodulo/:idSubmodulo"
+        element={
+          <PrivateRoute session={session}>
+            <SubPage /> {/* Vamos criar esta página no passo 3 */}
+          </PrivateRoute>
         }
       />
     </Routes>
