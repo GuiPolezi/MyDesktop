@@ -96,15 +96,18 @@ export function MinhasEquipes() {
         )}
 
         {/* Cabeçalho Minhas Equipes */}
+        <Link to="/" className='homePageLink' style={{color: 'red'}}>Página Inicial</Link>
         <div className="flex justify-between items-center mt-4">
           <h1 className="text-3xl font-extrabold text-gray-800">Minhas Equipes</h1>
-          <Link 
-            to="/equipes/criar" 
-            className="font-semibold px-4 py-2 rounded-lg hover:bg-gray-200 transition"
-            style={{ color: '#606c38', backgroundColor: '#f0f2eb' }}
-          >
-            + Criar Equipe
-          </Link>
+          {equipes.length > 0  && (
+            <Link 
+              to="/equipes/criar" 
+              className="font-semibold px-4 py-2 rounded-lg hover:bg-gray-200 transition"
+              style={{ color: '#606c38', backgroundColor: '#f0f2eb' }}
+            >
+              + Criar Equipe
+            </Link>
+          )}
         </div>
 
         {/* Lista de Equipes */}
@@ -162,23 +165,58 @@ export function DashboardEquipe() {
   if (loading) return <div className="p-8 text-center text-xl">Carregando área da equipe...</div>;
 
   return (
-    <div className="p-8 w-full">
-      <div className="flex justify-between items-center mb-8 border-b pb-4">
-        <h1 className="text-4xl font-bold">Área da Equipe</h1>
-        <Link to={`/equipe/${idEquipe}/membros`} className='self-center' style={{color: '#606c38', opacity: '0.5'}}>Membros</Link>
-        {/* Botão que leva para a tela de criar módulo passando o ID da equipe na URL */}
-        <Link 
-          to={`/equipe/${idEquipe}/criar-modulo`} 
-          className="bg-[#283618] text-white px-6 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition"
-        >
-          + Criar Módulo da Equipe
-        </Link>
+    <div className="p-4 sm:p-8 w-full mx-auto">
+      
+      {/* 🔹 CABEÇALHO MODERNO E RESPONSIVO */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 pb-6 border-b border-gray-100">
+        
+        {/* Lado Esquerdo: Voltar + Título */}
+        <div className="flex flex-col gap-2">
+          <Link 
+            to="/equipes" 
+            className="text-sm font-medium text-gray-400 hover:text-gray-700 transition-colors flex items-center gap-2 w-fit"
+          >
+            <span>&larr;</span> Voltar para Minhas Equipes
+          </Link>
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-800 tracking-tight">
+            Área da Equipe
+          </h1>
+        </div>
+
+        {/* Lado Direito: Ações (Botões) */}
+        <div className="flex flex-wrap items-center gap-3 md:gap-4 mt-2 md:mt-0">
+          
+          {/* Botão Secundário: Membros */}
+          <Link 
+            to={`/equipe/${idEquipe}/membros`} 
+            className="text-sm font-semibold px-4 py-2.5 rounded-lg bg-white hover:bg-gray-50 border border-gray-200 transition-all flex items-center gap-2 shadow-sm"
+            style={{color: 'gray'}}
+          >
+            <svg className="w-4 h-4 text-[#606c38]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+            Membros
+          </Link>
+          
+          {/* Botão Principal: Criar Módulo */}
+          <Link 
+            to={`/equipe/${idEquipe}/criar-modulo`} 
+            className="text-sm sm:text-base px-5 py-2.5 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all flex items-center gap-2"
+            style={{ backgroundColor: '#283618', color: 'white' }}
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg>
+            Criar Módulo
+          </Link>
+
+        </div>
       </div>
 
+      {/* 🔹 CORPO DA PÁGINA */}
       {modulosEquipe.length === 0 ? (
-        <p className="text-gray-500 text-lg text-center mt-10">Nenhum módulo criado nesta equipe ainda.</p>
+        <div className="flex flex-col items-center justify-center py-16 px-4 bg-gray-50 rounded-2xl border border-dashed border-gray-300">
+          <p className="text-gray-600 text-lg font-medium">Nenhum módulo criado nesta equipe ainda.</p>
+          <p className="text-gray-400 text-sm mt-2">Clique no botão acima para estruturar sua área de trabalho.</p>
+        </div>
       ) : (
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-10">
           {/* Reaproveitamos o seu componente GetModulo perfeitamente! */}
           {modulosEquipe.map((modulo) => (
             <GetModulo key={modulo.id_modulo} idModulo={modulo.id_modulo} />

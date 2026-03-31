@@ -93,7 +93,7 @@ export function Home() {
               </button>
             </form>
           </div>
-          <Link to="/criarmodulo" className='mt-10 text-2xl' style={{color: '#283618'}}>Criar Modulo</Link>
+          <Link to="/criarmodulo" className='createModuleLink mt-10 text-2xl' style={{color: '#283618'}}>Criar Modulo</Link>
         </div>
 
       </div>
@@ -103,25 +103,6 @@ export function Home() {
         <LoopModule termoBusca={termoBusca}/>
       </div>
      </section>
-
-     {/*
-      <div className='header'>
-        <h1>Hello</h1>
-        <GetNameUser />
-      </div>
-        <div style={{display: 'flex', flexDirection: 'column'}}>
-          <Link to="/criarmodulo" style={{border: '1px solid', marginBottom: '10px'}}>Criar Modulo</Link>
-          <Logout />
-        </div>
-
-
-        <div>
-          <h3>Modulos Criados</h3>
-          {/*<GetModulo idModulo={2}/> -> Isso aqui obtem o modulo individualmente 
-          <LoopModule />
-
-        </div>
-      */}
         
     </main>
   )

@@ -115,7 +115,7 @@ button:focus-visible {
 }
 
 .buttonHelp {
-  background-color: #43C307;
+  background-color: #405726;
   color: white;
   border-radius: 15px;
   text-align: center;
@@ -125,7 +125,7 @@ button:focus-visible {
 }
 
 .buttonHelp:hover {
-  background-color: #43c30780;
+  background-color: #606c38;
 }
 
 .descHero {
@@ -155,6 +155,9 @@ button:focus-visible {
   border-radius: 15px;
 }
 
+.createModuleLink:hover {
+  opacity: 0.5;
+}
 
 /* Modulos - Estilos da Função getModulo */
 
@@ -209,3 +212,9 @@ button:focus-visible {
   border-radius: 5px;
 }
 
+
+/* Estilos da Página - Minhas Equipes */
+
+.homePageLink:hover {
+  opacity: 0.5;
+}
