@@ -536,6 +536,11 @@ export function GetCardsSubModule({idSubModulo}) {
   const [novoConteudo, setNovoConteudo] = useState("");
   const [salvando, setSalvando] = useState(false); // Para mostrar um "Salvando..." no botão
 
+  // 🔹 NOVOS ESTADOS PARA CONTROLE DE ARQUIVOS NA EDIÇÃO
+  const [arquivoAtual, setArquivoAtual] = useState(null); // Guarda o JSON do arquivo que já existe
+  const [removerArquivo, setRemoverArquivo] = useState(false); // Flag para saber se o usuário clicou em excluir
+  const [novoArquivo, setNovoArquivo] = useState(null); // Guarda o File (novo arquivo selecionado)
+
   // Declarando controles do modal
   const [cardSelecionado, setCardSelecionado] = useState(false)
 
@@ -589,6 +594,11 @@ export function GetCardsSubModule({idSubModulo}) {
     setEditando(card.id_card) // Agora guardamos o ID do card específico
     setNovoTitulo(card.titulo); // Preenche o input com o título atual
     setNovoConteudo(card.conteudo); // Preenche o input com a descrição atual
+
+    // 🔹 PREPARA OS ARQUIVOS
+    setArquivoAtual(card.arquivos); // Puxa o JSON salvo no banco
+    setRemoverArquivo(false); // Reseta a vontade de remover
+    setNovoArquivo(null); // Limpa o input file
   };
 
    // Nova função para salvar alterações no banco
@@ -601,9 +611,55 @@ export function GetCardsSubModule({idSubModulo}) {
 
     setSalvando(true);
     try {
+      // 1. Define qual será o valor final da coluna 'arquivos' no banco
+      let metadadosFinais = arquivoAtual;
+      // Se o usuário clicou em remover, apagamos a referência do arquivo
+      if (removerArquivo) {
+        metadadosFinais = null;
+        
+        // Opcional: Aqui você também poderia chamar supabase.storage.remove() 
+        // para apagar o arquivo fisicamente do bucket e economizar espaço.
+        // Só tenta apagar se realmente existir um caminho salvo
+        if (arquivoAtual && arquivoAtual.caminho_storage) {
+          const { error: removeError } = await supabase.storage
+            .from('card-arquivos') // ⚠️ Confirme se o nome do seu bucket é esse mesmo
+            .remove([arquivoAtual.caminho_storage]); // Passa o caminho dentro de uma array []
+
+          if (removeError) {
+            // Se der erro ao apagar do Storage, mostramos no console para debugar, 
+            // mas NÃO travamos o código (o update do card no banco ainda vai acontecer).
+            console.error("Aviso: Falha ao apagar arquivo antigo da nuvem:", removeError);
+          }
+        }
+      }
+
+      // Se o usuário selecionou um NOVO arquivo no input, fazemos o upload
+      if (novoArquivo) {
+        const extensao = novoArquivo.name.split('.').pop();
+        const nomeUnico = `${Date.now()}-${Math.random().toString(36).substring(7)}.${extensao}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from('card-arquivos')
+          .upload(nomeUnico, novoArquivo);
+
+        if (uploadError) throw new Error("Falha ao enviar o novo arquivo para a nuvem.");
+
+        const { data: urlData } = supabase.storage
+          .from('card-arquivos')
+          .getPublicUrl(nomeUnico);
+
+        // Atualiza os metadados com o arquivo que acabou de subir
+        metadadosFinais = {
+          nome_original: novoArquivo.name,
+          url_publica: urlData.publicUrl,
+          caminho_storage: nomeUnico
+        };
+      }
+
       const dadosAtualizados = {
         titulo: novoTitulo,
-        conteudo: novoConteudo
+        conteudo: novoConteudo,
+        arquivos: metadadosFinais,
       }
       
       // Salva no banco de dados usando a função que criamos no dvservice
@@ -676,6 +732,40 @@ export function GetCardsSubModule({idSubModulo}) {
                               className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200 resize-y"
                     />
                   </div>
+
+                  <div>
+                    {/* Se o card TIVER um arquivo salvo e o usuário NÃO clicou em remover */}
+                    {arquivoAtual && !removerArquivo ? (
+                    <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg bg-white shadow-sm">
+                      <div className="flex items-center gap-2 overflow-hidden pr-4">
+                        <svg className="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path>
+                        </svg>
+                        <span className="text-sm font-medium text-gray-700 truncate">{arquivoAtual.nome_original}</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setRemoverArquivo(true)}
+                        className="text-red-500 hover:text-red-700 hover:bg-red-50 px-3 py-1.5 rounded text-sm font-semibold transition-colors flex-shrink-0"
+                        >
+                        Excluir Arquivo
+                      </button>
+                    </div>
+                    ) : (
+                    /* Se não tiver arquivo salvo OU se o usuário clicou em excluir o antigo, mostra o input para um novo */
+                      <div className="flex flex-col gap-2">
+                        {removerArquivo && (
+                          <span className="text-xs text-red-500 font-medium italic">Arquivo anterior marcado para exclusão.</span>
+                        )}
+                          <input 
+                            type="file" 
+                            onChange={(e) => setNovoArquivo(e.target.files[0])}
+                            className="w-full px-4 py-2 text-sm border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:border-transparent transition-all file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#f0f2eb] file:text-[#606c38] hover:file:bg-[#e6e8e0] cursor-pointer"
+                          />
+                      </div>
+                    )}
+                  </div>
+
                 </div>
 
                 {/* Rodapé de Edição (Fixo: flex-shrink-0) */}

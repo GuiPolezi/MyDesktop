@@ -482,7 +482,7 @@ export const dbService = {
         usuarios (
           id_user,
           nome,
-          email,
+          email
         )
       `)
       .eq('id_equipe', idEquipe);
