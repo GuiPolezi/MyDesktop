@@ -162,7 +162,7 @@ export function DashboardEquipe() {
   if (loading) return <div className="p-8 text-center text-xl">Carregando área da equipe...</div>;
 
   return (
-    <div className="p-8 max-w-7xl mx-auto">
+    <div className="p-8 w-full">
       <div className="flex justify-between items-center mb-8 border-b pb-4">
         <h1 className="text-4xl font-bold">Área da Equipe</h1>
         <Link to={`/equipe/${idEquipe}/membros`} className='self-center' style={{color: '#606c38', opacity: '0.5'}}>Membros</Link>

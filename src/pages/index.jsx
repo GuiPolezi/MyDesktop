@@ -26,7 +26,6 @@ export function Home() {
           </div>
           <div className="col-span-1 gap-5 flex justify-end">
             <Link to="/equipes" className='self-center' style={{color: '#606c38', opacity: '0.5'}}>Equipes</Link>
-            <Link to="/admin" className='self-center' style={{color: '#606c38', opacity: '0.5'}}>Painel Administrativo</Link>
             <Logout />
           </div>
         </div>
