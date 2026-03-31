@@ -163,7 +163,7 @@ export function MembrosEquipe() {
               <div key={membro.id_user} className="flex justify-between items-center p-4 border rounded-lg bg-gray-50">
                 <div>
                   <p className="font-bold text-gray-800">{membro.nome}</p>
-                  <p className="text-sm text-gray-500">{membro.email} | Setor: {membro.setor}</p>
+                  <p className="text-sm text-gray-500">{membro.email}</p>
                 </div>
                 {/* 🔹 Estilização dinâmica baseada no status */}
                 <span className={`px-3 py-1 rounded-full text-xs font-semibold ${

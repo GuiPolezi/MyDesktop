@@ -2,7 +2,6 @@ import { supabase } from './supabase'
 
 export const dbService = {
   // 1. Criar Módulo
-  // Atualizando para receber setorPermitido
   async criarModulo(titulo, descricao) {
     const { data: { user } } = await supabase.auth.getUser()
     
@@ -360,31 +359,6 @@ export const dbService = {
     }
   },
 
-   // Editar setor do usuario (para painel admin)
-  async updateSetorUser(idUser, novoSetor) {
-    const { data, error } = await supabase
-      .from('usuarios')
-      .update({ setor: novoSetor })
-      .eq('id_user', idUser)
-      .select()
-
-    if (error) throw error
-    return data
-  },
-
-  // Editar setor Permitido do modulo (para painek admin)
-  async updateSetorPermitido(idModulo, novoSetorPermitido) {
-    const {data, error} = await supabase
-    .from('modulos')
-    .update({setor_permitido: novoSetorPermitido})
-    .eq('id_modulo', idModulo)
-    .select()
-
-    if (error) throw error
-    return data
-  },
-
-
 
 
 /* --------------- Funções de Equipe ---------------------- */
@@ -509,7 +483,6 @@ export const dbService = {
           id_user,
           nome,
           email,
-          setor
         )
       `)
       .eq('id_equipe', idEquipe);
