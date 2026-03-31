@@ -382,6 +382,193 @@ export const dbService = {
 
     if (error) throw error
     return data
-  }
+  },
+
+
+
+
+/* --------------- Funções de Equipe ---------------------- */
+
+  // Criar nova equipe
+  async criarEquipe(nome) {
+    const {data: {user}} = await supabase.auth.getUser();
+
+    // Cria a equipe
+    const {data: equipe, error: equipeError} = await supabase
+    .from('equipes')
+    .insert([{nome, criado_por_id: user.id}])
+    .select()
+    .single();
+
+    if (equipeError) throw equipeError;
+    
+    // Adiciona o criador automaticamente como membro aceito
+    const {error: membroError} = await supabase
+    .from('membros_equipe')
+    .insert([{
+      id_equipe: equipe.id_equipe,
+      id_user: user.id,
+      status: 'aceito'
+    }]);
+
+    if (membroError) throw membroError;
+
+    return equipe
+  },
+
+
+// Criar Módulo vinculado a uma Equipe
+  async criarModuloEquipe(titulo, descricao, idEquipe) {
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    const { data, error } = await supabase
+      .from('modulos')
+      .insert([{ 
+        titulo, 
+        descricao, 
+        criado_por_id: user.id,
+        id_equipe: idEquipe // A mágica acontece aqui
+      }])
+      .select();
+
+    if (error) throw error;
+    return data[0];
+  },
+
+
+  // Buscar todas as equipes que o usuário logado participa
+  async getMinhasEquipes() {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error('Usuário não autenticado');
+
+    // Busca na tabela de junção (membros_equipe) e traz os dados da tabela equipes
+    const { data, error } = await supabase
+      .from('membros_equipe')
+      .select(`
+        id_equipe,
+        status,
+        equipes (
+          id_equipe,
+          nome,
+          criado_por_id
+        )
+      `)
+      .eq('id_user', user.id)
+      .eq('status', 'aceito'); // Traz apenas as que ele já aceitou participar
+
+    if (error) throw error;
+
+    // O Supabase retorna um objeto aninhado. Vamos mapear para facilitar o uso no React:
+    // Exemplo de retorno formatado: [ { id_equipe: '...', nome: '...', criado_por_id: '...' } ]
+    return data.map(item => item.equipes);
+  },
+
+  // Buscar os módulos que pertencem a uma equipe específica
+  async getModulosDaEquipe(idEquipe) {
+    const { data, error } = await supabase
+      .from('modulos')
+      .select('*')
+      .eq('id_equipe', idEquipe) // Filtra apenas os módulos desta equipe
+      .order('id_modulo', { ascending: true }); 
+    
+    if (error) throw error;
+    return data;
+  },
+
+  // Adicionar um usuário à equipe
+  async adicionarMembroEquipe(idEquipe, idUserAdicionado) {
+    // No futuro, você pode mudar para 'pendente' e criar uma tela de "Convites Recebidos".
+    const { data, error } = await supabase
+      .from('membros_equipe')
+      .insert([{ 
+        id_equipe: idEquipe, 
+        id_user: idUserAdicionado,
+        status: 'pendente' 
+      }])
+      .select();
+
+    if (error) {
+      // Tratamento amigável caso tente adicionar alguém que já está na equipe
+      if (error.code === '23505') { 
+        throw new Error("Este usuário já é membro ou ja foi convidado para esta equipe.");
+      }
+      throw error;
+    }
+    return data[0];
+  },
+
+  // Buscar os membros de uma equipe específica
+  async getMembrosDaEquipe(idEquipe) {
+    // Vamos fazer um JOIN com a sua tabela 'usuarios' para pegar o nome e email deles
+    const { data, error } = await supabase
+      .from('membros_equipe')
+      .select(`
+        status,
+        criado_em,
+        usuarios (
+          id_user,
+          nome,
+          email,
+          setor
+        )
+      `)
+      .eq('id_equipe', idEquipe);
+
+    if (error) throw error;
+    
+    // Formatando o retorno para ficar mais fácil de usar no React
+    return data.map(membro => ({
+      ...membro.usuarios,
+      status: membro.status,
+      entrou_em: membro.criado_em
+    }));
+  },
+
+  // Buscar convites de equipe
+  async getConvitesPendentes() {
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    const { data, error } = await supabase
+      .from('membros_equipe')
+      .select(`
+        id_equipe,
+        equipes ( nome )
+      `)
+      .eq('id_user', user.id)
+      .eq('status', 'pendente');
+
+    if (error) throw error;
+    
+    // Retorna formatado: [{ id_equipe: '...', nome: 'Time X' }]
+    return data.map(convite => ({
+      id_equipe: convite.id_equipe,
+      nome: convite.equipes.nome
+    }));
+  },
+
+  // Resposta ao convite
+  async responderConvite(idEquipe, aceito) {
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (aceito) {
+      // Se aceitou, muda o status para 'aceito'
+      const { error } = await supabase
+        .from('membros_equipe')
+        .update({ status: 'aceito' })
+        .eq('id_equipe', idEquipe)
+        .eq('id_user', user.id);
+      if (error) throw error;
+    } else {
+      // Se recusou, simplesmente apaga a linha da tabela
+      const { error } = await supabase
+        .from('membros_equipe')
+        .delete()
+        .eq('id_equipe', idEquipe)
+        .eq('id_user', user.id);
+      if (error) throw error;
+    }
+  },
+
 
 }
+

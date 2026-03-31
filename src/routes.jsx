@@ -10,6 +10,9 @@ import { CriarCards } from "./components/Cards"
 import { AdminRoute } from "./components/AdminRoute"
 import { AdminPage } from "./pages/admin"
 import { SubPage } from "./pages/submodulo"
+import { MinhasEquipes, DashboardEquipe } from "./pages/equipes"
+import { CriarModuloEquipe } from "./components/ModuloEquipe"
+import { CriarEquipe, MembrosEquipe } from "./components/GerenciarEquipe"
 
 export default function AppRoutes({ session }) {
   return (
@@ -87,6 +90,53 @@ export default function AppRoutes({ session }) {
           </PrivateRoute>
         }
       />
+
+      <Route 
+        path="/equipes"
+        element={
+          <PrivateRoute session={session}>
+            <MinhasEquipes />
+          </PrivateRoute>
+        }
+      />
+
+      <Route 
+        path="/equipe/:idEquipe"
+        element={
+          <PrivateRoute session={session}>
+            <DashboardEquipe />
+          </PrivateRoute>
+        }
+      />
+
+      <Route 
+        path="/equipe/:idEquipe/criar-modulo"
+        element={
+          <PrivateRoute session={session}>
+            <CriarModuloEquipe />
+          </PrivateRoute>
+        }
+      />
+
+      <Route 
+        path="/equipes/criar"
+        element={
+          <PrivateRoute session={session}>
+            <CriarEquipe />
+          </PrivateRoute>
+        }
+      />
+
+
+      <Route 
+        path="/equipe/:idEquipe/membros"
+        element={
+          <PrivateRoute session={session}>
+            <MembrosEquipe />
+          </PrivateRoute>
+        }
+      />
+
     </Routes>
   )
 }
