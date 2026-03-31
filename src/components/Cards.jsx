@@ -448,6 +448,9 @@ export function GetCardsSubModule({idSubModulo}) {
   const [novoConteudo, setNovoConteudo] = useState("");
   const [salvando, setSalvando] = useState(false); // Para mostrar um "Salvando..." no botão
 
+  // Declarando controles do modal
+  const [cardSelecionado, setCardSelecionado] = useState(false)
+
   useEffect(() => {
     async function carregarCardsSubModule() {
       if (!idSubModulo) return // Segurança: não busca se não tiver ID
@@ -535,107 +538,156 @@ export function GetCardsSubModule({idSubModulo}) {
   };
 
   return (
-    <section className="mt-8">
-      {/* Grid Responsivo: 1 coluna no mobile, 2 em tablets, 3 em desktops grandes */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <section>
+       <ul className='flex gap-5 mb-30 items-center'>
         {cardsubmodule.map((card) => (
-          <article
-            key={card.id_card}
-            className="group relative bg-white rounded-3xl p-6 shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
-          >
-            {/* 🔹 MODO EDIÇÃO */}
-            {editando === card.id_card ? (
-              <div className="space-y-4 animate-in fade-in duration-300">
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-gray-400 ml-1">Título do Card</label>
-                  <input
-                    value={novoTitulo}
-                    onChange={(e) => setNovoTitulo(e.target.value)}
-                    className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#283618] focus:bg-white outline-none transition-all text-gray-800 font-semibold"
-                    placeholder="Título..."
-                  />
-                </div>
-
-                <div className="space-y-1">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-gray-400 ml-1">Conteúdo</label>
-                  <textarea
-                    value={novoConteudo}
-                    onChange={(e) => setNovoConteudo(e.target.value)}
-                    className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#283618] focus:bg-white outline-none transition-all text-gray-600 text-sm min-h-[100px] resize-none"
-                    placeholder="Escreva o conteúdo aqui..."
-                  />
-                </div>
-
-                <div className="flex items-center gap-2 pt-2">
-                  <button
-                    onClick={handleSalvarEdicao}
-                    disabled={salvando}
-                    className="flex-1 bg-[#283618] text-black py-2 rounded-lg font-bold text-sm hover:bg-[#3a4d24] disabled:opacity-50 transition-colors"
-                  >
-                    {salvando ? "Salvando..." : "Salvar Alterações"}
-                  </button>
-                  <button
-                    onClick={() => setEditando(null)}
-                    className="px-4 py-2 text-gray-500 font-semibold text-sm hover:bg-gray-100 rounded-lg transition-colors"
-                  >
-                    Cancelar
-                  </button>
-                </div>
-              </div>
-            ) : (
-              // --- MODO VISUALIZAÇÃO ---
-              <div className="flex flex-col h-full">
-                <div className="mb-4">
-                  <h3 className="text-xl font-bold text-gray-900 leading-snug group-hover:text-[#283618] transition-colors">
-                    {card.titulo}
-                  </h3>
-                  {card.conteudo && (
-                    <p className="mt-3 text-gray-500 text-sm leading-relaxed line-clamp-4">
-                      {card.conteudo}
-                    </p>
-                  )}
-                </div>
-
-                {/* Área de Arquivos (se houver) */}
-                {card.arquivos && (
-                  <div className="mt-auto pt-4 border-t border-gray-50">
-                    <span className="text-[10px] font-black text-gray-300 uppercase tracking-widest block mb-2">Anexos</span>
-                    <div className="text-sm text-gray-600 italic bg-gray-50 p-2 rounded-lg">
-                      {card.arquivos}
-                    </div>
-                  </div>
-                )}
-
-                {/* Botões de Ação (Apenas para o dono) */}
-                {usuarioLogado && usuarioLogado.id === card.criado_por_id && (
-                  <div className="mt-6 flex items-center justify-end gap-4 border-t border-gray-50 pt-4">
-                    <button
-                      onClick={() => iniciarEdicao(card)}
-                      className="flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:text-blue-800 transition-colors"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                      </svg>
-                      Editar
-                    </button>
-                    <button
-                      onClick={() => handleExcluir(card.id_card, card.titulo)}
-                      className="flex items-center gap-1.5 text-xs font-bold text-red-400 hover:text-red-600 transition-colors"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                      </svg>
-                      Excluir
-                    </button>
-                  </div>
-                )}
-              </div>
-            )}
-          </article>
+            <div key={card.id_card}>
+              <button onClick={() => setCardSelecionado(card)} className='buttonModalCard w-full md:w-48 h-12 md:h-20'>{card.titulo}</button>
+            
+            </div>
         ))}
-      </div>
+        
+      </ul>
+
+      {cardSelecionado && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          {/* Caixa Principal do Modal (Apenas ELE controla a altura agora) */}
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl flex flex-col max-h-[90vh] overflow-hidden">
+            {/* 🔹 VERIFICAÇÃO: Este card é o que estou editando? */}
+            {editando === cardSelecionado.id_card ? (
+              // Modo Edição
+              <>
+                {/*  Cabeçalho edição */}
+                <div className="flex-shrink-0 flex justify-between items-center px-6 py-5 border-b border-gray-100 bg-gray-50/50">
+                  <h3 className="text-xl font-bold text-gray-800">Editar Card</h3>
+                  <button 
+                    className="text-gray-400 hover:text-gray-700 hover:bg-gray-200 transition-colors text-2xl font-bold w-10 h-10 flex items-center justify-center rounded-full" 
+                    onClick={() => setEditando(null)}
+                    >
+                    &times;
+                  </button>
+                </div>
+
+                {/* Formulário de Edição (Com Scroll: flex-1 overflow-y-auto min-h-0) */}
+                <div className="flex-1 overflow-y-auto p-6 min-h-0 flex flex-col gap-5">
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Título</label>
+                    <input 
+                      value={novoTitulo} 
+                      onChange={(e) => setNovoTitulo(e.target.value)}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200"
+                    />
+                  </div>
+
+                  <div className="flex flex-col flex-1">
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Conteúdo</label>
+                    <textarea 
+                              value={novoConteudo} 
+                              onChange={(e) => setNovoConteudo(e.target.value)}
+                              rows="12"
+                              className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200 resize-y"
+                    />
+                  </div>
+                </div>
+
+                {/* Rodapé de Edição (Fixo: flex-shrink-0) */}
+                <div className="flex-shrink-0 px-6 py-4 border-t border-gray-100 bg-gray-50 flex justify-end gap-3">
+                  <button 
+                            onClick={() => setEditando(null)} 
+                            className="px-5 py-2.5 text-gray-600 font-medium rounded-lg hover:bg-gray-200 transition-colors"
+                          >
+                            Cancelar
+                  </button>
+                  <button onClick={handleSalvarEdicao} 
+                            disabled={salvando} 
+                            className="px-5 py-2.5 text-white font-semibold rounded-lg shadow hover:shadow-lg transition-all disabled:opacity-70 flex items-center gap-2"
+                            style={{ backgroundColor: '#283618' }}
+                            >
+                              {salvando ? "Salvando..." : "Salvar Alterações"}
+                            </button>
+                </div>
+              </>
+            ) : (
+              // Modo visualização
+              <>
+                {/* Cabeçalho Visualização (Fixo) */}
+                        <div className="flex-shrink-0 flex justify-between items-center px-6 py-5 border-b border-gray-100 bg-gray-50/50">
+                          <h3 className="text-2xl font-extrabold text-gray-800 pr-4 break-words">{cardSelecionado.titulo}</h3>
+                          <button 
+                            className="text-gray-400 hover:text-gray-700 hover:bg-gray-200 transition-colors text-2xl font-bold w-10 h-10 flex items-center justify-center rounded-full flex-shrink-0" 
+                            onClick={() => setCardSelecionado(null)}
+                          >
+                            &times;
+                          </button>
+                        </div>
+
+                        {/* Corpo do Modal (Com Scroll: flex-1 overflow-y-auto) */}
+                        <div className="flex-1 overflow-y-auto p-6 min-h-0">
+                          {cardSelecionado.conteudo ? (
+                            // break-words garante que não corte os lados, whitespace-pre-wrap preserva quebras de linha
+                            <p className="text-gray-700 text-base leading-relaxed whitespace-pre-wrap break-words">
+                              {cardSelecionado.conteudo}
+                            </p>
+                          ) : (
+                            <p className="text-gray-400 italic">Nenhum conteúdo adicionado a este card.</p>
+                          )}
+
+                          {/* Área de Arquivo Anexado (ATUALIZADA PARA O NOVO JSONB) */}
+                          {cardSelecionado.arquivos && cardSelecionado.arquivos.url_publica && (
+                            <div className="mt-8 p-4 bg-gray-50 border border-gray-200 rounded-lg flex items-center justify-between w-fit pr-8 max-w-full">
+                              <div className="flex items-center gap-3 overflow-hidden">
+                                <svg className="w-6 h-6 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path>
+                                </svg>
+                                <div className="overflow-hidden">
+                                  <p className="text-xs text-gray-500 uppercase font-semibold tracking-wider">Anexo</p>
+                                  <p className="text-sm font-medium text-gray-800 truncate" title={cardSelecionado.arquivos.nome_original}>
+                                    {cardSelecionado.arquivos.nome_original}
+                                  </p>
+                                </div>
+                              </div>
+                              
+                              {/* Botão de Download ou Visualização */}
+                              <a 
+                                href={cardSelecionado.arquivos.url_publica} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="ml-6 flex items-center gap-2 px-3 py-1.5 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors shadow-sm"
+                              >
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                </svg>
+                                Abrir
+                              </a>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Rodapé de Ações (Fixo) */}
+                        {usuarioLogado && usuarioLogado.id === cardSelecionado.criado_por_id && (
+                          <div className="flex-shrink-0 px-6 py-4 border-t border-gray-100 bg-gray-50 flex justify-end gap-3">
+                            <button 
+                              onClick={() => iniciarEdicao(cardSelecionado)} 
+                              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors shadow-sm"
+                            >
+                              Editar Card
+                            </button>
+                            <button 
+                              onClick={() => handleExcluir(cardSelecionado.id_card, cardSelecionado.titulo)} 
+                              className="px-4 py-2 text-sm font-medium text-red-600 bg-white border border-red-200 rounded-lg hover:bg-red-50 hover:border-red-300 transition-colors shadow-sm"
+                            >
+                              Excluir
+                            </button>
+                          </div>
+                        )}
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </section>
   );
+
 }
 
 /*
