@@ -3,7 +3,7 @@ import { supabase } from './supabase'
 export const dbService = {
   // 1. Criar Módulo
   // Atualizando para receber setorPermitido
-  async criarModulo(titulo, descricao, setorPermitido = 'todos') {
+  async criarModulo(titulo, descricao) {
     const { data: { user } } = await supabase.auth.getUser()
     
     const { data, error } = await supabase
@@ -12,7 +12,6 @@ export const dbService = {
         titulo, 
         descricao, 
         criado_por_id: user.id,
-        setor_permitido: setorPermitido,
       }])
       .select()
 
@@ -153,29 +152,21 @@ export const dbService = {
     return data
   },
 
-  // 4. Obter Lista de modulos com funções de filtragem
+  
+  // 4. Obter Lista de modulos do usuário logado
   async getLoopModules() {
-    // Primeiro descobre o usuario e qual o setor dele
-    const usuario = await this.getUsers();
-    if (!usuario) throw new Error('usuario não autenticado');
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error('Usuário não autenticado');
 
-    const setorDoUser = usuario.setor;
-
-    let query = supabase
+    // Filtramos diretamente pelo ID do usuário criador
+    const { data, error } = await supabase
       .from('modulos')
-      .select('*') // Traz a lista de objetos
+      .select('*')
+      .eq('criado_por_id', user.id) // <- O filtro principal agora é esse
       .order('id_modulo', { ascending: true }); 
     
-    // Regra de negocio: se não for admin, filtra os modulos
-    if (setorDoUser !== 'administrador') {
-      // retorna os modulos onde setor_permitido é 'todos' ou igual ao setor do usuario
-      query = query.or(`setor_permitido.eq.todos,setor_permitido.eq.${setorDoUser}`);
-    }
-
-    const { data, error } = await query;
     if (error) throw error;
     return data;
-
   },
 
 

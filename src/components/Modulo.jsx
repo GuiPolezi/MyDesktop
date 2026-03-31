@@ -11,7 +11,6 @@ import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons'; // I
 export function CriarModulo() {
     const [titulo, setTitulo] = useState('')
   const [descricao, setDescricao] = useState('')
-  const [setorPermitido, setSetorPermitido] = useState('todos')
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate(); // 🔹 hook para redirecionar
 
@@ -21,11 +20,10 @@ export function CriarModulo() {
     setLoading(true)
     
     try {
-        const novoModulo = await dbService.criarModulo(titulo, descricao, setorPermitido)
+        const novoModulo = await dbService.criarModulo(titulo, descricao)
         alert(`Módulo "${novoModulo.titulo}" criado com sucesso! ID: ${novoModulo.id_modulo}`)
         setTitulo('')
         setDescricao('')
-        setSetorPermitido('todos')
         // Aqui você poderia atualizar uma lista de módulos na tela
         navigate('/') // Redireciona para página inicial após criação
     } catch (error) {
@@ -79,27 +77,6 @@ export function CriarModulo() {
               rows="3"
               className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200 resize-none"
             />
-          </div>
-
-          {/* Campo: Setor Permitido */}
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Público-Alvo (Setor Permitido) <span className="text-red-500">*</span>
-            </label>
-            <select
-              value={setorPermitido} 
-              onChange={e => setSetorPermitido(e.target.value)}
-              required
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200 cursor-pointer text-gray-700"
-            >
-              <option value="todos">Todos (Visível para qualquer setor)</option>
-              <option value="administrador">Administrador (Exclusivo)</option>
-              <option value="suporte">Suporte</option>
-              <option value="comum">Comum</option>
-            </select>
-            <p className="text-xs text-gray-400 mt-2">
-              Apenas usuários deste setor conseguirão visualizar este módulo na página inicial.
-            </p>
           </div>
 
           {/* Rodapé com Botões */}
