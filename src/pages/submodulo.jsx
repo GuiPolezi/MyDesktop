@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { dbService } from '../services/dbService';
 // 🔹 Importe o componente que lista os cards do submódulo (vamos criar ele no Passo 2)
 import { GetCardsSubModule } from '../components/Cards'; // Ajuste o caminho se necessário
@@ -7,7 +7,7 @@ import { GetCardsSubModule } from '../components/Cards'; // Ajuste o caminho se 
 export function SubPage() {
   // Captura o ID que vem na URL (ex: /submodulo/5)
   const { idSubmodulo } = useParams(); 
-  
+  const navigate = useNavigate(); // 🔹 hook para redirecionar
   const [submodulo, setSubmodulo] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -48,8 +48,15 @@ export function SubPage() {
   return (
     <main className="min-h-screen bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-slate-50 via-gray-50 to-emerald-50/20 py-12 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="max-w-6xl mx-auto">
-        
-        {/* Botão Voltar com Efeito de Hover */}
+        <button type='button' onClick={() => navigate(-1)} style={{background: 'none'}} className="group inline-flex items-center text-sm font-semibold text-gray-400 hover:text-[#283618] mb-10 transition-all duration-300">
+             <div className="p-2 mr-3 bg-white rounded-full shadow-sm border border-gray-100 group-hover:shadow-md group-hover:-translate-x-1 transition-all">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+            </svg>
+          </div>
+          Voltar
+        </button>
+        {/* Botão Voltar com Efeito de Hover 
         <Link 
           to="/" 
           className="group inline-flex items-center text-sm font-semibold text-gray-400 hover:text-[#283618] mb-10 transition-all duration-300"
@@ -61,7 +68,7 @@ export function SubPage() {
           </div>
           Voltar para o Início
         </Link>
-
+        */}
         {/* Header Card: Design Minimalista e Flutuante */}
         <header className="relative bg-white/70 backdrop-blur-md rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/80 p-8 md:p-12 mb-12 overflow-hidden">
           {/* Detalhe Decorativo de Fundo */}
@@ -100,10 +107,9 @@ export function SubPage() {
             
             <Link
               to={`/criarcard/${submodulo.id_modulo}/${submodulo.id_submodulo}`}
-              className="group relative px-8 py-4 bg-[#283618] text-white font-bold rounded-2xl shadow-xl shadow-[#283618]/20 hover:shadow-[#283618]/30 hover:-translate-y-1 transition-all duration-300 flex items-center gap-3 overflow-hidden"
+              className='createCardSub'
             >
-              <span className="relative z-10">+ Adicionar Card</span>
-              <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+             + Adicionar Card
             </Link>
           </div>
 

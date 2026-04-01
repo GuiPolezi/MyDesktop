@@ -101,14 +101,17 @@ export function CriarSubModulo() {
           {/* Rodapé com Botões */}
           <div className="pt-6 flex justify-end items-center gap-4 mt-2">
             
-            {/* Botão Cancelar (Volta para a Home) */}
+            <button type='button' onClick={() => navigate(-1)} className="px-6 py-3 text-gray-600 font-medium rounded-lg hover:bg-gray-100 transition-colors">
+              Cancelar
+            </button>
+            {/* Botão Cancelar (Volta para a Home) 
             <Link 
               to="/" 
               className="px-6 py-3 text-gray-600 font-medium rounded-lg hover:bg-gray-100 transition-colors"
             >
               Cancelar
             </Link>
-
+            */}
             {/* Botão Salvar com Loader */}
             <button 
               type="submit" 

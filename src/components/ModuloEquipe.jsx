@@ -52,7 +52,7 @@ export function CriarModuloEquipe() {
             <Link to={`/equipe/${idEquipe}`} className="px-6 py-3 text-gray-600 font-medium hover:bg-gray-100 rounded-lg">
               Cancelar
             </Link>
-            <button type="submit" disabled={loading} className="bg-[#283618] text-white font-semibold py-3 px-8 rounded-lg">
+            <button type="submit" disabled={loading} className="bg-[#283618] text-black font-semibold py-3 px-8 rounded-lg">
               {loading ? 'Criando...' : 'Criar Módulo'}
             </button>
           </div>

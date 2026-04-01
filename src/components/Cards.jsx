@@ -127,13 +127,17 @@ export function CriarCards() {
           {/* Rodapé com Botões */}
           <div className="pt-6 flex justify-end items-center gap-4 mt-2 border-t border-gray-100">
             
-            {/* Botão Cancelar (Não se esqueça do import { Link } from 'react-router-dom') */}
+            <button type='button' onClick={() => navigate(-1)} className="px-6 py-3 text-gray-600 font-medium rounded-lg hover:bg-gray-100 transition-colors">
+              Cancelar
+            </button>
+            {/* Botão Cancelar (Não se esqueça do import { Link } from 'react-router-dom')
             <Link 
               to="/" 
               className="px-6 py-3 text-gray-600 font-medium rounded-lg hover:bg-gray-100 transition-colors"
             >
               Cancelar
             </Link>
+            */}
 
             {/* Botão Salvar com Loader */}
             <button 

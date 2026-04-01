@@ -218,3 +218,14 @@ button:focus-visible {
 .homePageLink:hover {
   opacity: 0.5;
 }
+
+
+/* Estilo da página do submodulo */
+.createCardSub {
+  color: #606c38;
+  font-weight: bold;
+}
+
+.createCardSub:hover {
+  opacity: 0.5;
+}
