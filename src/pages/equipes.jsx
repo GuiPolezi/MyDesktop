@@ -60,7 +60,7 @@ export function MinhasEquipes() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8" style={{backgroundColor: '#fefae0'}}>
       <div className="max-w-4xl mx-auto flex flex-col gap-6">
         
         {/* Seção de Convites Pendentes */}
@@ -165,7 +165,7 @@ export function DashboardEquipe() {
   if (loading) return <div className="p-8 text-center text-xl">Carregando área da equipe...</div>;
 
   return (
-    <div className="p-4 sm:p-8 w-full mx-auto">
+    <div className="p-4 sm:p-8 w-full mx-auto min-h-screen" style={{backgroundColor: '#fefae0'}}>
       
       {/* 🔹 CABEÇALHO MODERNO E RESPONSIVO */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 pb-6 border-b border-gray-100">

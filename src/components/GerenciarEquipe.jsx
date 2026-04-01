@@ -112,7 +112,7 @@ export function MembrosEquipe() {
   if (loading) return <div className="p-8 text-center">Carregando membros...</div>;
 
   return (
-    <div className="p-8 max-w-5xl mx-auto">
+    <div className="p-8 mx-auto min-h-screen" style={{backgroundColor: '#fefae0'}}>
       
       {/* Cabeçalho e Navegação */}
       <div className="flex justify-between items-center mb-8 border-b pb-4">
