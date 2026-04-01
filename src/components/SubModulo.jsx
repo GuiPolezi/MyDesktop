@@ -254,13 +254,13 @@ export function GetSubModulo({idModulo}) {
                   <input 
                   value={novoTitulo} 
                   onChange={(e) => setNovoTitulo(e.target.value)}
-                  style={{ display: 'block', marginBottom: '5px', width: '100%' }}
+                  style={{ display: 'block', marginBottom: '5px', width: '100%', border: '1px solid', borderRadius: '10px', padding: '3px', backgroundColor: 'white' }}
                   />
 
-                <button onClick={handleSalvarEdicao} disabled={salvando} style={{ color: 'green', marginRight: '10px' }}>
+                <button onClick={handleSalvarEdicao} disabled={salvando} style={{ color: 'white', marginRight: '10px', backgroundColor: '#606c38' }}>
                   {salvando ? "Salvando..." : "Salvar"}
                 </button>
-                <button onClick={() => setEditando(null)}>Cancelar</button>
+                <button onClick={() => setEditando(null)} style={{backgroundColor:'red', color: 'white'}}>Cancelar</button>
               </div>
               
             ): (

@@ -234,35 +234,35 @@ export function GetModulo({idModulo}) {
         <div className="col-span-1 p-2  items-center lg:items-start flex flex-col">
           { editando === modulo.id_modulo ? (
             <div style={{ marginBottom: '20px' }}>
-            <label style={{ display: 'block', fontWeight: 'bold' }}>Título do Módulo:</label>
-            <input 
-              type="text" 
-              value={novoTitulo} 
-              onChange={(e) => setNovoTitulo(e.target.value)} 
-              style={{ display: 'block', width: '100%', padding: '8px', marginBottom: '10px' }}
-            />
+              <label style={{ display: 'block', fontWeight: 'bold' }}>Título do Módulo:</label>
+              <input 
+                type="text" 
+                value={novoTitulo} 
+                onChange={(e) => setNovoTitulo(e.target.value)} 
+                style={{ display: 'block', width: '100%', padding: '8px', marginBottom: '10px', border: '1px solid', borderRadius: '10px', backgroundColor: 'white'  }}
+              />
 
-            <label style={{ display: 'block', fontWeight: 'bold' }}>Descrição:</label>
-            <textarea 
-              value={novaDescricao} 
-              onChange={(e) => setNovaDescricao(e.target.value)} 
-              style={{ display: 'block', width: '100%', padding: '8px', height: '80px', marginBottom: '10px' }}
-            />
+              <label style={{ display: 'block', fontWeight: 'bold' }}>Descrição:</label>
+              <textarea 
+                value={novaDescricao} 
+                onChange={(e) => setNovaDescricao(e.target.value)} 
+                style={{ display: 'block', width: '100%', padding: '8px', height: '80px', marginBottom: '10px', border: '1px solid', borderRadius: '10px', backgroundColor: 'white'  }}
+              />
 
-            <button 
-              onClick={handleSalvarEdicao} 
-              disabled={salvando}
-              style={{ backgroundColor: '#28a745', color: 'white', padding: '8px 15px', border: 'none', cursor: 'pointer', marginRight: '10px' }}
-            >
-              {salvando ? "Salvando..." : "Salvar Alterações"}
-            </button>
-            
-            <button 
-              onClick={() => setEditando(null)} 
-              style={{ padding: '8px 15px', cursor: 'pointer' }}
-            >
-              Cancelar
-            </button>
+              <button 
+                onClick={handleSalvarEdicao} 
+                disabled={salvando}
+                style={{ backgroundColor: '#606c38', color: 'white', padding: '8px 15px', border: 'none', cursor: 'pointer', marginRight: '10px' }}
+              >
+                {salvando ? "Salvando..." : "Salvar Alterações"}
+              </button>
+              
+              <button 
+                onClick={() => setEditando(null)} 
+                style={{ padding: '8px 15px', cursor: 'pointer', backgroundColor: 'red', color: 'white' }}
+              >
+                Cancelar
+              </button>
           </div>
           ) : (
             // Titulo modulo
