@@ -126,6 +126,14 @@ export default function AppRoutes({ session }) {
         }
       />
 
+      {/* 🔹 ROTA 404: DEVE SER ESTRITAMENTE A ÚLTIMA ROTA */}
+      <Route 
+        path="*" 
+        element={
+          <NotFound />
+        } 
+      />
+
     </Routes>
   )
 }
