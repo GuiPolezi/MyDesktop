@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { dbService } from '../services/dbService';
 import { Link, useParams } from 'react-router-dom';
-import { GetModulo } from '../components/Modulo';
+import { LoopModuleEquipe } from '../components/GerenciarEquipe';
 
 
 export function MinhasEquipes() {
@@ -148,6 +148,14 @@ export function DashboardEquipe() {
   const [modulosEquipe, setModulosEquipe] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Cria estado para armazenar texto da pesquisa
+  const [termoBusca, setTermoBusca] = useState('')
+
+  // Função para evitar que a página recarregue ao apertar enter ou clicar no submit
+  const handlePesquisa = (e) => {
+    e.preventDefault()
+  }
+
   useEffect(() => {
     async function carregarModulos() {
       try {
@@ -181,6 +189,17 @@ export function DashboardEquipe() {
           <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-800 tracking-tight">
             Área da Equipe
           </h1>
+          <form onSubmit={handlePesquisa} className='flex align-center justify-center gap-5 p-2'>
+              <p className='flex flex-col justify-center'>
+                Nome
+              </p>
+              <input className='w-full p-1 max-w-md' type="text" placeholder='Digite o nome do módulo' value={termoBusca} onChange={(e) => setTermoBusca(e.target.value)}/>
+              <button className='text-center' style={{backgroundColor: '#283618'}}>
+                <svg className="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 16">
+                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3"/>
+                </svg>
+              </button>
+          </form>
         </div>
 
         {/* Lado Direito: Ações (Botões) */}
@@ -217,10 +236,7 @@ export function DashboardEquipe() {
         </div>
       ) : (
         <div className="flex flex-col gap-10">
-          {/* Reaproveitamos o seu componente GetModulo perfeitamente! */}
-          {modulosEquipe.map((modulo) => (
-            <GetModulo key={modulo.id_modulo} idModulo={modulo.id_modulo} />
-          ))}
+           <LoopModuleEquipe idEquipe={idEquipe} termoBusca={termoBusca}/>
         </div>
       )}
     </div>

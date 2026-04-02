@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { dbService } from '../services/dbService';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { GetModulo } from './Modulo';
 
 
 export function CriarEquipe() {
@@ -181,4 +182,70 @@ export function MembrosEquipe() {
       </div>
     </div>
   );
+}
+
+
+
+// Contagem de modulos de equipe em LOOP
+
+export function LoopModuleEquipe({ idEquipe, termoBusca = ''}) {
+  const [ listaModulos, setListaModulos ] = useState([])
+
+  useEffect(() => {
+    async function carregarQuantidade() {
+      try {
+        const qtd = await dbService.getModulosDaEquipe(idEquipe);
+        setListaModulos(qtd);
+      } catch (error) {
+        console.error("Erro ao contar módulos:", error.message);
+      }
+    }
+    if (idEquipe) {
+      carregarQuantidade();
+    }
+
+    // 🔹 Função que vai rodar quando escutar o evento
+    const removerDaLista = (evento) => {
+      const idDeletado = evento.detail; // Pega o ID que enviamos lá no GetModulo
+      setListaModulos((listaAtual) => 
+        listaAtual.filter((modulo) => modulo.id_modulo !== idDeletado)
+      );
+    };
+
+    // 🔹 Começa a escutar o evento global
+    window.addEventListener('moduloDeletado', removerDaLista);
+
+    // 🔹 Limpeza: Para de escutar quando o LoopModule sair da tela
+    return () => {
+      window.removeEventListener('moduloDeletado', removerDaLista);
+    };
+  }, [idEquipe]);
+
+  // filtra os módulos baseado no que foi digitado (prop termoBusca)
+  const modulosFiltrados = listaModulos.filter((m) => {
+    // se a busca for vazia, mostra tudo
+    if (!termoBusca) return true;
+
+    // converte os dois para minusculo para a busca nar ser sensivel a maiusculas
+    return m.titulo?.toLowerCase().includes(termoBusca.toLowerCase());
+  })
+
+
+  if (modulosFiltrados.length == 0 ) {
+    return (
+      <div className='text-center text-3xl'>
+        <p>Nenhum módulo encontrado para "{termoBusca}"</p>
+      </div>
+
+      
+    )
+  }
+
+  return (
+    <div>
+      {modulosFiltrados.map((m) => (
+        <GetModulo key={m.id_modulo} idModulo={m.id_modulo} />
+      ))}
+    </div>
+  )
 }
