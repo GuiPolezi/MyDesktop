@@ -24,7 +24,7 @@ export function Home() {
             <p className='mt-9' style={{fontSize: '20px'}}>Olá,</p>
             <GetNameUser />
           </div>
-          <div className="col-span-1 gap-5 flex justify-end">
+          <div className="col-span-2 md:col-span-1 gap-5 flex justify-end">
             <Link to="/equipes" className='self-center' style={{color: '#606c38', opacity: '0.5'}}>Equipes</Link>
             <Logout />
           </div>
