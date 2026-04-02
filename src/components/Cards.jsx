@@ -337,12 +337,12 @@ export function GetCardsModule({idModulo}) {
 
   return (
     <section>
-      <ul className='flex gap-5 mb-30 items-center'>
+      <ul className='flex gap-5 mb-30 items-center flex-wrap'>
         {cardmodule.map((card) => (
-            <div key={card.id_card}>
+            <li key={card.id_card}>
               <button onClick={() => setCardSelecionado(card)} className='buttonModalCard w-full md:w-48 h-12 md:h-20'>{card.titulo}</button>
             
-            </div>
+            </li>
         ))}
         
       </ul>
@@ -687,12 +687,12 @@ export function GetCardsSubModule({idSubModulo}) {
 
   return (
     <section>
-       <ul className='flex gap-5 mb-30 items-center'>
+       <ul className='flex gap-5 mb-30 items-center flex-wrap'>
         {cardsubmodule.map((card) => (
-            <div key={card.id_card}>
+            <li key={card.id_card}>
               <button onClick={() => setCardSelecionado(card)} className='buttonModalCard w-full md:w-48 h-12 md:h-20'>{card.titulo}</button>
             
-            </div>
+            </li>
         ))}
         
       </ul>
