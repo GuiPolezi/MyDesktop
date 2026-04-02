@@ -189,6 +189,7 @@ export function DashboardEquipe() {
           <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-800 tracking-tight">
             Área da Equipe
           </h1>
+          <div className="pesquisaEquipe">
           <form onSubmit={handlePesquisa} className='flex align-center justify-center gap-5 p-2'>
               <p className='flex flex-col justify-center'>
                 Nome
@@ -200,6 +201,7 @@ export function DashboardEquipe() {
                 </svg>
               </button>
           </form>
+          </div>
         </div>
 
         {/* Lado Direito: Ações (Botões) */}

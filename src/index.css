@@ -219,6 +219,12 @@ button:focus-visible {
   opacity: 0.5;
 }
 
+/* Estilo da Área da Equipe */
+.pesquisaEquipe input {
+  border: 1px solid;
+  border-radius: 15px;
+
+}
 
 /* Estilo da página do submodulo */
 .createCardSub {
