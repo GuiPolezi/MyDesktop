@@ -162,6 +162,7 @@ export const dbService = {
       .from('modulos')
       .select('*')
       .eq('criado_por_id', user.id) // <- O filtro principal agora é esse
+      .is('id_equipe', null)
       .order('id_modulo', { ascending: true }); 
     
     if (error) throw error;
