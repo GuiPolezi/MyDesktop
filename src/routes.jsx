@@ -11,6 +11,7 @@ import { SubPage } from "./pages/submodulo"
 import { MinhasEquipes, DashboardEquipe } from "./pages/equipes"
 import { CriarModuloEquipe } from "./components/ModuloEquipe"
 import { CriarEquipe, MembrosEquipe } from "./components/GerenciarEquipe"
+import { NotFound } from "./components/NotFound"
 
 export default function AppRoutes({ session }) {
   return (
