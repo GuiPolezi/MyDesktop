@@ -29,7 +29,7 @@ export function CriarCards() {
             const novoCard = await dbService.criarCard(titulo, conteudo, arquivos, idModulo, idSubModulo)
             alert(`Card "${novoCard.titulo}" criado com sucesso! ID: ${novoCard.id_card}`)
 
-            navigate('/') // Redireciona para página inicial após criação
+            navigate(-1) // Redireciona para página pagina anterior após criação
         } catch (error) {
             alert("Erro ao criar: " + error.message)
         } finally {
