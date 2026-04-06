@@ -169,6 +169,36 @@ export const dbService = {
     return data;
   },
 
+  // 4.4 Obter Lista de Modulos paginado
+  async getLoopModulesPaginado(paginaAtual = 1, itensPorPagina = 5, termoBusca = '') {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error('Usuário não autenticado');
+
+    // Calcula os índices do range para o Supabase (Ex: Página 1 = 0 a 4)
+    const from = (paginaAtual - 1) * itensPorPagina;
+    const to = from + itensPorPagina - 1;
+
+    // Montamos a base da query, pedindo também a contagem total
+    let query = supabase
+      .from('modulos')
+      .select('*', { count: 'exact' }) 
+      .eq('criado_por_id', user.id)
+      .is('id_equipe', null)
+      .order('id_modulo', { ascending: true })
+      .range(from, to);
+
+    // Se o usuário digitou algo na busca, adicionamos o filtro ILIKE (não sensível a maiúsculas)
+    if (termoBusca) {
+      query = query.ilike('titulo', `%${termoBusca}%`);
+    }
+
+    const { data, count, error } = await query;
+    
+    if (error) throw error;
+    
+    // Retornamos os dados daquela página E o número total de módulos encontrados
+    return { dados: data, total: count }; 
+  },
 
   // 5. Obter nome do usuario
   async getNameUser(idUser) {

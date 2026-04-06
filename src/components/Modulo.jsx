@@ -329,12 +329,21 @@ export function GetModulo({idModulo}) {
 
 export function LoopModule({termoBusca = ''}) {
   const [ listaModulos, setListaModulos ] = useState([])
-
+  // Novos estados para a Paginação
+  const [paginaAtual, setPaginaAtual] = useState(1);
+  const [totalModulos, setTotalModulos] = useState(0);
+  const itensPorPagina = 5; // Você pode alterar quantos módulos aparecem por vez aqui  
   useEffect(() => {
     async function carregarQuantidade() {
       try {
-        const qtd = await dbService.getLoopModules();
-        setListaModulos(qtd);
+        // Agora passamos a página, o limite e a busca para o Supabase
+        const { dados, total } = await dbService.getLoopModulesPaginado(
+          paginaAtual, 
+          itensPorPagina, 
+          termoBusca
+        );
+        setListaModulos(dados);
+        setTotalModulos(total);
       } catch (error) {
         console.error("Erro ao contar módulos:", error.message);
       }
@@ -356,8 +365,17 @@ export function LoopModule({termoBusca = ''}) {
     return () => {
       window.removeEventListener('moduloDeletado', removerDaLista);
     };
-  }, []);
+  }, [paginaAtual, termoBusca]);
 
+  // 🔹 Se o usuário começar a digitar uma nova busca, voltamos para a página 1 automaticamente
+  useEffect(() => {
+    setPaginaAtual(1);
+  }, [termoBusca]);
+
+  // Calcula quantas páginas existem no total
+  const totalPaginas = Math.ceil(totalModulos / itensPorPagina);
+
+  /*
   // filtra os módulos baseado no que foi digitado (prop termoBusca)
   const modulosFiltrados = listaModulos.filter((m) => {
     // se a busca for vazia, mostra tudo
@@ -366,11 +384,18 @@ export function LoopModule({termoBusca = ''}) {
     // converte os dois para minusculo para a busca nar ser sensivel a maiusculas
     return m.titulo?.toLowerCase().includes(termoBusca.toLowerCase());
   })
-
+*/
   if (listaModulos.length == 0 ) {
-    return <p>nenhum módulo encontrado</p>
+    return (
+      <div className='text-center text-3xl mt-5'>
+          {termoBusca 
+            ? <p>Nenhum módulo encontrado para "{termoBusca}"</p>
+            : <p>Nenhum módulo criado ainda.</p>
+          }
+      </div>
+    )
   }
-
+/*
   if (modulosFiltrados.length == 0 ) {
     return (
       <div className='text-center text-3xl'>
@@ -380,12 +405,38 @@ export function LoopModule({termoBusca = ''}) {
       
     )
   }
-
+*/
   return (
     <div>
-      {modulosFiltrados.map((m) => (
+      {/* Renderiza os módulos da página atual */}
+      {listaModulos.map((m) => (
         <GetModulo key={m.id_modulo} idModulo={m.id_modulo} />
       ))}
+
+      {/* 🔹 Controles de Paginação */}
+      {totalPaginas > 1 && (
+        <div className="flex justify-center items-center gap-4 mt-8 mb-8">
+          <button 
+            onClick={() => setPaginaAtual(prev => Math.max(prev - 1, 1))}
+            disabled={paginaAtual === 1}
+            className="px-4 py-2 bg-gray-200 text-black font-bold rounded-lg disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
+          >
+            Anterior
+          </button>
+          
+          <span className="font-semibold text-lg">
+            Página {paginaAtual} de {totalPaginas}
+          </span>
+          
+          <button 
+            onClick={() => setPaginaAtual(prev => Math.min(prev + 1, totalPaginas))}
+            disabled={paginaAtual === totalPaginas}
+            className="px-4 py-2 bg-gray-200 text-black font-bold rounded-lg disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
+          >
+            Próxima
+          </button>
+        </div>
+      )}
     </div>
   )
 }
