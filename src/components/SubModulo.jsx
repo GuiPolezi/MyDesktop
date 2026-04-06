@@ -34,7 +34,7 @@ export function CriarSubModulo() {
         setTitulo('')
         setDescricao('')
         // Aqui você poderia atualizar uma lista de módulos na tela
-        navigate('/') // Redireciona para página inicial após criação
+        navigate(-1)
     } catch (error) {
         alert("Erro ao criar: " + error.message)
     } finally {
