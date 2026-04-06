@@ -480,6 +480,37 @@ export const dbService = {
     return data;
   },
 
+  // Buscar os módulos da equipe com paginação
+  async getModulosDaEquipePaginado(idEquipe, paginaAtual = 1, itensPorPagina = 5, termoBusca = '') {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error('Usuário não autenticado');
+
+    // Calcula os índices do range para o Supabase (Ex: Página 1 = 0 a 4)
+    const from = (paginaAtual - 1) * itensPorPagina;
+    const to = from + itensPorPagina - 1;
+
+    // Montamos a base da query, pedindo também a contagem total
+    let query = supabase
+      .from('modulos')
+      .select('*', { count: 'exact' }) 
+      .eq('id_equipe', idEquipe)
+      .order('id_modulo', { ascending: true })
+      .range(from, to);
+
+    // Se o usuário digitou algo na busca, adicionamos o filtro ILIKE (não sensível a maiúsculas)
+    if (termoBusca) {
+      query = query.ilike('titulo', `%${termoBusca}%`);
+    }
+
+    const { data, count, error } = await query;
+    
+    if (error) throw error;
+    
+    // Retornamos os dados daquela página E o número total de módulos encontrados
+    return { dados: data, total: count }; 
+  },
+
+
   // Adicionar um usuário à equipe
   async adicionarMembroEquipe(idEquipe, idUserAdicionado) {
     // No futuro, você pode mudar para 'pendente' e criar uma tela de "Convites Recebidos".
