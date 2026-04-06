@@ -468,6 +468,19 @@ export const dbService = {
     return data.map(item => item.equipes);
   },
 
+  // Buscar detalhes de uma equipe específica por ID
+  async getEquipeById(idEquipe) {
+    const { data, error } = await supabase
+      .from('equipes')
+      .select('*')
+      .eq('id_equipe', idEquipe)
+      .single(); // .single() garante que retorne o objeto exato da equipe
+
+    if (error) throw error;
+    return data;
+  },
+
+
   // Buscar os módulos que pertencem a uma equipe específica
   async getModulosDaEquipe(idEquipe) {
     const { data, error } = await supabase

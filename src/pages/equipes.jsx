@@ -151,6 +151,10 @@ export function DashboardEquipe() {
   // Cria estado para armazenar texto da pesquisa
   const [termoBusca, setTermoBusca] = useState('')
 
+  // Novo estado para guardar o nome da equipe
+  const [nomeEquipe, setNomeEquipe] = useState('');
+
+
   // Função para evitar que a página recarregue ao apertar enter ou clicar no submit
   const handlePesquisa = (e) => {
     e.preventDefault()
@@ -159,6 +163,11 @@ export function DashboardEquipe() {
   useEffect(() => {
     async function carregarModulos() {
       try {
+        // busca de nome
+        const equipeDados = await dbService.getEquipeById(idEquipe);
+        setNomeEquipe(equipeDados.nome);
+
+        // Busca modulos
         const dados = await dbService.getModulosDaEquipe(idEquipe);
         setModulosEquipe(dados);
       } catch (error) {
@@ -189,6 +198,7 @@ export function DashboardEquipe() {
           <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-800 tracking-tight">
             Área da Equipe
           </h1>
+          <p>{nomeEquipe}</p>
           <div className="pesquisaEquipe">
           <form onSubmit={handlePesquisa} className='flex align-center justify-center gap-5 p-2'>
               <p className='flex flex-col justify-center'>
