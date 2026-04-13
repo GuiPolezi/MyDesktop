@@ -676,6 +676,12 @@ export function GetCardsSubModule({idSubModulo}) {
         )
       );
 
+      // 🔹 A SOLUÇÃO: Atualiza o card que está aberto no Modal AGORA
+      setCardSelecionado((cardAntigo) => ({
+        ...cardAntigo,
+        ...dadosAtualizados
+      }));
+
       // sai do modo edição
       setEditando(null);
     } catch (error) {
