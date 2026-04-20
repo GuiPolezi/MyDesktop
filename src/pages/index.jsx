@@ -10,7 +10,11 @@ import { useState } from 'react'
 export function Home() {
   // Cria estado para armazenar texto da pesquisa
   const [termoBusca, setTermoBusca] = useState('')
+const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const toggleMenu = () => {
+    setIsMenuOpen((prev) => !prev);
+  };
   // Função para evitar que a página recarregue ao apertar enter ou clicar no submit
   const handlePesquisa = (e) => {
     e.preventDefault()
@@ -57,7 +61,7 @@ export function Home() {
           </div>
 
           {/* Coluna da Direita: My Desktop */}
-          <div className="mydesktop flex flex-col justify-center mt-12 lg:mt-0">
+          <div className="mydesktop flex flex-col justify-center mt-12 lg:mt-0 relative cursor-pointer" onClick={toggleMenu} >
             <div className="w-full max-w-lg lg:max-w-sm flex flex-col text-6xl lg:text-9xl font-black items-center lg:items-end">
               <div className="w-1/6 text-right">
                 <p>MY</p>
@@ -69,6 +73,22 @@ export function Home() {
                 <p>TOP</p>
               </div>
             </div>
+            {/* O Menu Flutuante */}
+            {isMenuOpen && (
+              <div 
+                // onClick={(e) => e.stopPropagation()} // Impede que clicar no menu feche ele mesmo acidentalmente
+                className="absolute top-full mt-4 right-0 lg:right-auto bg-neutral-900 text-white shadow-xl rounded-lg p-4 flex flex-col gap-3 min-w-[200px] z-50 border border-neutral-800"
+              >
+                <p className="text-sm text-neutral-400 mb-2 uppercase tracking-widest">Opções</p>
+                <a 
+                  href="/sua-rota" 
+                  className="text-lg font-medium hover:text-gray-300 transition-colors"
+                >
+                  Ir para Navegação
+                </a>
+                {/* Adicione mais opções aqui */}
+              </div>
+            )}
           </div>
         </div>
       </section>
