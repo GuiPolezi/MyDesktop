@@ -136,6 +136,7 @@ button:focus-visible {
   color: black;
   text-transform: uppercase;
   font-weight: 900;
+  cursor:default;
 }
 
 /* Módulos section */
@@ -234,4 +235,13 @@ button:focus-visible {
 
 .createCardSub:hover {
   opacity: 0.5;
+}
+
+/* Atualizações */
+
+/* Menu para acesso RemindMe */
+.ballon-menu {
+  background-color: #111;
+  border-radius: 10px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }

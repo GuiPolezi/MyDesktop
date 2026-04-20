@@ -77,15 +77,10 @@ const [isMenuOpen, setIsMenuOpen] = useState(false);
             {isMenuOpen && (
               <div 
                 // onClick={(e) => e.stopPropagation()} // Impede que clicar no menu feche ele mesmo acidentalmente
-                className="absolute top-full mt-4 right-0 lg:right-auto bg-neutral-900 text-white shadow-xl rounded-lg p-4 flex flex-col gap-3 min-w-[200px] z-50 border border-neutral-800"
+                className="absolute ballon-menu right-50 md:right-10  p-2"
               >
-                <p className="text-sm text-neutral-400 mb-2 uppercase tracking-widest">Opções</p>
-                <a 
-                  href="/sua-rota" 
-                  className="text-lg font-medium hover:text-gray-300 transition-colors"
-                >
-                  Ir para Navegação
-                </a>
+                <p className="text-sm text-neutral-400">Acesse</p>
+               <Link to="https://remind-me-roan.vercel.app/" style={{color: 'white'}}>RemindMe</Link>
                 {/* Adicione mais opções aqui */}
               </div>
             )}
