@@ -130,10 +130,9 @@ const [isMenuOpen, setIsMenuOpen] = useState(false);
 }
 
 const CARDS = [
-  { id: 1, label: "Projetos", icon: "📁", color: "#606c38" },
-  { id: 2, label: "Tarefas",  icon: "✅", color: "#283618" },
-  { id: 3, label: "Equipes",  icon: "👥", color: "#dda15e" },
-  { id: 4, label: "Agenda",   icon: "📅", color: "#bc6c25" },
+  { id: 1, label: "DailyWorkout", icon: "📁", color: "#606c38", ahref:"https://daily-checkout-team.vercel.app/" },
+  { id: 2, label: "HelpDesk",  icon: "✅", color: "#283618", ahref:"https://helpdeskbot.vercel.app/" },
+  { id: 3, label: "RemindMe",  icon: "👥", color: "#dda15e", ahref:"https://remind-me-roan.vercel.app/" },
 ];
 
 export function HeroSection() {
@@ -252,6 +251,7 @@ export function HeroSection() {
                 onClick={(e) => {
                   e.stopPropagation(); // não propaga para .mydesktop
                   alert(`Você clicou em: ${card.label}`);
+                  window.open(card.ahref, "_blank");
                 }}
                 style={{
                   background: "#fff",
