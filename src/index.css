@@ -136,8 +136,10 @@ button:focus-visible {
   color: black;
   text-transform: uppercase;
   font-weight: 900;
-  cursor:default;
+  cursor:pointer;
 }
+
+
 
 /* Módulos section */
 /*

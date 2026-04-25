@@ -2,7 +2,7 @@ import {Logout} from '../components/Logout'
 import { Link } from 'react-router-dom'
 import { GetModulo, LoopModule } from '../components/Modulo'
 import { GetNameUser} from '../components/Users'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 
 
 
@@ -22,6 +22,7 @@ const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <main>
+    {/* 
       <section className="header">
         <div className="grid grid-cols-2 p-5 items-center">
           <div className="col-span-1 flex items-center">
@@ -34,7 +35,8 @@ const [isMenuOpen, setIsMenuOpen] = useState(false);
           </div>
         </div>
       </section>
-
+      */}
+      <HeroSection />
       <section className='hero'>
         {/* Container Principal: 1 coluna no mobile, 2 no desktop */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-5">
@@ -60,7 +62,7 @@ const [isMenuOpen, setIsMenuOpen] = useState(false);
 
           </div>
 
-          {/* Coluna da Direita: My Desktop */}
+          {/* Coluna da Direita: My Desktop
           <div className="mydesktop flex flex-col justify-center mt-12 lg:mt-0 relative cursor-pointer" onClick={toggleMenu} >
             <div className="w-full max-w-lg lg:max-w-sm flex flex-col text-6xl lg:text-9xl font-black items-center lg:items-end">
               <div className="w-1/6 text-right">
@@ -73,7 +75,7 @@ const [isMenuOpen, setIsMenuOpen] = useState(false);
                 <p>TOP</p>
               </div>
             </div>
-            {/* O Menu Flutuante */}
+            {/* O Menu Flutuante 
             {isMenuOpen && (
               <div 
                 // onClick={(e) => e.stopPropagation()} // Impede que clicar no menu feche ele mesmo acidentalmente
@@ -81,10 +83,11 @@ const [isMenuOpen, setIsMenuOpen] = useState(false);
               >
                 <p className="text-sm text-neutral-400">Acesse</p>
                <Link to="https://remind-me-roan.vercel.app/" style={{color: 'white'}}>RemindMe</Link>
-                {/* Adicione mais opções aqui */}
+                {/* Adicione mais opções aqui 
               </div>
             )}
           </div>
+          */}
         </div>
       </section>
 
@@ -120,5 +123,48 @@ const [isMenuOpen, setIsMenuOpen] = useState(false);
      </section>
         
     </main>
+  )
+}
+
+
+export function HeroSection() {
+  const [container, setContainer] = useRef();
+  return (
+    <>
+     <section className="header">
+        <div className="grid grid-cols-2 p-5 items-center">
+          <div className="col-span-1 flex items-center">
+            <p className='mt-9' style={{fontSize: '20px'}}>Olá,</p>
+            <GetNameUser />
+          </div>
+          <div className="col-span-2 md:col-span-1 gap-5 flex justify-end">
+            <Link to="/equipes" className='self-center' style={{color: '#606c38', opacity: '0.5'}}>Equipes</Link>
+            <Logout />
+          </div>
+        </div>
+      </section>
+      <section className='Hero text-6xl lg:text-9xl bg-gray-500 text-center p-30'>
+        <div className="mydesktop" ref={container}>
+
+          <div className='grid grid-cols-1'>
+            <div className="col-span-1">
+              <p>MY</p>
+            </div>
+          </div>
+          <div className="grid grid-cols-2">
+            <div className="col-span-1 text-end">
+              <p>DESK</p>
+            </div>
+          </div>
+          <div className="grid grid-cols-1">
+            <div className="col-span-1">
+              <p>TOP</p>
+            </div>
+          </div>
+        </div>
+        
+      </section>
+    </>
+      
   )
 }
