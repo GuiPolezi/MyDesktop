@@ -73,6 +73,8 @@ export function Home() {
     </main>
   )
 }
+
+
 // Posições separadas por breakpoint
 const CARDS = [
   {
@@ -227,11 +229,14 @@ export function HeroSection() {
   }, [open, isMobile]);
  
 
-  const openCards = () => {
-    if (open) return;
+  const toggleCards = () => {
+  if (open) {
+    closeCards();
+  } else {
     setOpen(true);
     tlRef.current.play();
-  };
+  }
+};
  
   const closeCards = useCallback(() => {
     if (!open) return;
@@ -283,7 +288,7 @@ export function HeroSection() {
         <div
           className="mydesktop"
           ref={desktopRef}
-          onClick={openCards}
+          onClick={toggleCards}
           
           style={{
             position: "relative",   // ← FIX 1: ancora o container de cards
