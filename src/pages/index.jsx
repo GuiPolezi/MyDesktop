@@ -2,7 +2,7 @@ import {Logout} from '../components/Logout'
 import { Link } from 'react-router-dom'
 import { GetModulo, LoopModule } from '../components/Modulo'
 import { GetNameUser} from '../components/Users'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 
 
 
@@ -22,6 +22,9 @@ const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <main>
+      <HeroSection />
+      {/*
+      
       <section className="header">
         <div className="grid grid-cols-2 p-5 items-center">
           <div className="col-span-1 flex items-center">
@@ -31,9 +34,10 @@ const [isMenuOpen, setIsMenuOpen] = useState(false);
           <div className="col-span-2 md:col-span-1 gap-5 flex justify-end">
             <Link to="/equipes" className='self-center' style={{color: '#606c38', opacity: '0.5'}}>Equipes</Link>
             <Logout />
-          </div>
+            </div>
         </div>
       </section>
+      */}
 
       <section className='hero'>
         {/* Container Principal: 1 coluna no mobile, 2 no desktop */}
@@ -120,5 +124,47 @@ const [isMenuOpen, setIsMenuOpen] = useState(false);
      </section>
         
     </main>
+  )
+}
+
+export function HeroSection() {
+ 
+  return (
+    <>
+     <section className="header">
+        <div className="grid grid-cols-2 p-5 items-center">
+          <div className="col-span-1 flex items-center">
+            <p className='mt-9' style={{fontSize: '20px'}}>Olá,</p>
+            <GetNameUser />
+          </div>
+          <div className="col-span-2 md:col-span-1 gap-5 flex justify-end">
+            <Link to="/equipes" className='self-center' style={{color: '#606c38', opacity: '0.5'}}>Equipes</Link>
+            <Logout />
+          </div>
+        </div>
+      </section>
+      <section className='Hero text-6xl lg:text-9xl bg-gray-500 text-center p-30'>
+        <div className="mydesktop">
+
+          <div className='grid grid-cols-1'>
+            <div className="col-span-1">
+              <p>MY</p>
+            </div>
+          </div>
+          <div className="grid grid-cols-2">
+            <div className="col-span-1 text-end">
+              <p>DESK</p>
+            </div>
+          </div>
+          <div className="grid grid-cols-1">
+            <div className="col-span-1">
+              <p>TOP</p>
+            </div>
+          </div>
+        </div>
+        
+      </section>
+    </>
+      
   )
 }
