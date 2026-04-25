@@ -130,9 +130,9 @@ const [isMenuOpen, setIsMenuOpen] = useState(false);
 }
 
 const CARDS = [
-  { id: 1, label: "DailyWorkout", icon: "📁", color: "#606c38", ahref:"https://daily-checkout-team.vercel.app/" },
-  { id: 2, label: "HelpDesk",  icon: "✅", color: "#283618", ahref:"https://helpdeskbot.vercel.app/" },
-  { id: 3, label: "RemindMe",  icon: "👥", color: "#dda15e", ahref:"https://remind-me-roan.vercel.app/" },
+  { id: 1, label: "DailyWorkout", icon: "📁", color: "#606c38", ahref:"https://daily-checkout-team.vercel.app/", x: "-200px", y: "-20px" },
+  { id: 2, label: "HelpDesk",  icon: "✅", color: "#283618", ahref:"https://helpdeskbot.vercel.app/", x: "160px", y: "120px" },
+  { id: 3, label: "RemindMe",  icon: "👥", color: "#dda15e", ahref:"https://remind-me-roan.vercel.app/", x: "-200px", y: "100px" },
 ];
 
 export function HeroSection() {
@@ -233,14 +233,8 @@ export function HeroSection() {
             className="cards-container"
             style={{
               position: "absolute",
-              top: "50%",
+              top: "40%",
               left: "50%",
-              transform: "translate(-50%, -50%)",
-              display: "flex",
-              gap: "16px",
-              flexWrap: "wrap",
-              justifyContent: "center",
-              pointerEvents: "none", // o gsap ativa por card
               zIndex: 10,
             }}
           >
@@ -261,6 +255,7 @@ export function HeroSection() {
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
+                  transform: `translate(calc(-50% + ${card.x}), calc(-50% + ${card.y}))`,
                   gap: "8px",
                   minWidth: "110px",
                   cursor: "pointer",
