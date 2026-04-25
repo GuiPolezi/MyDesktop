@@ -2,7 +2,9 @@ import {Logout} from '../components/Logout'
 import { Link } from 'react-router-dom'
 import { GetModulo, LoopModule } from '../components/Modulo'
 import { GetNameUser} from '../components/Users'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
+import gsap from "gsap";
+
 
 
 
@@ -127,7 +129,73 @@ const [isMenuOpen, setIsMenuOpen] = useState(false);
   )
 }
 
+const CARDS = [
+  { id: 1, label: "Projetos", icon: "📁", color: "#606c38" },
+  { id: 2, label: "Tarefas",  icon: "✅", color: "#283618" },
+  { id: 3, label: "Equipes",  icon: "👥", color: "#dda15e" },
+  { id: 4, label: "Agenda",   icon: "📅", color: "#bc6c25" },
+];
+
 export function HeroSection() {
+  const desktopRef  = useRef(null);   // ref na div .mydesktop
+  const cardsRef    = useRef([]);     // refs individuais de cada card
+  const tlRef       = useRef(null);   // timeline reutilizável
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // estado inicial dos cards: invisíveis e deslocados
+      gsap.set(cardsRef.current, { opacity: 0, y: 40, scale: 0.7, pointerEvents: "none" });
+ 
+      tlRef.current = gsap
+        .timeline({ paused: true })
+        // texto: desbota e muda de cor
+        .to(".mydesktop p", {
+          opacity: 0.25,
+          color: "#606c38",
+          duration: 0.35,
+          ease: "power2.out",
+        })
+        // cards sobem em cascata
+        .to(
+          cardsRef.current,
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            pointerEvents: "auto",
+            duration: 0.45,
+            stagger: 0.08,
+            ease: "back.out(1.6)",
+          },
+          "-=0.15"   // começa um pouco antes do step anterior terminar
+        );
+    }, desktopRef);
+ 
+    return () => ctx.revert();
+  }, []);
+ const openCards = () => {
+    if (open) return;
+    setOpen(true);
+    tlRef.current.play();
+  };
+ 
+  const closeCards = () => {
+    if (!open) return;
+    setOpen(false);
+    tlRef.current.reverse();
+  };
+ 
+  // clique fora da .mydesktop fecha
+  useEffect(() => {
+    const handleOutside = (e) => {
+      if (desktopRef.current && !desktopRef.current.contains(e.target)) {
+        closeCards();
+      }
+    };
+    document.addEventListener("mousedown", handleOutside);
+    return () => document.removeEventListener("mousedown", handleOutside);
+  }, [open]); // eslint-disable-line react-hooks/exhaustive-deps
  
   return (
     <>
@@ -144,7 +212,8 @@ export function HeroSection() {
         </div>
       </section>
       <section className='Hero text-6xl lg:text-9xl bg-gray-500 text-center p-30'>
-        <div className="mydesktop">
+        <div className="mydesktop"  ref={desktopRef}
+          onClick={openCards}>
 
           <div className='grid grid-cols-1'>
             <div className="col-span-1">
@@ -160,6 +229,60 @@ export function HeroSection() {
             <div className="col-span-1">
               <p>TOP</p>
             </div>
+          </div>
+           <div
+            className="cards-container"
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              display: "flex",
+              gap: "16px",
+              flexWrap: "wrap",
+              justifyContent: "center",
+              pointerEvents: "none", // o gsap ativa por card
+              zIndex: 10,
+            }}
+          >
+            {CARDS.map((card, i) => (
+              <div
+                key={card.id}
+                ref={(el) => (cardsRef.current[i] = el)}
+                onClick={(e) => {
+                  e.stopPropagation(); // não propaga para .mydesktop
+                  alert(`Você clicou em: ${card.label}`);
+                }}
+                style={{
+                  background: "#fff",
+                  borderRadius: "16px",
+                  padding: "20px 28px",
+                  boxShadow: "0 8px 32px rgba(0,0,0,0.18)",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: "8px",
+                  minWidth: "110px",
+                  cursor: "pointer",
+                  borderTop: `4px solid ${card.color}`,
+                  fontSize: "1rem",        // sobrescreve o text-6xl do pai
+                  fontWeight: 600,
+                  color: "#283618",
+                  transition: "box-shadow 0.2s",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.boxShadow =
+                    "0 12px 40px rgba(0,0,0,0.28)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.boxShadow =
+                    "0 8px 32px rgba(0,0,0,0.18)")
+                }
+              >
+                <span style={{ fontSize: "2rem" }}>{card.icon}</span>
+                {card.label}
+              </div>
+            ))}
           </div>
         </div>
         
