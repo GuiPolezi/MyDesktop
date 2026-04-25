@@ -2,7 +2,7 @@ import {Logout} from '../components/Logout'
 import { Link } from 'react-router-dom'
 import { GetModulo, LoopModule } from '../components/Modulo'
 import { GetNameUser} from '../components/Users'
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import gsap from "gsap";
 
 
@@ -82,6 +82,7 @@ const CARDS = [
     color: "#606c38",
     ahref: "https://daily-checkout-team.vercel.app/",
     pos: { default: { x: "-180px", y: "0px" }, sm: { x: "0px", y: "-130px" } },
+    depth: 1.4,   // ← mais rápido = mais "próximo" do usuário
   },
   {
     id: 2,
@@ -90,6 +91,7 @@ const CARDS = [
     color: "#283618",
     ahref: "https://helpdeskbot.vercel.app/",
     pos: { default: { x: "180px", y: "80px" }, sm: { x: "0px", y: "0px" } },
+    depth: 1.1,
   },
   {
     id: 3,
@@ -98,6 +100,8 @@ const CARDS = [
     color: "#dda15e",
     ahref: "https://remind-me-roan.vercel.app/",
     pos: { default: { x: "-180px", y: "-160px" }, sm: { x: "0px", y: "130px" } },
+    depth: 0.7,   // ← mais lento = mais "distante"
+
   },
 ];
  
@@ -118,6 +122,8 @@ export function HeroSection() {
   const desktopRef = useRef(null);
   const cardsRef = useRef([]);
   const tlRef = useRef(null);
+  const rafRef      = useRef(null);       // requestAnimationFrame handle
+  const basePos     = useRef([]);         // posições-base após a timeline abrir
   const [open, setOpen] = useState(false);
   const isMobile = useIsMobile();
  
@@ -142,6 +148,7 @@ export function HeroSection() {
         .to(".mydesktop p", {
           opacity: 0.2,
           color: "#606c38",
+          cursor: 'default',
           duration: 0.35,
           ease: "power2.out",
         })
@@ -156,6 +163,15 @@ export function HeroSection() {
             ease: "back.out(1.7)",
             x: (i) => cardTargetPos[i].x,  // posição individual por card
             y: (i) => cardTargetPos[i].y,
+            onComplete() {
+              cardsRef.current.forEach((el, i) => {
+                if (!el) return;
+                basePos.current[i] = {
+                  x: gsap.getProperty(el, "x"),
+                  y: gsap.getProperty(el, "y"),
+                };
+              });
+            },
           },
           "-=0.15"
         );
@@ -164,17 +180,73 @@ export function HeroSection() {
     return () => ctx.revert();
   }, [isMobile]); // recria ao trocar breakpoint
  
+  // ─── parallax: segue o mouse com profundidades diferentes ────────────────
+  const handleMouseMove = useCallback(
+    (e) => {
+      if (!open || isMobile) return;
+ 
+      const rect   = desktopRef.current.getBoundingClientRect();
+      // posição normalizada do mouse dentro do elemento [-1, 1]
+      const normX  = ((e.clientX - rect.left)  / rect.width  - 0.5) * 2;
+      const normY  = ((e.clientY - rect.top)   / rect.height - 0.5) * 2;
+      const RANGE  = 28; // px máximos de deslocamento parallax
+ 
+      // cancela frame anterior e agenda novo (throttle via rAF)
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = requestAnimationFrame(() => {
+        cardsRef.current.forEach((el, i) => {
+          if (!el || basePos.current[i] == null) return;
+          const { depth } = CARDS[i];
+          gsap.to(el, {
+            x: basePos.current[i].x + normX * RANGE * depth,
+            y: basePos.current[i].y + normY * RANGE * depth,
+            duration: 0.6,
+            ease: "power2.out",
+            overwrite: "auto",
+          });
+        });
+      });
+    },
+    [open, isMobile]
+  );
+
+  // reset suave ao sair com o mouse
+  const handleMouseLeave = useCallback(() => {
+    if (!open || isMobile) return;
+    cancelAnimationFrame(rafRef.current);
+    cardsRef.current.forEach((el, i) => {
+      if (!el || basePos.current[i] == null) return;
+      gsap.to(el, {
+        x: basePos.current[i].x,
+        y: basePos.current[i].y,
+        duration: 0.8,
+        ease: "elastic.out(1, 0.5)",
+        overwrite: "auto",
+      });
+    });
+  }, [open, isMobile]);
+ 
+
   const openCards = () => {
     if (open) return;
     setOpen(true);
     tlRef.current.play();
   };
  
-  const closeCards = () => {
+  const closeCards = useCallback(() => {
     if (!open) return;
+    // reseta parallax antes de reverter
+    cancelAnimationFrame(rafRef.current);
+    cardsRef.current.forEach((el, i) => {
+      if (!el || basePos.current[i] == null) return;
+      gsap.set(el, {
+        x: basePos.current[i].x,
+        y: basePos.current[i].y,
+      });
+    });
     setOpen(false);
     tlRef.current.reverse();
-  };
+  }, [open]);
  
   useEffect(() => {
     const handleOutside = (e) => {
@@ -184,10 +256,14 @@ export function HeroSection() {
     };
     document.addEventListener("mousedown", handleOutside);
     return () => document.removeEventListener("mousedown", handleOutside);
-  }, [open]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [closeCards]);
+  useEffect(() => () => cancelAnimationFrame(rafRef.current), []);
  
   return (
-    <>
+    <section   
+      onMouseMove={handleMouseMove}    // ← parallax
+        onMouseLeave={handleMouseLeave}  // ← reset suave
+    >
       <section className="header">
         <div className="grid grid-cols-2 p-5 items-center">
           <div className="col-span-1 flex items-center">
@@ -208,6 +284,7 @@ export function HeroSection() {
           className="mydesktop"
           ref={desktopRef}
           onClick={openCards}
+          
           style={{
             position: "relative",   // ← FIX 1: ancora o container de cards
             cursor: "pointer",
@@ -267,11 +344,14 @@ export function HeroSection() {
                   fontSize: isMobile ? "0.7rem" : "1rem",          // responsivo
                   fontWeight: 600,
                   color: "#283618",
+                  willChange: "transform", // hint GPU para parallax suave
                   transition: "box-shadow 0.2s",
+                  // sombra mais profunda para cards com maior depth (efeito z)
+                  filter: `drop-shadow(0 ${4 * card.depth}px ${12 * card.depth}px rgba(0,0,0,${0.1 * card.depth}))`,
                   pointerEvents: "none", // GSAP ativa via timeline
                 }}
                 onMouseEnter={(e) =>
-                  (e.currentTarget.style.boxShadow = "0 12px 40px rgba(0,0,0,0.28)")
+                  (e.currentTarget.style.boxShadow = "0 12px 40px rgba(0, 0, 0, 0.68)")
                 }
                 onMouseLeave={(e) =>
                   (e.currentTarget.style.boxShadow = "0 8px 32px rgba(0,0,0,0.18)")
@@ -286,6 +366,6 @@ export function HeroSection() {
           </div>
         </div>
       </section>
-    </>
+    </section>
   );
 }
