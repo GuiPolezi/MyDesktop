@@ -7,6 +7,7 @@ export default defineConfig({
   plugins: [react(), tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
+      injectRegister: 'auto', // Adicione isso para garantir a injeção do Service Worker
       manifest: {
         name: 'MyDesktop',
         short_name: 'MyDesk',
@@ -18,7 +19,7 @@ export default defineConfig({
         icons: [
           { src: '/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
           { src: '/icons/icon-512.png', sizes: '512x512', type: 'image/png' },
-          { src: '/icons/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
+          { src: '/icons/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' }
         ]
       },
       workbox: {
