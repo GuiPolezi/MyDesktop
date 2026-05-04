@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons'; // Importe o ícone específico
 
 export function CriarModulo() {
-    const [titulo, setTitulo] = useState('')
+  const [titulo, setTitulo] = useState('')
   const [descricao, setDescricao] = useState('')
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate(); // 🔹 hook para redirecionar
@@ -18,28 +18,28 @@ export function CriarModulo() {
   const handleCriar = async (e) => {
     e.preventDefault()
     setLoading(true)
-    
+
     try {
-        const novoModulo = await dbService.criarModulo(titulo, descricao)
-        alert(`Módulo "${novoModulo.titulo}" criado com sucesso! ID: ${novoModulo.id_modulo}`)
-        setTitulo('')
-        setDescricao('')
-        // Aqui você poderia atualizar uma lista de módulos na tela
-        navigate('/') // Redireciona para página inicial após criação
+      const novoModulo = await dbService.criarModulo(titulo, descricao)
+      alert(`Módulo "${novoModulo.titulo}" criado com sucesso! ID: ${novoModulo.id_modulo}`)
+      setTitulo('')
+      setDescricao('')
+      // Aqui você poderia atualizar uma lista de módulos na tela
+      navigate('/') // Redireciona para página inicial após criação
     } catch (error) {
-        alert("Erro ao criar: " + error.message)
+      alert("Erro ao criar: " + error.message)
     } finally {
-        setLoading(false)
+      setLoading(false)
     }
   }
 
   return (
     // Fundo da página e centralização (ideal caso seja uma página isolada)
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 flex justify-center">
-      
+
       {/* Card do Formulário */}
       <div className="w-full max-w-2xl bg-white rounded-2xl shadow-lg p-8 border border-gray-100 h-fit">
-        
+
         {/* Cabeçalho */}
         <div className="mb-8 border-b border-gray-100 pb-5">
           <h2 className="text-3xl font-extrabold text-gray-800">Criar Novo Módulo</h2>
@@ -49,18 +49,18 @@ export function CriarModulo() {
         </div>
 
         <form onSubmit={handleCriar} className="flex flex-col gap-6">
-          
+
           {/* Campo: Título */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Título do Módulo <span className="text-red-500">*</span>
             </label>
-            <input 
+            <input
               type="text"
-              placeholder="Ex: Gestão de Projetos" 
-              value={titulo} 
-              onChange={e => setTitulo(e.target.value)} 
-              required 
+              placeholder="Ex: Gestão de Projetos"
+              value={titulo}
+              onChange={e => setTitulo(e.target.value)}
+              required
               className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200"
             />
           </div>
@@ -70,10 +70,10 @@ export function CriarModulo() {
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Descrição
             </label>
-            <textarea 
-              placeholder="Descreva brevemente o propósito deste módulo..." 
-              value={descricao} 
-              onChange={e => setDescricao(e.target.value)} 
+            <textarea
+              placeholder="Descreva brevemente o propósito deste módulo..."
+              value={descricao}
+              onChange={e => setDescricao(e.target.value)}
               rows="3"
               className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200 resize-none"
             />
@@ -81,18 +81,18 @@ export function CriarModulo() {
 
           {/* Rodapé com Botões */}
           <div className="pt-6 flex justify-end items-center gap-4 mt-2">
-            
+
             {/* Botão Cancelar */}
-            <Link 
-              to="/" 
+            <Link
+              to="/"
               className="px-6 py-3 text-gray-600 font-medium rounded-lg hover:bg-gray-100 transition-colors"
             >
               Cancelar
             </Link>
 
             {/* Botão Salvar com Loader */}
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               disabled={loading}
               className="text-white font-semibold py-3 px-8 rounded-lg transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed shadow-md hover:shadow-lg flex items-center justify-center"
               style={{ backgroundColor: '#283618' }}
@@ -119,12 +119,12 @@ export function CriarModulo() {
 
 // Função para obter Modulo
 
-export function GetModulo({idModulo}) {
+export function GetModulo({ idModulo }) {
   // Estados para guardar os dados e status de carregamento
   const [modulo, setModulos] = useState(null) // UseState para esperar por um modulo (um objeto)
   const [loading, setLoading] = useState(true)
 
-  const [ usuarioLogado, setUsuarioLogado ] = useState(null)
+  const [usuarioLogado, setUsuarioLogado] = useState(null)
   const navigate = useNavigate(); // 🔹 hook para redirecionar
 
   // Novos estados para edição de Módulo
@@ -137,11 +137,11 @@ export function GetModulo({idModulo}) {
   useEffect(() => {
     if (!idModulo) {
       setLoading(false)
-      return 
+      return
     }
     async function carregarDados() {
       try {
-        const {data: {user}} = await supabase.auth.getUser();
+        const { data: { user } } = await supabase.auth.getUser();
         setUsuarioLogado(user);
 
         const dados = await dbService.getModulo(idModulo)
@@ -156,7 +156,7 @@ export function GetModulo({idModulo}) {
     if (idModulo) {
       carregarDados();
     }
-    
+
   }, [idModulo]) // Colocamos idModulo aqui para o React atualizar se o ID mudar
 
   // O que aparece na tela enquando os dados carregam
@@ -169,7 +169,7 @@ export function GetModulo({idModulo}) {
   }
 
   // Excluindo modulo
-   const handleExcluir = async (id_modulo, titulo) => {
+  const handleExcluir = async (id_modulo, titulo) => {
     const confirmar = window.confirm(`Tem certeza que deseja excluir o módulo "${titulo}"?`);
 
     if (confirmar) {
@@ -180,27 +180,27 @@ export function GetModulo({idModulo}) {
         // 🔹 Dispara um evento global avisando que este ID foi excluído
         window.dispatchEvent(new CustomEvent('moduloDeletado', { detail: id_modulo }));
 
-        navigate("/");
+        // navigate("/");
       } catch (error) {
         alert("Erro ao excluir: " + error.message);
       }
     }
-   };
+  };
 
-    // 🔹 NOVA FUNÇÃO: Ativar o modo de edição
+  // 🔹 NOVA FUNÇÃO: Ativar o modo de edição
   const iniciarEdicao = (module) => {
     setEditando(module.id_modulo) // Agora guardamos o ID do card específico
     setNovoTitulo(module.titulo); // Preenche o input com o título atual
     setNovaDescricao(module.descricao); // Preenche o input com a descrição atual
   };
 
-   // Nova função para salvar alterações no banco
-   const handleSalvarEdicao = async () => {
+  // Nova função para salvar alterações no banco
+  const handleSalvarEdicao = async () => {
     if (!novoTitulo.trim()) {
       alert("O titulo não pode estar vázio")
       return;
     }
-   
+
 
     setSalvando(true);
     try {
@@ -208,10 +208,10 @@ export function GetModulo({idModulo}) {
         titulo: novoTitulo,
         descricao: novaDescricao,
       }
-      
+
       // Salva no banco de dados usando a função que criamos no dvservice
       await dbService.updateModule(editando, dadosAtualizados)
-      
+
       // atualiza o estado local
       setModulos({ ...modulo, ...dadosAtualizados });
 
@@ -225,45 +225,45 @@ export function GetModulo({idModulo}) {
   };
 
   // O que aparece na tela depois que os dados chegam
-  
+
   return (
 
     <section>
       <div className="grid grid-cols-1 lg:grid-cols-3">
         {/* Coluna do Módulo - Submodulo */}
         <div className="col-span-1 p-2  items-center lg:items-start flex flex-col">
-          { editando === modulo.id_modulo ? (
+          {editando === modulo.id_modulo ? (
             <div style={{ marginBottom: '20px' }}>
               <label style={{ display: 'block', fontWeight: 'bold' }}>Título do Módulo:</label>
-              <input 
-                type="text" 
-                value={novoTitulo} 
-                onChange={(e) => setNovoTitulo(e.target.value)} 
-                style={{ display: 'block', width: '100%', padding: '8px', marginBottom: '10px', border: '1px solid', borderRadius: '10px', backgroundColor: 'white'  }}
+              <input
+                type="text"
+                value={novoTitulo}
+                onChange={(e) => setNovoTitulo(e.target.value)}
+                style={{ display: 'block', width: '100%', padding: '8px', marginBottom: '10px', border: '1px solid', borderRadius: '10px', backgroundColor: 'white' }}
               />
 
               <label style={{ display: 'block', fontWeight: 'bold' }}>Descrição:</label>
-              <textarea 
-                value={novaDescricao} 
-                onChange={(e) => setNovaDescricao(e.target.value)} 
-                style={{ display: 'block', width: '100%', padding: '8px', height: '80px', marginBottom: '10px', border: '1px solid', borderRadius: '10px', backgroundColor: 'white'  }}
+              <textarea
+                value={novaDescricao}
+                onChange={(e) => setNovaDescricao(e.target.value)}
+                style={{ display: 'block', width: '100%', padding: '8px', height: '80px', marginBottom: '10px', border: '1px solid', borderRadius: '10px', backgroundColor: 'white' }}
               />
 
-              <button 
-                onClick={handleSalvarEdicao} 
+              <button
+                onClick={handleSalvarEdicao}
                 disabled={salvando}
                 style={{ backgroundColor: '#606c38', color: 'white', padding: '8px 15px', border: 'none', cursor: 'pointer', marginRight: '10px' }}
               >
                 {salvando ? "Salvando..." : "Salvar Alterações"}
               </button>
-              
-              <button 
-                onClick={() => setEditando(null)} 
+
+              <button
+                onClick={() => setEditando(null)}
                 style={{ padding: '8px 15px', cursor: 'pointer', backgroundColor: 'red', color: 'white' }}
               >
                 Cancelar
               </button>
-          </div>
+            </div>
           ) : (
             // Titulo modulo
             <div className="title  w-full max-w-lg">
@@ -272,14 +272,14 @@ export function GetModulo({idModulo}) {
                 {/* Botões de Gestão (Dono) */}
                 {usuarioLogado && usuarioLogado.id === modulo.criado_por_id && (
                   <div className='items-center flex gap-2 iconsManagementModule'>
-                    <button 
-                      onClick={() => iniciarEdicao(modulo)} 
-                      style={{border: 'none', background: 'none', cursor: 'pointer', padding: 0, fontWeight: 'bold' }}
+                    <button
+                      onClick={() => iniciarEdicao(modulo)}
+                      style={{ border: 'none', background: 'none', cursor: 'pointer', padding: 0, fontWeight: 'bold' }}
                     >
                       <FontAwesomeIcon icon={faPenToSquare} />
                     </button>
 
-                    <button 
+                    <button
                       onClick={() => handleExcluir(modulo.id_modulo, modulo.titulo)} className='buttonDelete'
                       style={{ border: 'none', background: 'none', cursor: 'pointer', padding: 0, fontWeight: 'bold' }}
                     >
@@ -291,24 +291,24 @@ export function GetModulo({idModulo}) {
               </div>
               <p className='text-1xl'>{modulo.descricao}</p>
               <div className='linksModule flex gap-5 mt-2'>
-                 <Link style={{fontWeight: 'bold',}} className='linksCreate'
-                      to={`/criarsubmodulo/${modulo.id_modulo}`} 
+                <Link style={{ fontWeight: 'bold', }} className='linksCreate'
+                  to={`/criarsubmodulo/${modulo.id_modulo}`}
 
-                    >
-                      + Criar Submódulo
-                    </Link>
-                    <Link to={`/criarcard/${modulo.id_modulo}`} style={{ fontWeight: 'bold', }} className='linksCreate'>
-                      + Criar Card
-                    </Link>
-                
+                >
+                  + Criar Submódulo
+                </Link>
+                <Link to={`/criarcard/${modulo.id_modulo}`} style={{ fontWeight: 'bold', }} className='linksCreate'>
+                  + Criar Card
+                </Link>
+
               </div>
 
             </div>
           )}
-          
+
           {/* Submodulos */}
           <div className="submodulos w-full max-w-lg flex">
-              <GetSubModulo idModulo={modulo.id_modulo} />
+            <GetSubModulo idModulo={modulo.id_modulo} />
           </div>
         </div>
 
@@ -321,114 +321,122 @@ export function GetModulo({idModulo}) {
 
     </section>
   )
- 
+
 }
 
 
 // Contagem de modulos em LOOP para exibição na página
 
-export function LoopModule({termoBusca = ''}) {
-  const [ listaModulos, setListaModulos ] = useState([])
-  // Novos estados para a Paginação
+// Contagem de modulos em LOOP para exibição na página
+export function LoopModule({ termoBusca = '' }) {
+  const [listaModulos, setListaModulos] = useState([])
+  const [loading, setLoading] = useState(true) 
+  
+  // Estados para a Paginação
   const [paginaAtual, setPaginaAtual] = useState(1);
   const [totalModulos, setTotalModulos] = useState(0);
-  const itensPorPagina = 5; // Você pode alterar quantos módulos aparecem por vez aqui  
+  const itensPorPagina = 5; 
+
   useEffect(() => {
     async function carregarQuantidade() {
       try {
-        // Agora passamos a página, o limite e a busca para o Supabase
+        setLoading(true);
         const { dados, total } = await dbService.getLoopModulesPaginado(
-          paginaAtual, 
-          itensPorPagina, 
+          paginaAtual,
+          itensPorPagina,
           termoBusca
         );
         setListaModulos(dados);
         setTotalModulos(total);
       } catch (error) {
         console.error("Erro ao contar módulos:", error.message);
+      } finally {
+        setLoading(false); 
       }
     }
     carregarQuantidade();
 
-    // 🔹 Função que vai rodar quando escutar o evento
+    // 🔹 Nova Função removerDaLista com correção de página
     const removerDaLista = (evento) => {
-      const idDeletado = evento.detail; // Pega o ID que enviamos lá no GetModulo
-      setListaModulos((listaAtual) => 
+      const idDeletado = evento.detail; 
+
+      // 1. Remove da lista que está visível na tela
+      setListaModulos((listaAtual) =>
         listaAtual.filter((modulo) => modulo.id_modulo !== idDeletado)
       );
+
+      // 2. Atualiza o total de módulos global e recalcula as páginas
+      setTotalModulos((prevTotal) => {
+        const novoTotal = prevTotal - 1;
+        const totalPaginasRestantes = Math.ceil(novoTotal / itensPorPagina);
+
+        // Se a página em que estamos for maior do que o total de páginas restantes 
+        // (ou seja, apagamos o último item dela), nós voltamos 1 página automaticamente.
+        setPaginaAtual((pagina) => {
+          if (pagina > totalPaginasRestantes && pagina > 1) {
+            return pagina - 1;
+          }
+          return pagina;
+        });
+
+        return novoTotal; // Salva o novo total de módulos
+      });
     };
 
-    // 🔹 Começa a escutar o evento global
     window.addEventListener('moduloDeletado', removerDaLista);
 
-    // 🔹 Limpeza: Para de escutar quando o LoopModule sair da tela
     return () => {
       window.removeEventListener('moduloDeletado', removerDaLista);
     };
-  }, [paginaAtual, termoBusca]);
+  }, [paginaAtual, termoBusca]); // itensPorPagina é constante, não precisa estar aqui
 
-  // 🔹 Se o usuário começar a digitar uma nova busca, voltamos para a página 1 automaticamente
   useEffect(() => {
     setPaginaAtual(1);
   }, [termoBusca]);
 
-  // Calcula quantas páginas existem no total
   const totalPaginas = Math.ceil(totalModulos / itensPorPagina);
 
-  /*
-  // filtra os módulos baseado no que foi digitado (prop termoBusca)
-  const modulosFiltrados = listaModulos.filter((m) => {
-    // se a busca for vazia, mostra tudo
-    if (!termoBusca) return true;
+  if (loading) {
+    return (
+      <div className='text-center text-xl mt-10 font-medium text-gray-500'>
+        Buscando módulos...
+      </div>
+    )
+  }
 
-    // converte os dois para minusculo para a busca nar ser sensivel a maiusculas
-    return m.titulo?.toLowerCase().includes(termoBusca.toLowerCase());
-  })
-*/
-  if (listaModulos.length == 0 ) {
+  // A mensagem de vazio agora fica segura sem "piscar" na tela
+  if (listaModulos.length === 0) {
     return (
       <div className='text-center text-3xl mt-5'>
-          {termoBusca 
-            ? <p>Nenhum módulo encontrado para "{termoBusca}"</p>
-            : <p>Nenhum módulo criado ainda.</p>
-          }
+        {termoBusca
+          ? <p>Nenhum módulo encontrado para "{termoBusca}"</p>
+          : <p>Nenhum módulo criado ainda.</p>
+        }
       </div>
     )
   }
-/*
-  if (modulosFiltrados.length == 0 ) {
-    return (
-      <div className='text-center text-3xl'>
-        <p>Nenhum módulo encontrado para "{termoBusca}"</p>
-      </div>
 
-      
-    )
-  }
-*/
   return (
     <div>
-      {/* Renderiza os módulos da página atual */}
       {listaModulos.map((m) => (
         <GetModulo key={m.id_modulo} idModulo={m.id_modulo} />
       ))}
 
-      {/* 🔹 Controles de Paginação */}
       {totalPaginas > 1 && (
         <div className="flex justify-center items-center gap-4 mt-8 mb-8">
-          <button 
+          <button
             onClick={() => setPaginaAtual(prev => Math.max(prev - 1, 1))}
             disabled={paginaAtual === 1}
             className="px-4 py-2 bg-gray-200 text-black font-bold rounded-lg disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
           >
             Anterior
           </button>
-          
+
           <span className="font-semibold text-lg">
             Página {paginaAtual} de {totalPaginas}
           </span>
-          
-          <button 
+
+          <button
             onClick={() => setPaginaAtual(prev => Math.min(prev + 1, totalPaginas))}
             disabled={paginaAtual === totalPaginas}
             className="px-4 py-2 bg-gray-200 text-black font-bold rounded-lg disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"

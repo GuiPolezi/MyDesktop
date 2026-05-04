@@ -2,12 +2,17 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
-// https://vite.dev/config/
+
 export default defineConfig({
-  plugins: [react(), tailwindcss(),
+  plugins: [
+    react(), 
+    tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
-      injectRegister: 'auto', // Adicione isso para garantir a injeção do Service Worker
+      injectRegister: 'auto',
+      // ADICIONE ESTAS DUAS LINHAS ABAIXO:
+      outDir: 'dist',
+      manifestFilename: 'manifest.json', // Vamos forçar a ser um .json padrão
       manifest: {
         name: 'MyDesktop',
         short_name: 'MyDesk',
@@ -23,7 +28,6 @@ export default defineConfig({
         ]
       },
       workbox: {
-        // Não fazer cache das chamadas do Supabase
         navigateFallback: '/index.html',
         runtimeCaching: [
           {

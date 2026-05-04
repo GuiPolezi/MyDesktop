@@ -1,6 +1,13 @@
 <!doctype html>
 <html lang="pt-br">
   <head>
+    <script type="module">import { injectIntoGlobalHook } from "/@react-refresh";
+injectIntoGlobalHook(window);
+window.$RefreshReg$ = () => {};
+window.$RefreshSig$ = () => (type) => type;</script>
+
+    <script type="module" src="/@vite/client"></script>
+
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/src/assets/oldesk.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,7 +15,9 @@
     <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png" />
     <link rel="apple-touch-icon" href="/icons/icon-192.png" />
     <meta name="theme-color" content="#ffffff" />
-    <link rel="manifest" href="/manifest.webmanifest" />
+    
+    <link rel="manifest" href="/manifest.json" crossorigin="use-credentials" />
+    
     <title>My Desktop</title>
   </head>
   <body>
