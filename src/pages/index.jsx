@@ -44,7 +44,7 @@ export function Home() {
       {/* Container: Titulo Modulos e Input pesquisa */}
       <div className="grid grid-cols-1 ">
         <div className="flex flex-col items-center">
-          <h2 className='text-7xl font-black'>Módulos</h2>
+          <h2 className='text-7xl font-black dark:text-black'>Módulos</h2>
           <div className="line mt-5"></div>
           <div className="pesquisa  w-full mt-5">
             <form onSubmit={handlePesquisa} className='flex align-center justify-center gap-5 p-2'>
