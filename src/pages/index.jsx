@@ -90,7 +90,7 @@ const CARDS = [
     id: 2,
     label: "HelpDesk",
     icon: "✅",
-    color: "#283618",
+    color: "#425a26",
     ahref: "https://helpdeskbot.vercel.app/",
     pos: { default: { x: "180px", y: "80px" }, sm: { x: "0px", y: "-20px" } },
     depth: 1.1,
@@ -113,6 +113,16 @@ const CARDS = [
     ahref: "https://sys-out.vercel.app/",
     pos: { default: { x: "90px", y: "-120px" }, sm: { x: "0px", y: "50px" } },
     depth: 0.5,   // ← mais lento = mais "distante"
+
+  },
+   {
+    id: 5,
+    label: "SAC-Dash",
+    icon: "🧑‍💻",
+    color: "#000000",
+    ahref: "https://sac-dash.vercel.app/",
+    pos: { default: { x: "-90px", y: "100px" }, sm: { x: "40px", y: "80px" } },
+    depth: 2.0,   // ← mais lento = mais "distante"
 
   },
 ];
