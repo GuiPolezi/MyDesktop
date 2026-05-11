@@ -268,7 +268,7 @@ export function GetModulo({ idModulo }) {
             // Titulo modulo
             <div className="title  w-full max-w-lg">
               <div className='flex justify-between'>
-                <h2 className='text-5xl font-bold'>{modulo.titulo}</h2>
+                <h2 className='text-5xl dark:text-black font-bold'>{modulo.titulo}</h2>
                 {/* Botões de Gestão (Dono) */}
                 {usuarioLogado && usuarioLogado.id === modulo.criado_por_id && (
                   <div className='items-center flex gap-2 iconsManagementModule'>
