@@ -125,6 +125,16 @@ const CARDS = [
     depth: 2.0,   // ← mais lento = mais "distante"
 
   },
+  {
+    id: 6,
+    label: "QA Report Builder",
+    icon: "⚡​",
+    color: "#9c0062",
+    ahref: "https://qa-report-builder-xi.vercel.app/",
+    pos: { default: { x: "-90px", y: "180px" }, sm: { x: "-180px", y: "80px" } },
+    depth: 2.5,   // ← mais lento = mais "distante"
+
+  },
 ];
  
 // Hook de breakpoint
