@@ -151,7 +151,7 @@ const CARDS = [
     icon: "🎨",
     color: "#ffc9b9",
     ahref: "https://world-ing.vercel.app/",
-    pos: { default: { x: "0px", y: "-100px" }, sm: { x: "-90px", y: "-20px" } },
+    pos: { default: { x: "0px", y: "-100px" }, sm: { x: "90px", y: "-20px" } },
     depth: 1.2,   // ← mais lento = mais "distante"
 
   },
