@@ -48,7 +48,7 @@ export function Login() {
             value={email} 
             onChange={(e) => setEmail(e.target.value)} 
             required 
-            className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200"
+            className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-gray-50 text-gray-900 focus:bg-white focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200"
           />
         </div>
 
@@ -61,7 +61,7 @@ export function Login() {
             value={password} 
             onChange={(e) => setPassword(e.target.value)} 
             required 
-            className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200"
+            className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-gray-50 text-gray-900 focus:bg-white focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200"
           />
         </div>
 
