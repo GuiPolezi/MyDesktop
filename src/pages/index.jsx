@@ -141,7 +141,7 @@ const CARDS = [
     icon: "💰",
     color: "#104911",
     ahref: "https://moneybox-blue.vercel.app/",
-    pos: { default: { x: "0px", y: "10px" }, sm: { x: "-180px", y: "80px" } },
+    pos: { default: { x: "0px", y: "10px" }, sm: { x: "-50px", y: "80px" } },
     depth: 1.2,   // ← mais lento = mais "distante"
 
   },
