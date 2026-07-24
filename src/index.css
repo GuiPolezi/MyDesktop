@@ -1,17 +1,29 @@
 @import "tailwindcss";
 
-main {
-  background-color: #fefae0;
+/* ─────────────────────────────────────────────
+   MyDeskTop — Paleta "Charcoal & Leaf"
+   Fundo grafite escuro + verde natural (frutiger aero / iOS)
+   ───────────────────────────────────────────── */
+@theme {
+  --color-night: #1d2127;      /* fundo mais profundo */
+  --color-charcoal: #262b32;   /* fundo principal (print) */
+  --color-panel: #2d333c;      /* superfícies elevadas */
+  --color-mist: #e9ede7;       /* texto principal */
+  --color-fog: #9aa4a0;        /* texto secundário */
+  --color-leaf: #6fb152;       /* verde principal (print) */
+  --color-leaf-bright: #8cc46d;
+  --color-leaf-deep: #4a7a33;
+  --color-coral: #ff6b66;      /* ações destrutivas */
 }
 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  /*line-height: 1.5;*/
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI",
+    system-ui, Roboto, Helvetica, Arial, sans-serif;
   font-weight: 400;
-  
-  color-scheme: light;
-  color: #213547;
-  background-color: #ffffff;
+
+  color-scheme: dark;
+  color: var(--color-mist);
+  background-color: var(--color-charcoal);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -19,229 +31,323 @@ main {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Glow suave de "natureza" atrás de tudo (frutiger aero) */
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(1100px 600px at 85% -10%, rgba(111, 177, 82, 0.14), transparent 60%),
+    radial-gradient(900px 550px at 5% 110%, rgba(111, 177, 82, 0.09), transparent 55%),
+    var(--color-charcoal);
+  background-attachment: fixed;
+}
+
+main {
+  background-color: transparent;
+}
+
 a {
   font-weight: 500;
-  color: #646cff;
+  color: var(--color-leaf-bright);
   text-decoration: inherit;
+  transition: color 0.2s ease, opacity 0.2s ease;
 }
-/*
-a:hover {
-  color: #535bf2;
-}*/
-/*
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-*/
 
 button {
-  border-radius: 15px;
+  border-radius: 14px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #f9f9f9;
+  background-color: rgba(255, 255, 255, 0.06);
+  color: var(--color-mist);
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: background-color 0.25s ease, border-color 0.25s ease,
+    box-shadow 0.25s ease, transform 0.15s ease;
 }
-/*
-button:hover {
-  border-color: #646cff;
-}
-  */
+
 button:focus,
 button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  outline: 2px solid rgba(140, 196, 109, 0.6);
+  outline-offset: 2px;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #000000;
-    background-color: #ffffff;
-  }
-  /*a:hover {
-    color: #747bff;
-  }*/
-  button {
-    background-color: #f9f9f9;
-  }
+/* ── Componentes reutilizáveis ───────────────── */
+
+/* Painel de vidro (cards, formulários, modais) */
+.glass-card {
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 24px;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
-/*  Header */
+/* Botão principal verde com brilho */
+.btn-primary {
+  background: linear-gradient(145deg, var(--color-leaf-bright), var(--color-leaf-deep));
+  color: #ffffff;
+  border: none;
+  border-radius: 14px;
+  font-weight: 600;
+  box-shadow: 0 8px 20px rgba(111, 177, 82, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.btn-primary:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+  box-shadow: 0 12px 26px rgba(111, 177, 82, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+/* Botão secundário discreto (vidro) */
+.btn-ghost {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--color-mist);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  font-weight: 500;
+}
+
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Botão de perigo suave (estilo iOS) */
+.btn-danger {
+  background: rgba(255, 107, 102, 0.14);
+  color: var(--color-coral);
+  border: 1px solid rgba(255, 107, 102, 0.25);
+  border-radius: 14px;
+  font-weight: 600;
+}
+
+.btn-danger:hover {
+  background: rgba(255, 107, 102, 0.24);
+}
+
+/* Campos de formulário */
+.field {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  color: var(--color-mist);
+  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.field::placeholder {
+  color: rgba(233, 237, 231, 0.35);
+}
+
+.field:focus {
+  outline: none;
+  border-color: rgba(140, 196, 109, 0.65);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 3px rgba(111, 177, 82, 0.18);
+}
+
+select.field option {
+  background-color: var(--color-panel);
+  color: var(--color-mist);
+}
+
+/* ── Header ─────────────────────────────────── */
 .username {
   margin-left: 10px;
   font-weight: bolder;
- /* font-size: 64px;*/
- color: black;
+  color: var(--color-mist);
 }
 
 .buttonHeader {
-  background-color: #FF5353;
-  color: white;
+  background: rgba(255, 107, 102, 0.14);
+  color: var(--color-coral);
+  border: 1px solid rgba(255, 107, 102, 0.25);
+  border-radius: 999px;
+  font-weight: 600;
 }
 
 .buttonHeader:hover {
-  background-color: #ff535394;
+  background: rgba(255, 107, 102, 0.26);
 }
 
-/* Hero Section */ 
-
+/* ── Hero Section (layout original, paleta nova) ── */
 .heroTopic {
   font-weight: bolder;
-  opacity: 0.3;
+  opacity: 0.35;
   font-size: 20px;
   margin-bottom: 20px;
+  color: var(--color-leaf-bright);
 }
 
-
-
 .buttonDaily {
-  background-color: black;
-  color: white;
+  background-color: var(--color-night);
+  color: var(--color-mist);
   border-radius: 15px;
   text-align: center;
   font-size: 32px;
-  box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 3px 8px 0px;
   margin-bottom: 15px;
 }
 
 .buttonDaily:hover {
-  background-color: rgba(0, 0, 0, 0.342);
+  background-color: rgba(29, 33, 39, 0.6);
 }
 
 .buttonHelp {
-  background-color: #405726;
+  background: linear-gradient(145deg, var(--color-leaf), var(--color-leaf-deep));
   color: white;
   border-radius: 15px;
   text-align: center;
   font-size: 32px;
-  box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 3px 8px 0px;
   margin-bottom: 15px;
 }
 
 .buttonHelp:hover {
-  background-color: #606c38;
+  filter: brightness(1.1);
 }
 
 .descHero {
-  font-size: 14px
+  font-size: 14px;
 }
 
 .mydesktop {
-  color: black;
+  color: var(--color-leaf);
   text-transform: uppercase;
   font-weight: 900;
-  cursor:pointer;
+  cursor: pointer;
 }
 
-/* Módulos section */
-/*
-.modulos {
-  height: 100vh;
-}
-*/
+/* ── Seção de Módulos ───────────────────────── */
 .modulos .line {
-  border-bottom: 2px solid;
+  border-bottom: 2px solid var(--color-leaf);
   width: 100px;
-  opacity: 0.3;
+  opacity: 0.5;
+  border-radius: 2px;
 }
 
 .modulos .pesquisa input {
-  border: 2px solid;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-mist);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.modulos .pesquisa input::placeholder {
+  color: rgba(233, 237, 231, 0.35);
+}
+
+.modulos .pesquisa input:focus {
+  outline: none;
+  border-color: rgba(140, 196, 109, 0.65);
+  box-shadow: 0 0 0 3px rgba(111, 177, 82, 0.18);
 }
 
 .createModuleLink:hover {
-  opacity: 0.5;
+  opacity: 0.6;
 }
 
-/* Modulos - Estilos da Função getModulo */
-
-/* Estilização da coluna da esquerda - Modulo titulo e descrição, botões e submodulos */
+/* Módulos - ícones de gestão */
 .iconsManagementModule {
   font-size: 20px;
-  color: gray;
+  color: var(--color-fog);
 }
 
 .iconsManagementModule .buttonDelete:hover {
-  color: red;
+  color: var(--color-coral);
 }
 
 .iconsManagementModule button:hover {
-  color: #606c38;
+  color: var(--color-leaf-bright);
 }
 
 .linksModule .linksCreate {
-  color: #606c38;
+  color: var(--color-leaf-bright);
 }
 
 .linksModule .linksCreate:hover {
-  opacity: 0.5;
+  opacity: 0.6;
 }
 
-/*  Estilo da listagem de submodulos*/
+/* Listagem de submódulos */
 .buttonsSubmodule {
   font-size: 12px;
 }
 
-.buttonsSubmodule button{
-  color: gray;
+.buttonsSubmodule button {
+  color: var(--color-fog);
   background: none;
+  border: none;
   padding: 4px;
 }
 
 .buttonsSubmodule button:hover {
-  color: #606c38;
+  color: var(--color-leaf-bright);
 }
 
 .buttonsSubmodule .buttonSubmoduleDelete:hover {
-  color: red;
+  color: var(--color-coral);
 }
 
-
-
-/* Cards - Estilo da coluna CARDS modulo */
+/* Cards do módulo */
 .buttonModalCard {
-  background-color: #606c38;
-  color: #fefae0;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
-  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-mist);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-left: 3px solid var(--color-leaf);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
+  border-radius: 16px;
+  font-weight: 600;
 }
 
+.buttonModalCard:hover {
+  background: rgba(111, 177, 82, 0.14);
+  border-color: rgba(140, 196, 109, 0.4);
+  transform: translateY(-2px);
+}
 
-/* Estilos da Página - Minhas Equipes */
-
+/* ── Página Minhas Equipes ──────────────────── */
 .homePageLink:hover {
-  opacity: 0.5;
+  opacity: 0.6;
 }
 
-/* Estilo da Área da Equipe */
 .pesquisaEquipe input {
-  border: 1px solid;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 15px;
-
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-mist);
 }
 
-/* Estilo da página do submodulo */
+.pesquisaEquipe input::placeholder {
+  color: rgba(233, 237, 231, 0.35);
+}
+
+.pesquisaEquipe input:focus {
+  outline: none;
+  border-color: rgba(140, 196, 109, 0.65);
+  box-shadow: 0 0 0 3px rgba(111, 177, 82, 0.18);
+}
+
+/* Página do submódulo */
 .createCardSub {
-  color: #606c38;
+  color: var(--color-leaf-bright);
   font-weight: bold;
 }
 
 .createCardSub:hover {
-  opacity: 0.5;
+  opacity: 0.6;
 }
-
-/* Atualizações */
 
 /* Menu para acesso RemindMe */
 .ballon-menu {
-  background-color: #111;
-  border-radius: 10px;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  background: rgba(29, 33, 39, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
 }

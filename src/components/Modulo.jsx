@@ -35,15 +35,15 @@ export function CriarModulo() {
 
   return (
     // Fundo da página e centralização (ideal caso seja uma página isolada)
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 flex justify-center">
+    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 flex justify-center">
 
       {/* Card do Formulário */}
-      <div className="w-full max-w-2xl bg-white rounded-2xl shadow-lg p-8 border border-gray-100 h-fit">
+      <div className="w-full max-w-2xl glass-card p-8 h-fit">
 
         {/* Cabeçalho */}
-        <div className="mb-8 border-b border-gray-100 pb-5">
-          <h2 className="text-3xl font-extrabold text-gray-800">Criar Novo Módulo</h2>
-          <p className="text-gray-500 mt-2 text-sm">
+        <div className="mb-8 border-b border-white/10 pb-5">
+          <h2 className="text-3xl font-extrabold text-mist">Criar Novo Módulo</h2>
+          <p className="text-fog mt-2 text-sm">
             Preencha os detalhes abaixo para estruturar uma nova categoria no sistema.
           </p>
         </div>
@@ -52,8 +52,8 @@ export function CriarModulo() {
 
           {/* Campo: Título */}
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Título do Módulo <span className="text-red-500">*</span>
+            <label className="block text-sm font-semibold text-gray-300 mb-2">
+              Título do Módulo <span className="text-coral">*</span>
             </label>
             <input
               type="text"
@@ -61,13 +61,13 @@ export function CriarModulo() {
               value={titulo}
               onChange={e => setTitulo(e.target.value)}
               required
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200"
+              className="field px-4 py-3"
             />
           </div>
 
           {/* Campo: Descrição (Agora usando textarea) */}
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
+            <label className="block text-sm font-semibold text-gray-300 mb-2">
               Descrição
             </label>
             <textarea
@@ -75,7 +75,7 @@ export function CriarModulo() {
               value={descricao}
               onChange={e => setDescricao(e.target.value)}
               rows="3"
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200 resize-none"
+              className="field px-4 py-3 resize-none"
             />
           </div>
 
@@ -85,7 +85,7 @@ export function CriarModulo() {
             {/* Botão Cancelar */}
             <Link
               to="/"
-              className="px-6 py-3 text-gray-600 font-medium rounded-lg hover:bg-gray-100 transition-colors"
+              className="px-6 py-3 text-fog font-medium rounded-lg hover:bg-white/10 transition-colors"
             >
               Cancelar
             </Link>
@@ -94,8 +94,7 @@ export function CriarModulo() {
             <button
               type="submit"
               disabled={loading}
-              className="text-white font-semibold py-3 px-8 rounded-lg transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed shadow-md hover:shadow-lg flex items-center justify-center"
-              style={{ backgroundColor: '#283618' }}
+              className="btn-primary py-3 px-8 transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center"
             >
               {loading ? (
                 <span className="flex items-center gap-2">
@@ -239,27 +238,31 @@ export function GetModulo({ idModulo }) {
                 type="text"
                 value={novoTitulo}
                 onChange={(e) => setNovoTitulo(e.target.value)}
-                style={{ display: 'block', width: '100%', padding: '8px', marginBottom: '10px', border: '1px solid', borderRadius: '10px', backgroundColor: 'white' }}
+                className="field"
+                style={{ display: 'block', width: '100%', padding: '8px', marginBottom: '10px' }}
               />
 
               <label style={{ display: 'block', fontWeight: 'bold' }}>Descrição:</label>
               <textarea
                 value={novaDescricao}
                 onChange={(e) => setNovaDescricao(e.target.value)}
-                style={{ display: 'block', width: '100%', padding: '8px', height: '80px', marginBottom: '10px', border: '1px solid', borderRadius: '10px', backgroundColor: 'white' }}
+                className="field"
+                style={{ display: 'block', width: '100%', padding: '8px', height: '80px', marginBottom: '10px' }}
               />
 
               <button
                 onClick={handleSalvarEdicao}
                 disabled={salvando}
-                style={{ backgroundColor: '#606c38', color: 'white', padding: '8px 15px', border: 'none', cursor: 'pointer', marginRight: '10px' }}
+                className="btn-primary"
+                style={{ padding: '8px 15px', cursor: 'pointer', marginRight: '10px' }}
               >
                 {salvando ? "Salvando..." : "Salvar Alterações"}
               </button>
 
               <button
                 onClick={() => setEditando(null)}
-                style={{ padding: '8px 15px', cursor: 'pointer', backgroundColor: 'red', color: 'white' }}
+                className="btn-danger"
+                style={{ padding: '8px 15px', cursor: 'pointer' }}
               >
                 Cancelar
               </button>
@@ -268,7 +271,7 @@ export function GetModulo({ idModulo }) {
             // Titulo modulo
             <div className="title  w-full max-w-lg">
               <div className='flex justify-between'>
-                <h2 className='text-5xl dark:text-black font-bold'>{modulo.titulo}</h2>
+                <h2 className='text-5xl text-mist font-bold'>{modulo.titulo}</h2>
                 {/* Botões de Gestão (Dono) */}
                 {usuarioLogado && usuarioLogado.id === modulo.criado_por_id && (
                   <div className='items-center flex gap-2 iconsManagementModule'>
@@ -398,7 +401,7 @@ export function LoopModule({ termoBusca = '' }) {
 
   if (loading) {
     return (
-      <div className='text-center text-xl mt-10 font-medium text-gray-500'>
+      <div className='text-center text-xl mt-10 font-medium text-fog'>
         Buscando módulos...
       </div>
     )
@@ -427,7 +430,7 @@ export function LoopModule({ termoBusca = '' }) {
           <button
             onClick={() => setPaginaAtual(prev => Math.max(prev - 1, 1))}
             disabled={paginaAtual === 1}
-            className="px-4 py-2 bg-gray-200 text-black font-bold rounded-lg disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
+            className="btn-ghost px-4 py-2 font-bold disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
           >
             Anterior
           </button>
@@ -439,7 +442,7 @@ export function LoopModule({ termoBusca = '' }) {
           <button
             onClick={() => setPaginaAtual(prev => Math.min(prev + 1, totalPaginas))}
             disabled={paginaAtual === totalPaginas}
-            className="px-4 py-2 bg-gray-200 text-black font-bold rounded-lg disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
+            className="btn-ghost px-4 py-2 font-bold disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
           >
             Próxima
           </button>

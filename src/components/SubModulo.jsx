@@ -44,64 +44,64 @@ export function CriarSubModulo() {
 
   return (
     // Fundo da página e alinhamento
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 flex justify-center">
-      
+    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 flex justify-center">
+
       {/* Card do Formulário com uma borda superior de destaque para diferenciar da criação de Módulos */}
-      <div className="w-full max-w-2xl bg-white rounded-2xl shadow-lg p-8 border border-gray-100 border-t-4 h-fit" style={{ borderTopColor: '#283618' }}>
-        
+      <div className="w-full max-w-2xl glass-card p-8 border-t-4 h-fit" style={{ borderTopColor: '#6fb152' }}>
+
         {/* Cabeçalho */}
-        <div className="mb-8 border-b border-gray-100 pb-5">
+        <div className="mb-8 border-b border-white/10 pb-5">
           {/* Badges de Identificação (Evita a confusão do usuário) */}
           <div className="flex items-center gap-3 mb-3">
-            <span className="bg-gray-800 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+            <span className="bg-leaf-deep text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
               Submódulo
             </span>
-            <span className="text-sm font-medium" style={{ color: '#283618' }}>
+            <span className="text-sm font-medium text-leaf-bright">
               Vinculado ao Módulo #{idModulo}
             </span>
           </div>
-          
-          <h2 className="text-3xl font-extrabold text-gray-800">Criar Nova Seção</h2>
-          <p className="text-gray-500 mt-2 text-sm">
+
+          <h2 className="text-3xl font-extrabold text-mist">Criar Nova Seção</h2>
+          <p className="text-fog mt-2 text-sm">
             Adicione um submódulo para dividir e organizar o conteúdo do módulo principal de forma mais específica.
           </p>
         </div>
 
         <form onSubmit={handleCriar} className="flex flex-col gap-6">
-          
+
           {/* Campo: Título */}
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Título do Submódulo <span className="text-red-500">*</span>
+            <label className="block text-sm font-semibold text-gray-300 mb-2">
+              Título do Submódulo <span className="text-coral">*</span>
             </label>
-            <input 
+            <input
               type="text"
-              placeholder="Ex: Aula 01 - Introdução" 
-              value={titulo} 
-              onChange={e => setTitulo(e.target.value)} 
-              required 
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200"
+              placeholder="Ex: Aula 01 - Introdução"
+              value={titulo}
+              onChange={e => setTitulo(e.target.value)}
+              required
+              className="field px-4 py-3"
             />
           </div>
 
           {/* Campo: Descrição (Convertido para Textarea para melhor usabilidade) */}
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
+            <label className="block text-sm font-semibold text-gray-300 mb-2">
               Descrição
             </label>
-            <textarea 
-              placeholder="Descreva o que será abordado neste submódulo..." 
-              value={descricao} 
-              onChange={e => setDescricao(e.target.value)} 
+            <textarea
+              placeholder="Descreva o que será abordado neste submódulo..."
+              value={descricao}
+              onChange={e => setDescricao(e.target.value)}
               rows="3"
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200 resize-none"
+              className="field px-4 py-3 resize-none"
             />
           </div>
 
           {/* Rodapé com Botões */}
           <div className="pt-6 flex justify-end items-center gap-4 mt-2">
-            
-            <button type='button' onClick={() => navigate(-1)} className="px-6 py-3 text-gray-600 font-medium rounded-lg hover:bg-gray-100 transition-colors">
+
+            <button type='button' onClick={() => navigate(-1)} className="px-6 py-3 text-fog font-medium rounded-lg hover:bg-white/10 transition-colors">
               Cancelar
             </button>
             {/* Botão Cancelar (Volta para a Home) 
@@ -113,11 +113,10 @@ export function CriarSubModulo() {
             </Link>
             */}
             {/* Botão Salvar com Loader */}
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               disabled={loading}
-              className="text-white font-semibold py-3 px-8 rounded-lg transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed shadow-md hover:shadow-lg flex items-center justify-center"
-              style={{ backgroundColor: '#283618' }}
+              className="btn-primary py-3 px-8 transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center"
             >
               {loading ? (
                 <span className="flex items-center gap-2">
@@ -254,16 +253,17 @@ export function GetSubModulo({idModulo}) {
 
             {editando === sub.id_submodulo ? (
               <div>
-                  <input 
-                  value={novoTitulo} 
+                  <input
+                  value={novoTitulo}
                   onChange={(e) => setNovoTitulo(e.target.value)}
-                  style={{ display: 'block', marginBottom: '5px', width: '100%', border: '1px solid', borderRadius: '10px', padding: '3px', backgroundColor: 'white' }}
+                  className="field"
+                  style={{ display: 'block', marginBottom: '5px', width: '100%', padding: '3px' }}
                   />
 
-                <button onClick={handleSalvarEdicao} disabled={salvando} style={{ color: 'white', marginRight: '10px', backgroundColor: '#606c38' }}>
+                <button onClick={handleSalvarEdicao} disabled={salvando} className="btn-primary" style={{ marginRight: '10px' }}>
                   {salvando ? "Salvando..." : "Salvar"}
                 </button>
-                <button onClick={() => setEditando(null)} style={{backgroundColor:'red', color: 'white'}}>Cancelar</button>
+                <button onClick={() => setEditando(null)} className="btn-danger">Cancelar</button>
               </div>
               
             ): (

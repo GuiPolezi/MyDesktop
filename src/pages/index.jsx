@@ -44,7 +44,7 @@ export function Home() {
       {/* Container: Titulo Modulos e Input pesquisa */}
       <div className="grid grid-cols-1 ">
         <div className="flex flex-col items-center">
-          <h2 className='text-7xl font-black dark:text-black'>Módulos</h2>
+          <h2 className='text-7xl font-black text-mist'>Módulos</h2>
           <div className="line mt-5"></div>
           <div className="pesquisa  w-full mt-5">
             <form onSubmit={handlePesquisa} className='flex align-center justify-center gap-5 p-2'>
@@ -52,14 +52,14 @@ export function Home() {
                 Nome
               </p>
               <input className='w-full p-1 max-w-md' type="text" placeholder='Digite o nome do módulo' value={termoBusca} onChange={(e) => setTermoBusca(e.target.value)}/>
-              <button className='text-center' style={{backgroundColor: '#283618'}}>
+              <button className='text-center btn-primary'>
                 <svg className="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 16">
                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3"/>
                 </svg>
               </button>
             </form>
           </div>
-          <Link to="/criarmodulo" className='createModuleLink mt-10 text-2xl' style={{color: '#283618'}}>Criar Modulo</Link>
+          <Link to="/criarmodulo" className='createModuleLink mt-10 text-2xl text-leaf-bright'>Criar Modulo</Link>
         </div>
 
       </div>
@@ -81,7 +81,7 @@ const CARDS = [
     id: 1,
     label: "DailyWorkout",
     icon: "🏋️",
-    color: "#606c38",
+    color: "#6fb152",
     ahref: "https://daily-checkout-team.vercel.app/",
     pos: { default: { x: "-180px", y: "0px" }, sm: { x: "0px", y: "-130px" } },
     depth: 1.4,   // ← mais rápido = mais "próximo" do usuário
@@ -90,7 +90,7 @@ const CARDS = [
     id: 2,
     label: "HelpDesk",
     icon: "✅",
-    color: "#425a26",
+    color: "#4a7a33",
     ahref: "https://helpdeskbot.vercel.app/",
     pos: { default: { x: "180px", y: "80px" }, sm: { x: "0px", y: "-20px" } },
     depth: 1.1,
@@ -119,7 +119,7 @@ const CARDS = [
     id: 5,
     label: "SAC-Dash",
     icon: "🧑‍💻",
-    color: "#000000",
+    color: "#e9ede7",
     ahref: "https://sac-dash.vercel.app/",
     pos: { default: { x: "-90px", y: "100px" }, sm: { x: "40px", y: "80px" } },
     depth: 2.0,   // ← mais lento = mais "distante"
@@ -199,7 +199,7 @@ export function HeroSection() {
         .timeline({ paused: true })
         .to(".mydesktop p", {
           opacity: 0.2,
-          color: "#606c38",
+          color: "#8cc46d",
           cursor: 'default',
           duration: 0.35,
           ease: "power2.out",
@@ -326,7 +326,7 @@ export function HeroSection() {
             <GetNameUser />
           </div>
           <div className="col-span-2 md:col-span-1 gap-5 flex justify-end">
-            <Link to="/equipes" className="self-center" style={{ color: "#606c38", opacity: "0.5" }}>
+            <Link to="/equipes" className="self-center text-leaf-bright opacity-70 hover:opacity-100 transition-opacity">
               Equipes
             </Link>
             <Logout />
@@ -384,10 +384,13 @@ export function HeroSection() {
                 style={{
                   position: "absolute",
                   transform: "translate(-50%, -50%)", // centraliza no ponto âncora
-                  background: "#fff",
+                  background: "rgba(45, 51, 60, 0.85)",
+                  backdropFilter: "blur(14px)",
+                  WebkitBackdropFilter: "blur(14px)",
+                  border: "1px solid rgba(255,255,255,0.12)",
                   borderRadius: "16px",
                   padding: isMobile ? "12px 16px" : "20px 28px",  // responsivo
-                  boxShadow: "0 8px 32px rgba(0,0,0,0.18)",
+                  boxShadow: "0 8px 32px rgba(0,0,0,0.35)",
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
@@ -398,7 +401,7 @@ export function HeroSection() {
                   borderTop: `4px solid ${card.color}`,
                   fontSize: isMobile ? "0.7rem" : "1rem",          // responsivo
                   fontWeight: 600,
-                  color: "#283618",
+                  color: "#e9ede7",
                   willChange: "transform", // hint GPU para parallax suave
                   transition: "box-shadow 0.2s",
                   // sombra mais profunda para cards com maior depth (efeito z)
@@ -406,10 +409,10 @@ export function HeroSection() {
                   pointerEvents: "none", // GSAP ativa via timeline
                 }}
                 onMouseEnter={(e) =>
-                  (e.currentTarget.style.boxShadow = "0 12px 40px rgba(0, 0, 0, 0.68)")
+                  (e.currentTarget.style.boxShadow = "0 12px 40px rgba(111, 177, 82, 0.35)")
                 }
                 onMouseLeave={(e) =>
-                  (e.currentTarget.style.boxShadow = "0 8px 32px rgba(0,0,0,0.18)")
+                  (e.currentTarget.style.boxShadow = "0 8px 32px rgba(0,0,0,0.35)")
                 }
               >
                 <span style={{ fontSize: isMobile ? "1.4rem" : "2rem" }}>

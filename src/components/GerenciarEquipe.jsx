@@ -27,32 +27,32 @@ export function CriarEquipe() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 flex justify-center">
-      <div className="w-full max-w-lg bg-white rounded-2xl shadow-lg p-8 h-fit border border-gray-100">
-        <h2 className="text-3xl font-extrabold text-gray-800 mb-2">Nova Equipe</h2>
-        <p className="text-gray-500 text-sm mb-6">Crie um espaço de trabalho colaborativo.</p>
-        
+    <div className="min-h-screen py-12 px-4 flex justify-center">
+      <div className="w-full max-w-lg glass-card p-8 h-fit">
+        <h2 className="text-3xl font-extrabold text-mist mb-2">Nova Equipe</h2>
+        <p className="text-fog text-sm mb-6">Crie um espaço de trabalho colaborativo.</p>
+
         <form onSubmit={handleCriar} className="flex flex-col gap-6">
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Nome da Equipe *</label>
-            <input 
-              type="text" 
+            <label className="block text-sm font-semibold text-gray-300 mb-2">Nome da Equipe *</label>
+            <input
+              type="text"
               placeholder="Ex: Time de Marketing"
-              value={nome} 
-              onChange={e => setNome(e.target.value)} 
-              required 
-              className="w-full px-4 py-3 rounded-lg border bg-gray-50 focus:bg-white transition-all"
+              value={nome}
+              onChange={e => setNome(e.target.value)}
+              required
+              className="field px-4 py-3"
             />
           </div>
 
           <div className="pt-4 flex justify-end gap-4">
-            <Link to="/equipes" className="px-6 py-3 text-gray-600 font-medium hover:bg-gray-100 rounded-lg">
+            <Link to="/equipes" className="px-6 py-3 text-fog font-medium hover:bg-white/10 rounded-lg">
               Cancelar
             </Link>
-            <button 
-              type="submit" 
-              disabled={loading} 
-              className="bg-[#283618] text-black font-semibold py-3 px-8 rounded-lg shadow-md"
+            <button
+              type="submit"
+              disabled={loading}
+              className="btn-primary py-3 px-8"
             >
               {loading ? 'Criando...' : 'Criar Equipe'}
             </button>
@@ -113,28 +113,28 @@ export function MembrosEquipe() {
   if (loading) return <div className="p-8 text-center">Carregando membros...</div>;
 
   return (
-    <div className="p-8 mx-auto min-h-screen" style={{backgroundColor: '#fefae0'}}>
-      
+    <div className="p-8 mx-auto min-h-screen">
+
       {/* Cabeçalho e Navegação */}
-      <div className="flex justify-between items-center mb-8 border-b pb-4">
+      <div className="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
         <div>
-          <h1 className="text-3xl font-bold">Membros da Equipe</h1>
-          <Link to={`/equipe/${idEquipe}`} className="text-blue-600 hover:underline text-sm mt-2 inline-block">
+          <h1 className="text-3xl font-bold text-mist">Membros da Equipe</h1>
+          <Link to={`/equipe/${idEquipe}`} className="text-leaf-bright hover:underline text-sm mt-2 inline-block">
             &larr; Voltar para os Módulos da Equipe
           </Link>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        
+
         {/* Formulário para Convidar novos membros */}
-        <div className="col-span-1 bg-white p-6 rounded-xl border border-gray-100 shadow-sm h-fit">
-          <h3 className="text-lg font-bold mb-4">Convidar Membro</h3>
+        <div className="col-span-1 glass-card p-6 h-fit">
+          <h3 className="text-lg font-bold text-mist mb-4">Convidar Membro</h3>
           <form onSubmit={handleAdicionarMembro} className="flex flex-col gap-4">
-            <select 
-              value={usuarioSelecionado} 
+            <select
+              value={usuarioSelecionado}
               onChange={e => setUsuarioSelecionado(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg"
+              className="field px-4 py-2"
               required
             >
               <option value="">Selecione um usuário...</option>
@@ -144,11 +144,11 @@ export function MembrosEquipe() {
                 </option>
               ))}
             </select>
-            
-            <button 
-              type="submit" 
+
+            <button
+              type="submit"
               disabled={adicionando || !usuarioSelecionado}
-              className="bg-[#283618] text-black py-2 rounded-lg font-semibold disabled:opacity-50"
+              className="btn-primary py-2 disabled:opacity-50"
             >
               {adicionando ? 'Enviando...' : 'Enviar Convite'}
             </button>
@@ -156,21 +156,21 @@ export function MembrosEquipe() {
         </div>
 
         {/* Lista de membros atuais */}
-        <div className="col-span-2 bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
-          <h3 className="text-lg font-bold mb-4">Integrantes ({membros.length})</h3>
-          
+        <div className="col-span-2 glass-card p-6">
+          <h3 className="text-lg font-bold text-mist mb-4">Integrantes ({membros.length})</h3>
+
           <div className="flex flex-col gap-3">
             {membros.map(membro => (
-              <div key={membro.id_user} className="flex justify-between items-center p-4 border rounded-lg bg-gray-50">
+              <div key={membro.id_user} className="flex justify-between items-center p-4 border border-white/10 rounded-lg bg-white/5">
                 <div>
-                  <p className="font-bold text-gray-800">{membro.nome}</p>
-                  <p className="text-sm text-gray-500">{membro.email}</p>
+                  <p className="font-bold text-mist">{membro.nome}</p>
+                  <p className="text-sm text-fog">{membro.email}</p>
                 </div>
                 {/* 🔹 Estilização dinâmica baseada no status */}
                 <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                  membro.status === 'pendente' 
-                    ? 'bg-yellow-100 text-yellow-800' 
-                    : 'bg-green-100 text-green-800'
+                  membro.status === 'pendente'
+                    ? 'bg-amber-400/15 text-amber-300'
+                    : 'bg-leaf/20 text-leaf-bright'
                 }`}>
                   {membro.status === 'pendente' ? 'Aguardando Aceite' : 'Aceito'}
                 </span>
@@ -286,7 +286,7 @@ export function LoopModuleEquipe({ idEquipe, termoBusca = ''}) {
           <button 
             onClick={() => setPaginaAtual(prev => Math.max(prev - 1, 1))}
             disabled={paginaAtual === 1}
-            className="px-4 py-2 bg-gray-200 text-black font-bold rounded-lg disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
+            className="btn-ghost px-4 py-2 font-bold disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
           >
             Anterior
           </button>
@@ -298,7 +298,7 @@ export function LoopModuleEquipe({ idEquipe, termoBusca = ''}) {
           <button 
             onClick={() => setPaginaAtual(prev => Math.min(prev + 1, totalPaginas))}
             disabled={paginaAtual === totalPaginas}
-            className="px-4 py-2 bg-gray-200 text-black font-bold rounded-lg disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
+            className="btn-ghost px-4 py-2 font-bold disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
           >
             Próxima
           </button>
