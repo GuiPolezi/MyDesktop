@@ -161,7 +161,7 @@ const CARDS = [
     icon: "📓",
     color: "#ffc9b9",
     ahref: "https://journaling-codex.vercel.app/",
-    pos: { default: { x: "120px", y: "180px" }, sm: { x: "50px", y: "140px" } },
+    pos: { default: { x: "120px", y: "180px" }, sm: { x: "70px", y: "180px" } },
     depth: 1.2,   // ← mais lento = mais "distante"
 
   },
