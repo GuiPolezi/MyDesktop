@@ -155,6 +155,16 @@ const CARDS = [
     depth: 1.2,   // ← mais lento = mais "distante"
 
   },
+  {
+    id: 8,
+    label: "Journaling",
+    icon: "📓",
+    color: "#ffc9b9",
+    ahref: "https://journaling-codex.vercel.app/",
+    pos: { default: { x: "120px", y: "180px" }, sm: { x: "-250px", y: "80px" } },
+    depth: 1.2,   // ← mais lento = mais "distante"
+
+  },
 ];
  
 // Hook de breakpoint
