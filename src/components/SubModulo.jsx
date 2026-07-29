@@ -269,7 +269,7 @@ export function GetSubModulo({idModulo}) {
             ): (
               <div className='flex'>
                 
-                <Link to={`/submodulo/${sub.id_submodulo}`}>{sub.titulo} | </Link>
+                <Link className='titlesubmodule' to={`/submodulo/${sub.id_submodulo}`}>{sub.titulo} | </Link>
                 {/*
                 <a href="#" className='flex items-center text-2xl' key={sub.id_submodulo}>{sub.titulo} | </a>
                 <li key={sub.id_submodulo} style={{ marginBottom: '8px' }} className='listSubModules'>

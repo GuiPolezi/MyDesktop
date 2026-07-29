@@ -272,6 +272,10 @@ select.field option {
 }
 
 /* Listagem de submódulos */
+.titlesubmodule:hover {
+  opacity: 0.3;
+}
+
 .buttonsSubmodule {
   font-size: 12px;
 }
