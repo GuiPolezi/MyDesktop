@@ -457,10 +457,10 @@ export function GetCardsModule({idModulo}) {
                       // --- MODO VISUALIZAÇÃO ---
                       <>
                         {/* Cabeçalho Visualização (Fixo) */}
-                        <div className="flex-shrink-0 flex justify-between items-center px-6 py-5 border-b border-white/10 bg-white/5">
-                          <h3 className="text-2xl font-extrabold text-mist pr-4 break-words">{cardSelecionado.titulo}</h3>
+                        <div className="flex-shrink-0 flex justify-between items-start gap-4 px-6 py-5 border-b border-white/10 bg-white/5">
+                          <h3 className="flex-1 min-w-0 text-xl md:text-2xl font-extrabold text-mist leading-tight break-words [overflow-wrap:anywhere] max-h-[30vh] overflow-y-auto" title={cardSelecionado.titulo}>{cardSelecionado.titulo}</h3>
                           <button 
-                            className="text-gray-400 hover:text-white hover:bg-white/10 transition-colors text-2xl font-bold w-10 h-10 flex items-center justify-center rounded-full flex-shrink-0" 
+                            className="text-gray-400 hover:text-white hover:bg-white/10 transition-colors text-2xl font-bold w-10 h-10 flex items-center justify-center rounded-full flex-shrink-0 -mt-1 -mr-2" aria-label="Fechar" 
                             onClick={() => setCardSelecionado(null)}
                           >
                             &times;
@@ -800,10 +800,10 @@ export function GetCardsSubModule({idSubModulo}) {
               // Modo visualização
               <>
                 {/* Cabeçalho Visualização (Fixo) */}
-                        <div className="flex-shrink-0 flex justify-between items-center px-6 py-5 border-b border-white/10 bg-white/5">
-                          <h3 className="text-2xl font-extrabold text-mist pr-4 break-words">{cardSelecionado.titulo}</h3>
+                        <div className="flex-shrink-0 flex justify-between items-start gap-4 px-6 py-5 border-b border-white/10 bg-white/5">
+                          <h3 className="flex-1 min-w-0 text-xl md:text-2xl font-extrabold text-mist leading-tight break-words [overflow-wrap:anywhere] max-h-[30vh] overflow-y-auto" title={cardSelecionado.titulo}>{cardSelecionado.titulo}</h3>
                           <button 
-                            className="text-gray-400 hover:text-white hover:bg-white/10 transition-colors text-2xl font-bold w-10 h-10 flex items-center justify-center rounded-full flex-shrink-0" 
+                            className="text-gray-400 hover:text-white hover:bg-white/10 transition-colors text-2xl font-bold w-10 h-10 flex items-center justify-center rounded-full flex-shrink-0 -mt-1 -mr-2" aria-label="Fechar" 
                             onClick={() => setCardSelecionado(null)}
                           >
                             &times;
