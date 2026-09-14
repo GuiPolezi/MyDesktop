@@ -5,6 +5,26 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from '../services/supabase'; // Importe a instância do supabase para pegar o usuário
 import { Link } from 'react-router-dom'
 
+// Grade de cards (módulo e submódulo). O visual do card fica em .cardsGrid / .buttonModalCard no index.css
+function CardsGrid({ cards, onSelecionar }) {
+  return (
+    <ul className='cardsGrid mb-30'>
+      {cards.map((card) => (
+        <li key={card.id_card} className='min-w-0'>
+          <button
+            type='button'
+            onClick={() => onSelecionar(card)}
+            className='buttonModalCard'
+            title={card.titulo}
+          >
+            <span className='cardTitle'>{card.titulo}</span>
+          </button>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
 export function CriarCards() {
     const { idModulo, idSubModulo } = useParams();
     const navigate = useNavigate(); // 🔹 hook para redirecionar
@@ -210,10 +230,10 @@ export function GetCardsModule({idModulo}) {
     carregarCardsModule()
   }, [idModulo]) // Recarrega se o ID do módulo mudar
 
-  if (loading) return <p>Carregando Cards...</p>
+  if (loading) return <p className='text-fog text-sm font-medium'>Carregando Cards...</p>
 
   if (cardmodule.length == 0) {
-    return <p>Nenhum card encontrado</p>
+    return <p className='text-fog text-sm font-medium'>Nenhum card encontrado</p>
   }
 
   // Excluindo Card module
@@ -336,15 +356,7 @@ export function GetCardsModule({idModulo}) {
 
   return (
     <section>
-      <ul className='flex gap-5 mb-30 items-center flex-wrap'>
-        {cardmodule.map((card) => (
-            <li key={card.id_card}>
-              <button onClick={() => setCardSelecionado(card)} className='buttonModalCard w-full md:w-48 h-12 md:h-20'>{card.titulo}</button>
-            
-            </li>
-        ))}
-        
-      </ul>
+      <CardsGrid cards={cardmodule} onSelecionar={setCardSelecionado} />
       {cardSelecionado && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
   
@@ -568,10 +580,10 @@ export function GetCardsSubModule({idSubModulo}) {
     carregarCardsSubModule()
   }, [idSubModulo]) // Recarrega se o ID do módulo mudar
 
-   if (loading) return <p>Carregando Cards de Submodulos...</p>
+   if (loading) return <p className='text-fog text-sm font-medium'>Carregando Cards de Submódulos...</p>
 
    if (cardsubmodule.length == 0) {
-    return <p>Nenhum card encontrado</p>
+    return <p className='text-fog text-sm font-medium'>Nenhum card encontrado</p>
    }
 
    // Excluindo Card Submodule
@@ -691,15 +703,7 @@ export function GetCardsSubModule({idSubModulo}) {
 
   return (
     <section>
-       <ul className='flex gap-5 mb-30 items-center flex-wrap'>
-        {cardsubmodule.map((card) => (
-            <li key={card.id_card}>
-              <button onClick={() => setCardSelecionado(card)} className='buttonModalCard w-full md:w-48 h-12 md:h-20'>{card.titulo}</button>
-            
-            </li>
-        ))}
-        
-      </ul>
+       <CardsGrid cards={cardsubmodule} onSelecionar={setCardSelecionado} />
 
       {cardSelecionado && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
